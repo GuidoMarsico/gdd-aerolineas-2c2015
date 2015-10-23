@@ -15,10 +15,12 @@ namespace AerolineaFrba.Compra
     {
         Int32 cantidadPasajes = 0;
         Int32 cantidadKg = 0;
+        Int32 kgAcumulados=0;
 
         public cargaDeDatos()
         {
             InitializeComponent();
+            
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -197,13 +199,34 @@ namespace AerolineaFrba.Compra
         {
             if (validarCargaEncomienda())
             {
-                MessageBox.Show(" Carga valida encomienda");
+                MessageBox.Show("Carga valida encomienda");
+                this.cargarEncomienda();
                 this.limpiarEncomienda();
             }
             else
             {
                 MessageBox.Show(" Carga invalida encomienda");
             }
+        }
+
+        private void cargarEncomienda()
+        {
+            this.dataGridEnco.Rows.Add(1);
+            this.dataGridEnco.SelectedCells[0].Value = this.textBoxNombrePas.Text;
+            MessageBox.Show(this.dataGridEnco.Columns.Count.ToString());
+            //Si lo descomentan alguno tira error que supero el intervalo 
+            //this.dataGridEnco.SelectedCells[1].Value =this.textBoxIdCliente.Text;
+            //this.dataGridEnco.SelectedCells[2].Value = this.textBoxIdCliente.Text;
+            //this.dataGridEnco.SelectedCells[3].Value = this.textBoxIdCliente;
+            //this.dataGridEnco.SelectedCells[4].Value = this.textBoxIdCliente;
+            // this.dataGridEnco.SelectedCells[5].Value = this.textBoxIdCliente;
+            // this.dataGridEnco.SelectedCells[6].Value = this.textBoxIdCliente;
+            // this.dataGridEnco.SelectedCells[7].Value = this.textBoxIdCliente;
+            // this.dataGridEnco.SelectedCells[8].Value = this.textBoxIdCliente;
+            // this.dataGridEnco.SelectedCells[9].Value = this.textBoxIdCliente;
+            this.kgAcumulados = this.kgAcumulados + Int32.Parse(this.textBoxKg.Text);
+            Int32 disponible = this.cantidadKg - this.kgAcumulados;
+            MessageBox.Show("Cantidad Restante para enviar " + disponible);
         }
 
         private void limpiarEncomienda()
@@ -225,7 +248,17 @@ namespace AerolineaFrba.Compra
 
         private bool seleccionKg()
         {
-            return this.textBoxKg.Text != "";
+            if (this.textBoxKg.Text == "") {
+                MessageBox.Show("Debe ingresar una cantidad de Kg a enviar");
+                return false;
+            }
+            Int32 cantidadElegida = Int32.Parse(this.textBoxKg.Text);
+            Int32 disponible = this.cantidadKg - this.kgAcumulados;
+            if(cantidadElegida > disponible){
+                MessageBox.Show("No puede enviar mas de " + disponible + " Kg");
+                return false;
+            }
+            return true;
         }       
     }
 
