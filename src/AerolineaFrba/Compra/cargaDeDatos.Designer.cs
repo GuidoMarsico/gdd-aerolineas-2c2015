@@ -76,8 +76,8 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
             this.textBoxIdCliente = new System.Windows.Forms.TextBox();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -416,7 +416,9 @@
             this.dataGridPasaje.Location = new System.Drawing.Point(24, 332);
             this.dataGridPasaje.MultiSelect = false;
             this.dataGridPasaje.Name = "dataGridPasaje";
+            this.dataGridPasaje.ReadOnly = true;
             this.dataGridPasaje.RowHeadersVisible = false;
+            this.dataGridPasaje.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridPasaje.Size = new System.Drawing.Size(734, 120);
             this.dataGridPasaje.TabIndex = 0;
             // 
@@ -424,37 +426,44 @@
             // 
             this.IdCliente.HeaderText = "IdCliente";
             this.IdCliente.Name = "IdCliente";
+            this.IdCliente.ReadOnly = true;
             this.IdCliente.Visible = false;
             // 
             // Column1
             // 
             this.Column1.HeaderText = "Nombre";
             this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
             // 
             // Column2
             // 
             this.Column2.HeaderText = "Apellido";
             this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
             // 
             // Column3
             // 
             this.Column3.HeaderText = "DNI";
             this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
             // 
             // Column4
             // 
             this.Column4.HeaderText = "Butaca";
             this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
             // 
             // Column5
             // 
             this.Column5.HeaderText = "Ubicación";
             this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
             // 
             // Column6
             // 
             this.Column6.HeaderText = "Precio";
             this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
             // 
             // groupBox5
             // 
@@ -477,6 +486,7 @@
             this.textBoxKg.Name = "textBoxKg";
             this.textBoxKg.Size = new System.Drawing.Size(80, 20);
             this.textBoxKg.TabIndex = 34;
+            this.textBoxKg.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.validadorInput);
             // 
             // label8
             // 
@@ -542,8 +552,8 @@
             this.dataGridEnco.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridEnco.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridEnco.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn3,
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5,
@@ -557,6 +567,7 @@
             this.dataGridEnco.Name = "dataGridEnco";
             this.dataGridEnco.ReadOnly = true;
             this.dataGridEnco.RowHeadersVisible = false;
+            this.dataGridEnco.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridEnco.Size = new System.Drawing.Size(734, 122);
             this.dataGridEnco.TabIndex = 0;
             // 
@@ -593,6 +604,7 @@
             this.botonEliminarEnco.TabIndex = 39;
             this.botonEliminarEnco.Text = "Eliminar";
             this.botonEliminarEnco.UseVisualStyleBackColor = true;
+            this.botonEliminarEnco.Click += new System.EventHandler(this.botonEliminarEnco_Click);
             // 
             // groupBox4
             // 
@@ -632,18 +644,18 @@
             this.textBoxIdCliente.TabIndex = 81;
             this.textBoxIdCliente.Visible = false;
             // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Nombre";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.HeaderText = "IdCliente";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
             this.dataGridViewTextBoxColumn2.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Nombre";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn3
             // 
@@ -783,8 +795,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;

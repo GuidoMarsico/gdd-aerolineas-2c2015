@@ -14,8 +14,8 @@ namespace AerolineaFrba.Compra
     public partial class cargaDeDatos : Form
     {
         Int32 cantidadPasajes = 0;
-        Int32 cantidadKg = 0;
-        Int32 kgAcumulados=0;
+        Double cantidadKg = 0;
+        Double kgAcumulados=0;
 
         public cargaDeDatos()
         {
@@ -121,7 +121,7 @@ namespace AerolineaFrba.Compra
             if (this.textBoxNombrePas.Text != "")
                 this.textBoxDniPas.Enabled = false;
             this.cantidadPasajes = Int32.Parse(this.textBoxTipoForm.Text);
-            this.cantidadKg = Int32.Parse(this.textBox1.Text);
+            this.cantidadKg = Double.Parse(this.textBox1.Text);
         }
 
         private void butonDesElegir_Click(object sender, EventArgs e)
@@ -153,13 +153,32 @@ namespace AerolineaFrba.Compra
         {
             if (validarCargaPasaje())
             {
-                MessageBox.Show(" Carga valida de pasaje");
+                MessageBox.Show("Carga valida de pasaje");
+                this.cargarPasaje();
                 this.limpiarPasaje();
             }
             else
             {
-                MessageBox.Show(" Carga invalida de pasaje");
+                MessageBox.Show("Carga invalida de pasaje");
             }
+        }
+
+        private void cargarPasaje()
+        {
+            int index = this.dataGridPasaje.Rows.Add(1);
+            this.dataGridPasaje.Rows[index].Selected = true;
+            this.dataGridPasaje.SelectedCells[0].Value = this.textBoxIdCliente.Text;
+            this.dataGridPasaje.SelectedCells[1].Value = this.textBoxNombrePas.Text;
+            this.dataGridPasaje.SelectedCells[2].Value = this.textBoxApellidoPas.Text;
+            this.dataGridPasaje.SelectedCells[3].Value = this.textBoxDniPas.Text;
+            this.dataGridPasaje.SelectedCells[4].Value = this.comboBoxNumeroButaca.SelectedValue;
+            this.dataGridPasaje.SelectedCells[5].Value = this.textBoxUbicacion.Text;
+            //aca deberia ir el precio que sale de la ruta que se eligio
+            //this.dataGridPasaje.SelectedCells[6].Value = this.textBoxIdCliente;
+            /* TODO: fijarse la cant de pasajes restantes para cargar
+             * this.kgAcumulados = this.kgAcumulados + Int32.Parse(this.textBoxKg.Text);
+            Int32 disponible = this.cantidadKg - this.kgAcumulados;
+            MessageBox.Show("Cantidad Restante para enviar " + disponible);*/
         }
 
         private void limpiarPasaje()
@@ -211,21 +230,21 @@ namespace AerolineaFrba.Compra
 
         private void cargarEncomienda()
         {
-            this.dataGridEnco.Rows.Add(1);
-            this.dataGridEnco.SelectedCells[0].Value = this.textBoxNombrePas.Text;
-            MessageBox.Show(this.dataGridEnco.Columns.Count.ToString());
-            //Si lo descomentan alguno tira error que supero el intervalo 
-            //this.dataGridEnco.SelectedCells[1].Value =this.textBoxIdCliente.Text;
-            //this.dataGridEnco.SelectedCells[2].Value = this.textBoxIdCliente.Text;
-            //this.dataGridEnco.SelectedCells[3].Value = this.textBoxIdCliente;
-            //this.dataGridEnco.SelectedCells[4].Value = this.textBoxIdCliente;
-            // this.dataGridEnco.SelectedCells[5].Value = this.textBoxIdCliente;
-            // this.dataGridEnco.SelectedCells[6].Value = this.textBoxIdCliente;
-            // this.dataGridEnco.SelectedCells[7].Value = this.textBoxIdCliente;
-            // this.dataGridEnco.SelectedCells[8].Value = this.textBoxIdCliente;
-            // this.dataGridEnco.SelectedCells[9].Value = this.textBoxIdCliente;
-            this.kgAcumulados = this.kgAcumulados + Int32.Parse(this.textBoxKg.Text);
-            Int32 disponible = this.cantidadKg - this.kgAcumulados;
+            int index= this.dataGridEnco.Rows.Add(1);
+            this.dataGridEnco.Rows[index].Selected = true;
+            this.dataGridEnco.SelectedCells[0].Value = this.textBoxIdCliente.Text;
+            this.dataGridEnco.SelectedCells[1].Value = this.textBoxNombrePas.Text;
+            this.dataGridEnco.SelectedCells[2].Value = this.textBoxApellidoPas.Text;
+            this.dataGridEnco.SelectedCells[3].Value = this.textBoxDniPas.Text;
+            this.dataGridEnco.SelectedCells[4].Value = this.textBoxKg.Text;
+            //aca deberia ir el precio que sale de la ruta que se eligio
+            //this.dataGridEnco.SelectedCells[5].Value = this.textBoxIdCliente;
+            this.dataGridEnco.SelectedCells[6].Value = this.timePickerFecha.Value;
+            this.dataGridEnco.SelectedCells[7].Value = this.textBoxMailPas.Text;
+            this.dataGridEnco.SelectedCells[8].Value = this.textBoxDireccionPas.Text;
+            this.dataGridEnco.SelectedCells[9].Value = this.textBoxTelefonoPas.Text;
+            this.kgAcumulados = this.kgAcumulados + Double.Parse(this.textBoxKg.Text);
+            Double disponible = this.cantidadKg - this.kgAcumulados;
             MessageBox.Show("Cantidad Restante para enviar " + disponible);
         }
 
@@ -252,14 +271,31 @@ namespace AerolineaFrba.Compra
                 MessageBox.Show("Debe ingresar una cantidad de Kg a enviar");
                 return false;
             }
-            Int32 cantidadElegida = Int32.Parse(this.textBoxKg.Text);
-            Int32 disponible = this.cantidadKg - this.kgAcumulados;
+            Double cantidadElegida = Double.Parse(this.textBoxKg.Text);
+            Double disponible = this.cantidadKg - this.kgAcumulados;
             if(cantidadElegida > disponible){
                 MessageBox.Show("No puede enviar mas de " + disponible + " Kg");
                 return false;
             }
             return true;
-        }       
+        }
+
+        private void botonEliminarEnco_Click(object sender, EventArgs e)
+        {
+            if (this.dataGridEnco.Rows.Count > 0){
+                this.kgAcumulados = this.kgAcumulados - Double.Parse(this.dataGridEnco.SelectedCells[4].Value.ToString());
+                Double disponible = this.cantidadKg - this.kgAcumulados;
+                MessageBox.Show("Cantidad Restante para enviar " + disponible);
+                this.dataGridEnco.Rows.RemoveAt(this.dataGridEnco.CurrentRow.Index);
+            }else{
+                MessageBox.Show("Tabla vacia, no hay nada que eliminar");
+            }
+        }
+
+        private void validadorInput(object sender, KeyPressEventArgs e)
+        {
+            funcionesComunes.precioONumeros(this.textBoxKg, e);
+        }
     }
 
 }

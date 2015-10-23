@@ -32,7 +32,7 @@ namespace AerolineaFrba.Compra
                 Form frmCargaDeDatos = new Compra.cargaDeDatos();
                 ((TextBox)frmCargaDeDatos.Controls["textBoxTipoForm"]).Text = this.numericUpDownPasajes.Value.ToString();
                 ((TextBox)frmCargaDeDatos.Controls["textBoxIDVuelo"]).Text = this.dataGridViajes.SelectedCells[0].Value.ToString();
-                ((TextBox)frmCargaDeDatos.Controls["textBox1"]).Text = this.numericUpDownEncomiendas.Value.ToString();
+                ((TextBox)frmCargaDeDatos.Controls["textBox1"]).Text = this.textBoxKgEncomienda.Text;
                 
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(frmCargaDeDatos);
             }
@@ -40,7 +40,7 @@ namespace AerolineaFrba.Compra
 
         private bool compraValida()
         {
-            if (this.numericUpDownPasajes.Value == 0 && this.numericUpDownEncomiendas.Value == 0) {
+            if (this.numericUpDownPasajes.Value == 0 && Double.Parse(this.textBoxKgEncomienda.Text) == 0) {
                 MessageBox.Show("Debes eleccionar una cantidad de pasajes o kg");
                 return false;
             }
@@ -48,7 +48,7 @@ namespace AerolineaFrba.Compra
                 MessageBox.Show("No hay esa cantidad de pasajes disponibles para ese vuelo");
                 return false;
             }
-            if (this.numericUpDownEncomiendas.Value > Int32.Parse(dataGridViajes.SelectedCells[6].Value.ToString()))
+            if (Double.Parse(this.textBoxKgEncomienda.Text) > Double.Parse(dataGridViajes.SelectedCells[6].Value.ToString()))
             {
                 MessageBox.Show("No hay esa cantidad de Kg disponibles para ese vuelo");
                 return false;
@@ -106,7 +106,7 @@ namespace AerolineaFrba.Compra
         private void Limpiar()
         {
             this.timePickerFecha.ResetText();
-            this.numericUpDownEncomiendas.Value=0;
+            this.textBoxKgEncomienda.Text="0";
             this.numericUpDownPasajes.Value=0;
             this.comboBoxOrigen.SelectedIndex = 0;
             this.comboBoxDestino.SelectedIndex = 0;
@@ -130,6 +130,11 @@ namespace AerolineaFrba.Compra
             comboBoxDestino.DataSource = dt2;
             comboBoxDestino.DisplayMember = "NOMBRE";
             comboBoxDestino.ValueMember = "ID";
+        }
+
+        private void validadorInput(object sender, KeyPressEventArgs e)
+        {
+            funcionesComunes.precioONumeros(this.textBoxKgEncomienda, e);
         }
     }
 }

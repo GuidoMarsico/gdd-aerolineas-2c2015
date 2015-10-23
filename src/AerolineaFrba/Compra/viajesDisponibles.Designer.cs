@@ -39,9 +39,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.dataGridViajes = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBoxKgEncomienda = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDownEncomiendas = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownPasajes = new System.Windows.Forms.NumericUpDown();
             this.botonVolver = new System.Windows.Forms.Button();
             this.botonComprar = new System.Windows.Forms.Button();
@@ -49,7 +49,6 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViajes)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEncomiendas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPasajes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -175,9 +174,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.textBoxKgEncomienda);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.numericUpDownEncomiendas);
             this.groupBox2.Controls.Add(this.numericUpDownPasajes);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(143, 492);
@@ -186,6 +185,17 @@
             this.groupBox2.TabIndex = 57;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Compra";
+            // 
+            // textBoxKgEncomienda
+            // 
+            this.textBoxKgEncomienda.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxKgEncomienda.BackColor = System.Drawing.Color.White;
+            this.textBoxKgEncomienda.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.textBoxKgEncomienda.Location = new System.Drawing.Point(313, 54);
+            this.textBoxKgEncomienda.Name = "textBoxKgEncomienda";
+            this.textBoxKgEncomienda.Size = new System.Drawing.Size(125, 26);
+            this.textBoxKgEncomienda.TabIndex = 61;
+            this.textBoxKgEncomienda.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.validadorInput);
             // 
             // label6
             // 
@@ -208,20 +218,6 @@
             this.label4.Size = new System.Drawing.Size(133, 20);
             this.label4.TabIndex = 56;
             this.label4.Text = "Cantidad Pasajes";
-            // 
-            // numericUpDownEncomiendas
-            // 
-            this.numericUpDownEncomiendas.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDownEncomiendas.Location = new System.Drawing.Point(313, 54);
-            this.numericUpDownEncomiendas.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownEncomiendas.Name = "numericUpDownEncomiendas";
-            this.numericUpDownEncomiendas.Size = new System.Drawing.Size(125, 26);
-            this.numericUpDownEncomiendas.TabIndex = 1;
-            this.numericUpDownEncomiendas.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // numericUpDownPasajes
             // 
@@ -290,7 +286,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViajes)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEncomiendas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPasajes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -310,12 +305,12 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown numericUpDownEncomiendas;
         private System.Windows.Forms.NumericUpDown numericUpDownPasajes;
         private System.Windows.Forms.Button botonVolver;
         private System.Windows.Forms.Button botonComprar;
         private System.Windows.Forms.Button botonLimpiar;
         private System.Windows.Forms.ComboBox comboBoxOrigen;
         private System.Windows.Forms.ComboBox comboBoxDestino;
+        private System.Windows.Forms.TextBox textBoxKgEncomienda;
     }
 }

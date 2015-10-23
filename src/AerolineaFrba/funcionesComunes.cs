@@ -131,7 +131,7 @@ namespace AerolineaFrba
 
         public static void precioONumeros(TextBox textbox, KeyPressEventArgs e)
         {
-            if (textbox.Text.Contains('.'))
+            if (textbox.Text.Contains(','))
                 funcionesComunes.soloNumeros(e);
             else
                 funcionesComunes.soloPrecio(e);
