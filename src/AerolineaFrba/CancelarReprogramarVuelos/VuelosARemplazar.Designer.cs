@@ -54,7 +54,6 @@
             this.dataGridListadoVuelos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridListadoVuelos.Size = new System.Drawing.Size(861, 358);
             this.dataGridListadoVuelos.TabIndex = 27;
-            this.dataGridListadoVuelos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridListadoVuelos_CellContentClick);
             // 
             // groupBoxVuelos
             // 

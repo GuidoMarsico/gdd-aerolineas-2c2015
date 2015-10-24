@@ -32,6 +32,7 @@
             this.dataGridListadoAeronaves = new System.Windows.Forms.DataGridView();
             this.botonVolver = new System.Windows.Forms.Button();
             this.buttonAceptar = new System.Windows.Forms.Button();
+            this.textBoxIdVuelo = new System.Windows.Forms.TextBox();
             this.groupBoxAeronaves.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridListadoAeronaves)).BeginInit();
             this.SuspendLayout();
@@ -86,6 +87,16 @@
             this.buttonAceptar.UseVisualStyleBackColor = true;
             this.buttonAceptar.Click += new System.EventHandler(this.buttonAceptar_Click);
             // 
+            // textBoxIdVuelo
+            // 
+            this.textBoxIdVuelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIdVuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIdVuelo.Location = new System.Drawing.Point(367, 328);
+            this.textBoxIdVuelo.Name = "textBoxIdVuelo";
+            this.textBoxIdVuelo.Size = new System.Drawing.Size(33, 26);
+            this.textBoxIdVuelo.TabIndex = 81;
+            this.textBoxIdVuelo.Visible = false;
+            // 
             // SeleccionarAeronave
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -93,6 +104,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(748, 366);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxIdVuelo);
             this.Controls.Add(this.buttonAceptar);
             this.Controls.Add(this.botonVolver);
             this.Controls.Add(this.groupBoxAeronaves);
@@ -102,6 +114,7 @@
             this.groupBoxAeronaves.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridListadoAeronaves)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -111,5 +124,6 @@
         private System.Windows.Forms.DataGridView dataGridListadoAeronaves;
         private System.Windows.Forms.Button botonVolver;
         private System.Windows.Forms.Button buttonAceptar;
+        private System.Windows.Forms.TextBox textBoxIdVuelo;
     }
 }

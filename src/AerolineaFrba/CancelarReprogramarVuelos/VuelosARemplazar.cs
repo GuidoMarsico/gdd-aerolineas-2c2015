@@ -27,12 +27,7 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
             this.dataGridListadoVuelos.Columns[8].Visible = false;
         }
 
-        private void dataGridListadoVuelos_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            DataTable tabla = (DataTable)this.dataGridListadoVuelos.DataSource;
-            this.darDeBajaLosVuelosDe(tabla);
-        }
-
+   
         private void darDeBajaLosVuelosDe(DataTable tabla)
         {
             foreach (DataRow vuelo in tabla.Rows)
@@ -57,10 +52,11 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
         private void botonRemplazar_Click(object sender, EventArgs e)
         {   
             DataTable aeronavesDisponebles = this.obtenerAeronavesDisponibles();
-            //Int32 cantidadDisponible = aeronavesDisponebles.Rows.Count;
+            //Int32 cantidadDisponible = aeronavesDisponebles.Rows.Count; lo hardcode como true para que habra la siguiente vista 
             if (true)//cantidadDisponible > 0)
             {
                 Form seleccionarAeronave = new CancelarReprogramarVuelos.SeleccionarAeronave(aeronavesDisponebles);
+                ((TextBox)seleccionarAeronave.Controls["textBoxIdVuelo"]).Text = this.dataGridListadoVuelos.SelectedCells[0].Value.ToString();
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(seleccionarAeronave);
             }
             else

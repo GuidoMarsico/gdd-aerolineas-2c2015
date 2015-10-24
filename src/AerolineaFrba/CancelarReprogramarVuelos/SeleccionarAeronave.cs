@@ -21,6 +21,8 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
+
+            //Se tiene que hacer el update
             funcionesComunes.habilitarAnterior();
         }
 
