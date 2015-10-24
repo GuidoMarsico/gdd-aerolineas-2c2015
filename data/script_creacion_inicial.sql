@@ -233,6 +233,7 @@ CREATE TABLE AERO.funcionalidades_por_rol (
 	FUNCIONALIDAD_ID INT, 
 	PRIMARY KEY(ROL_ID,FUNCIONALIDAD_ID)
 )
+
 CREATE TABLE AERO.usuarios (
     ID INT IDENTITY(1,1)    PRIMARY KEY,
     ROL_ID        INT            NOT NULL ,
@@ -244,6 +245,7 @@ CREATE TABLE AERO.usuarios (
 	ACTIVO INT,
 	CONSTRAINT usuarios_CK001 CHECK (ACTIVO IN (0,1))
 )
+
 CREATE TABLE AERO.productos (
     ID  INT  IDENTITY(1,1)    PRIMARY KEY,
     NOMBRE        NVARCHAR(255)    UNIQUE,
@@ -266,7 +268,8 @@ CREATE TABLE AERO.aeronaves_por_periodos (
 CREATE TABLE AERO.aeropuertos (
     ID  INT    IDENTITY(1,1)    PRIMARY KEY,
     NOMBRE        NVARCHAR(255)     NOT NULL,
-    CIUDAD_ID        INT             NOT NULL
+    CIUDAD_ID        INT             NOT NULL,
+	BAJA			 INT			DEFAULT 0
 )
 
 CREATE TABLE AERO.vuelos (
@@ -292,7 +295,8 @@ CREATE TABLE AERO.rutas (
 
 CREATE TABLE AERO.ciudades (
     ID     INT     IDENTITY(1,1)     PRIMARY KEY,
-    NOMBRE         NVARCHAR(255)    NOT NULL
+    NOMBRE         NVARCHAR(255)    NOT NULL,
+	BAJA		   INT				DEFAULT 0
 )
 
 CREATE TABLE AERO.paquetes(
@@ -863,6 +867,18 @@ BEGIN
 END;
 GO
 
+IF OBJECT_ID('AERO.cambiarAeronaveDeVuelo') IS NOT NULL
+BEGIN
+	DROP PROCEDURE AERO.cambiarAeronaveDeVuelo;
+END;
+GO
+
+IF OBJECT_ID('AERO.bajaVuelo') IS NOT NULL
+BEGIN
+	DROP PROCEDURE AERO.bajaVuelo;
+END;
+GO
+
 --CREATE
 CREATE FUNCTION AERO.corrigeMail (@s NVARCHAR (255)) 
 RETURNS NVARCHAR(255)
@@ -1270,6 +1286,23 @@ or v.FECHA_LLEGADA_ESTIMADA between convert(datetime, @fechaSalida,109) and conv
 END
 GO
 
+CREATE PROCEDURE AERO.bajaVuelo(@id int)
+AS BEGIN
+DELETE AERO.butacas_por_vuelo WHERE VUELO_ID = @id
+UPDATE AERO.vuelos
+SET INVALIDO = 1
+WHERE ID = @id
+END
+GO
+
+CREATE PROCEDURE AERO.cambiarAeronaveDeVuelo (@idVuelo int, @idAeronaveNueva int)
+AS BEGIN
+UPDATE AERO.vuelos
+SET AERONAVE_ID = @idAeronaveNueva
+WHERE ID = @idVuelo
+END
+GO
+
 -- BUTACAS POR VUELO
 CREATE PROCEDURE AERO.migracionButacasPorVuelo
 AS BEGIN
@@ -1391,24 +1424,33 @@ END
 GO
 
 -- CIUDADES
-/* NO TENEMOS QUE HACER DELETE, TENDRIAMOS QUE HACER UNA BAJA LOGICA (PONERLE UN CAMPO BAJA A RUTAS, AEROPUERTOS Y CIUDADES)
-PORQUE SINO VAMOS A TENER QUE ELIMINAR VUELOS, BOLETOS DE COMPRA (LOS QUE ESTEN ASOCIADOS A ESOS Y VAMOS A ROMPER TODO)
-
+/*Hago baja logica de todo porque sino rompe*/
 CREATE PROCEDURE AERO.bajaCiudad (@idCiudad int)
 AS BEGIN
+
 UPDATE AERO.vuelos
 SET INVALIDO = 1
 WHERE RUTA_ID IN (SELECT ID FROM AERO.rutas WHERE ORIGEN_ID IN(SELECT ID FROM AERO.aeropuertos WHERE CIUDAD_ID = @idCiudad) 
 OR DESTINO_ID IN(SELECT ID FROM AERO.aeropuertos WHERE CIUDAD_ID = @idCiudad))
-DELETE AERO.rutas
+
+/*Aca le hago delete porque ya los vuelos dados de baja no deberian figurar en la tabla asociativa*/
+DELETE AERO.butacas_por_vuelo
+WHERE VUELO_ID IN (SELECT ID FROM AERO.vuelos WHERE INVALIDO = 1)
+
+UPDATE AERO.rutas
+SET BAJA = 1
 WHERE ORIGEN_ID IN(SELECT ID FROM AERO.aeropuertos WHERE CIUDAD_ID = @idCiudad) 
 OR DESTINO_ID IN(SELECT ID FROM AERO.aeropuertos WHERE CIUDAD_ID = @idCiudad)
-DELETE AERO.aeropuertos
+
+UPDATE AERO.aeropuertos
+SET BAJA = 1
 WHERE CIUDAD_ID = @idCiudad
-DELETE AERO.ciudades
+
+UPDATE AERO.ciudades
+SET BAJA = 1
 WHERE ID = @idCiudad
 END
-GO*/
+GO
 
 -----------------------------------------------------------------------
 -- TRIGGERS
@@ -1580,7 +1622,7 @@ EXEC AERO.addFuncionalidad @rol='cliente', @func ='Alta de Tarjeta de Crédito';
 
 -----------------------------------------------------------------------
 --PRUEBAS DE LISTADOS ESTADISTICOS 
-/*
+
 --set de datos para prueba 1
 insert into AERO.clientes values(2,'pepe','asd','37013085','asd','123','asd@gmail.com',CONVERT(datetime,'20151215',109),0)
 --select * from AERO.clientes
@@ -1595,12 +1637,12 @@ insert into AERO.aeronaves values('123','asd',123,1,1,NULL,CURRENT_TIMESTAMP,99,
 insert into AERO.aeronaves values('999','asd',999,1,1,NULL,CURRENT_TIMESTAMP,99,NULL)
 --select * from AERO.aeronaves
 
-insert into AERO.ciudades values('ciudad1')
-insert into AERO.ciudades values('ciudad2')
+insert into AERO.ciudades values('ciudad1',0)
+insert into AERO.ciudades values('ciudad2',0)
 --select * from AERO.ciudades
 
-insert into AERO.aeropuertos values('aerp1',1)
-insert into AERO.aeropuertos values('aerp2',2)
+insert into AERO.aeropuertos values('aerp1',1,0)
+insert into AERO.aeropuertos values('aerp2',2,0)
 --select * from AERO.aeropuertos
 
 insert into AERO.rutas values(1,100,100,1,2,1,0)
@@ -1611,9 +1653,9 @@ insert into AERO.vuelos values(CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,CURRENT_TIMES
 insert into AERO.vuelos values(dateadd(MM,1,CURRENT_TIMESTAMP),dateadd(MM,1,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP,2,2,0)
 --select * from AERO.vuelos
 
-insert into AERO.boletos_de_compra values(1,CURRENT_TIMESTAMP,300,'efectivo',1,22,1)
-insert into AERO.boletos_de_compra values(2,CURRENT_TIMESTAMP,30,'efectivo',1,22,1)
-insert into AERO.boletos_de_compra values(3,DATEADD(YYYY,-4,CURRENT_TIMESTAMP),40,'efectivo',1,22,2)
+insert into AERO.boletos_de_compra values(CURRENT_TIMESTAMP,300,'efectivo',1,22,1)
+insert into AERO.boletos_de_compra values(CURRENT_TIMESTAMP,30,'efectivo',1,22,1)
+insert into AERO.boletos_de_compra values(DATEADD(YYYY,-4,CURRENT_TIMESTAMP),40,'efectivo',1,22,2)
 --select * from AERO.boletos_de_compra
 
 insert into AERO.butacas values(1,'PASILLO',1,1)
@@ -1688,4 +1730,3 @@ GO
 
 EXEC AERO.top5AeronavesFueraDeServicio @fechaFrom='20150101', @fechaTo ='20150601';
 GO
-*/
