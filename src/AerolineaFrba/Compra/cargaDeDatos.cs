@@ -39,14 +39,14 @@ namespace AerolineaFrba.Compra
 
         private bool compraInvalida()
         {
-            if (this.textBoxTipoForm.Text != "0" && this.dataGridPasaje.RowCount < Int32.Parse(this.textBoxTipoForm.Text))
+            if (this.textBoxCantPasajes.Text != "0" && this.dataGridPasaje.RowCount < Int32.Parse(this.textBoxCantPasajes.Text))
             {
-                MessageBox.Show("Debe cargar " + this.textBoxTipoForm.Text + " pasajes para poder seguir con la siguiente etapa de compra");
+                MessageBox.Show("Debe cargar " + this.textBoxCantPasajes.Text + " pasajes para poder seguir con la siguiente etapa de compra");
                 return true;
             }
-            if (this.textBox1.Text != "0" && this.kgAcumulados < this.cantidadKg) 
+            if (this.textBoxKgEncomiendas.Text != "0" && this.kgAcumulados < this.cantidadKg) 
             {
-                MessageBox.Show("Debe cargar " + this.textBox1.Text + " kg en encomiendas y solo cargo "+ this.kgAcumulados.ToString()+" kg");
+                MessageBox.Show("Debe cargar " + this.textBoxKgEncomiendas.Text + " kg en encomiendas y solo cargo "+ this.kgAcumulados.ToString()+" kg");
                 return true;
             }
             return false;
@@ -91,11 +91,10 @@ namespace AerolineaFrba.Compra
         {
             String dni = this.textBoxDniPas.Text;
             if (dni != ""){
-                if (dni.Length >= 7){
+                if (dni.Length >= 6){
                     if (validarDni(dni)){
                         Form listadoClientes = new Registro_de_Usuario.bajaModificacionDeCliente();
                         int valor = 1;
-                       
                         ((TextBox)listadoClientes.Controls["textBoxTipoForm"]).Text = valor.ToString();
                         ((TextBox)listadoClientes.Controls["textBoxDniCompra"]).Text = dni;
                         funcionesComunes.deshabilitarVentanaYAbrirNueva(listadoClientes);
@@ -112,7 +111,7 @@ namespace AerolineaFrba.Compra
                         }
                     }
                 }else
-                    MessageBox.Show("Numero de documento invalido, debe poseer al menos 7 digitos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Numero de documento invalido, debe poseer al menos 6 digitos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }else{
                 MessageBox.Show("Ingrese un numero de documento", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -130,7 +129,7 @@ namespace AerolineaFrba.Compra
         private void cargaDeDatos_Enter(object sender, EventArgs e)
         {   
             // Si no eligio ninguna cantidad de pasajes a comprar
-            if (this.textBoxTipoForm.Text == "0") {
+            if (this.textBoxCantPasajes.Text == "0") {
                 groupBox3.Enabled = false;
                 this.botonLimpiarPas.Enabled = false;
                 this.botonEliminarPasaje.Enabled = false;
@@ -139,7 +138,7 @@ namespace AerolineaFrba.Compra
                 this.comboBoxNumeroButaca.Enabled = false;
             }
             //Si no eligio ninguna cantidad de kg a enviar
-            if (this.textBox1.Text == "0") {
+            if (this.textBoxKgEncomiendas.Text == "0") {
                 groupBox5.Enabled = false;
                 this.botonCargarEnco.Enabled = false;
                 this.botonEliminarEnco.Enabled = false;
@@ -149,14 +148,15 @@ namespace AerolineaFrba.Compra
             }
             if (this.textBoxNombrePas.Text != "")
                 this.textBoxDniPas.Enabled = false;
-            this.cantidadPasajes = Int32.Parse(this.textBoxTipoForm.Text);
-            this.cantidadKg = Double.Parse(this.textBox1.Text);
+            this.cantidadPasajes = Int32.Parse(this.textBoxCantPasajes.Text);
+            this.cantidadKg = Double.Parse(this.textBoxKgEncomiendas.Text);
         }
 
         private void butonDesElegir_Click(object sender, EventArgs e)
         {
             this.limpiarDatosPasajero();
         }
+
 
         private void limpiarDatosPasajero()
         {
@@ -190,17 +190,25 @@ namespace AerolineaFrba.Compra
 
         private void cargarPasaje()
         {
-            int index = this.dataGridPasaje.Rows.Add(1);
-            this.dataGridPasaje.Rows[index].Selected = true;
-            this.dataGridPasaje.SelectedCells[0].Value = this.textBoxIdCliente.Text;
-            this.dataGridPasaje.SelectedCells[1].Value = this.textBoxNombrePas.Text;
-            this.dataGridPasaje.SelectedCells[2].Value = this.textBoxApellidoPas.Text;
-            this.dataGridPasaje.SelectedCells[3].Value = this.textBoxDniPas.Text;
-            this.dataGridPasaje.SelectedCells[4].Value = this.comboBoxNumeroButaca.SelectedValue;
-            this.dataGridPasaje.SelectedCells[5].Value = this.textBoxUbicacion.Text;
-            this.dataGridPasaje.SelectedCells[6].Value = this.precioBasePasaje;
-            this.cantidadPasajes = this.cantidadPasajes - 1;
-            MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
+            if (dataGridPasaje.Rows.Count <= Convert.ToInt32(textBoxCantPasajes.Text))
+            {
+                int index = this.dataGridPasaje.Rows.Add(1);
+                this.dataGridPasaje.Rows[index].Selected = true;
+                this.dataGridPasaje.SelectedCells[0].Value = this.textBoxIdCliente.Text;
+                this.dataGridPasaje.SelectedCells[1].Value = this.textBoxNombrePas.Text;
+                this.dataGridPasaje.SelectedCells[2].Value = this.textBoxApellidoPas.Text;
+                this.dataGridPasaje.SelectedCells[3].Value = this.textBoxDniPas.Text;
+                this.dataGridPasaje.SelectedCells[4].Value = this.comboBoxNumeroButaca.SelectedValue;
+                this.dataGridPasaje.SelectedCells[5].Value = this.textBoxUbicacion.Text;
+                this.dataGridPasaje.SelectedCells[6].Value = this.precioBasePasaje;
+                this.cantidadPasajes = this.cantidadPasajes - 1;
+                MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
+            }
+            else
+            {
+                MessageBox.Show("No se pueden comprar mas pasajes de los seleccionados");
+                limpiarPasaje();
+            }
         }
 
         private void limpiarPasaje()
