@@ -18,5 +18,15 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
             InitializeComponent();
             this.aeronavesDisponibles = tabla;
         }
+
+        private void buttonAceptar_Click(object sender, EventArgs e)
+        {
+            funcionesComunes.habilitarAnterior();
+        }
+
+        private void botonVolver_Click(object sender, EventArgs e)
+        {
+            funcionesComunes.habilitarAnterior();
+        }
     }
 }

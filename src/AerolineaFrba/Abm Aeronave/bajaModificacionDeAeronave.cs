@@ -88,8 +88,9 @@ namespace AerolineaFrba.Abm_Aeronave
         {
             
            bool resultado = this.cancelarVuelosVinculados();
-            if(resultado)
-                this.darDeBaja();
+           if (resultado)
+               funcionesComunes.darDeBajaAeronave(dataGridListadoAeronaves.SelectedCells[0].Value.ToString()); 
+            funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
             
         }
 
@@ -97,12 +98,11 @@ namespace AerolineaFrba.Abm_Aeronave
         {
             DataTable vuelos =this.vuelosVinculados();
             int cantVuelos =vuelos.Rows.Count;
-            MessageBox.Show("cantidad de vuelos " + vuelos+ " ID de la aeronave "+ dataGridListadoAeronaves.SelectedCells[0].Value.ToString() );
             if (cantVuelos > 0)
             {
                 Form opcion = new CancelarReprogramarVuelos.CancelarVuelos(vuelos);
                 ((TextBox)opcion.Controls["textBoxTipoIdAero"]).Text = dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
-      
+                ((TextBox)opcion.Controls["textBoxTipo"]).Text = "1";
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(opcion);
                 return false;
             }
@@ -111,7 +111,7 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private DataTable vuelosVinculados()
         {   
-             String id= dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
+            String id= dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
             return SqlConnector.obtenerTablaSegunConsultaString(@"SELECT v.ID as Id,v.FECHA_SALIDA as 'Fecha Salida',v.FECHA_LLEGADA as 'Fecha Llegada'
                         ,v.FECHA_LLEGADA_ESTIMADA as 'Fecha Estimada',r.CODIGO as 'Codigo Ruta',t.NOMBRE as Servicio, v.AERONAVE_ID as Aeronave,v.RUTA_ID as RutaID,
                         r.TIPO_SERVICIO_ID as IdServicio
@@ -119,18 +119,6 @@ namespace AerolineaFrba.Abm_Aeronave
                         join AERO.rutas r on r.ID = v.Ruta_ID
                         join AERO.tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
                         where v.AERONAVE_ID =" + id +" AND v.INVALIDO = 0 AND v.FECHA_SALIDA > CURRENT_TIMESTAMP order by 2");
-        }
-
-        private void darDeBaja()
-        {
-            List<string> lista = new List<string>();
-            lista.Add("@id");
-            bool resultado = SqlConnector.executeProcedure("AERO.bajaAeronave", lista, dataGridListadoAeronaves.SelectedCells[0].Value.ToString());
-            if (resultado)
-            {
-                MessageBox.Show("La aeronave se dio de baja exitosamente");
-            }
-            funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
         }
 
         private void bajaModificacionDeAeronave_Enter(object sender, EventArgs e)

@@ -32,6 +32,8 @@
             this.groupBoxVuelos = new System.Windows.Forms.GroupBox();
             this.botonRemplazar = new System.Windows.Forms.Button();
             this.buttonTerminar = new System.Windows.Forms.Button();
+            this.textBoxTipoIdAero = new System.Windows.Forms.TextBox();
+            this.textBoxTipo = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridListadoVuelos)).BeginInit();
             this.groupBoxVuelos.SuspendLayout();
             this.SuspendLayout();
@@ -52,6 +54,7 @@
             this.dataGridListadoVuelos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridListadoVuelos.Size = new System.Drawing.Size(861, 358);
             this.dataGridListadoVuelos.TabIndex = 27;
+            this.dataGridListadoVuelos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridListadoVuelos_CellContentClick);
             // 
             // groupBoxVuelos
             // 
@@ -74,6 +77,7 @@
             this.botonRemplazar.TabIndex = 29;
             this.botonRemplazar.Text = "Remplazar Aeronave";
             this.botonRemplazar.UseVisualStyleBackColor = true;
+            this.botonRemplazar.Click += new System.EventHandler(this.botonRemplazar_Click);
             // 
             // buttonTerminar
             // 
@@ -85,23 +89,48 @@
             this.buttonTerminar.TabIndex = 30;
             this.buttonTerminar.Text = "Terminar";
             this.buttonTerminar.UseVisualStyleBackColor = true;
+            this.buttonTerminar.Click += new System.EventHandler(this.buttonTerminar_Click);
             // 
-            // VuelosAReprogramar
+            // textBoxTipoIdAero
+            // 
+            this.textBoxTipoIdAero.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxTipoIdAero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxTipoIdAero.Location = new System.Drawing.Point(447, 413);
+            this.textBoxTipoIdAero.Name = "textBoxTipoIdAero";
+            this.textBoxTipoIdAero.Size = new System.Drawing.Size(33, 26);
+            this.textBoxTipoIdAero.TabIndex = 79;
+            this.textBoxTipoIdAero.Visible = false;
+            // 
+            // textBoxTipo
+            // 
+            this.textBoxTipo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxTipo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxTipo.Location = new System.Drawing.Point(521, 413);
+            this.textBoxTipo.Name = "textBoxTipo";
+            this.textBoxTipo.Size = new System.Drawing.Size(33, 26);
+            this.textBoxTipo.TabIndex = 80;
+            this.textBoxTipo.Visible = false;
+            // 
+            // VuelosARemplazar
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(897, 451);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxTipo);
+            this.Controls.Add(this.textBoxTipoIdAero);
             this.Controls.Add(this.buttonTerminar);
             this.Controls.Add(this.botonRemplazar);
             this.Controls.Add(this.groupBoxVuelos);
-            this.Name = "VuelosAReprogramar";
+            this.Name = "VuelosARemplazar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Vuelos A Remplazar";
             this.Load += new System.EventHandler(this.cargaVentana_load);
+            this.Enter += new System.EventHandler(this.recarga_enter);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridListadoVuelos)).EndInit();
             this.groupBoxVuelos.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -111,5 +140,7 @@
         private System.Windows.Forms.GroupBox groupBoxVuelos;
         private System.Windows.Forms.Button botonRemplazar;
         private System.Windows.Forms.Button buttonTerminar;
+        private System.Windows.Forms.TextBox textBoxTipoIdAero;
+        private System.Windows.Forms.TextBox textBoxTipo;
     }
 }

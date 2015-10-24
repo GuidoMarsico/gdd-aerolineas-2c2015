@@ -269,6 +269,23 @@ namespace AerolineaFrba
             return listado;
         }
 
+         public  static void darDeBajaAeronave(String id)
+        {
+            List<string> lista = new List<string>();
+            lista.Add("@id");
+            bool resultado = SqlConnector.executeProcedure("AERO.bajaAeronave", lista, id);
+            if (resultado)
+            {
+                MessageBox.Show("La aeronave se dio de baja exitosamente");
+            }
+        }
+       public static void darDebajaVuelo(int id)
+       {
+           List<String> lista = new List<string>();
+           lista.Add("@id");
+           SqlConnector.executeProcedure("AERO.bajaVuelo", lista, id);
+       }
+
         #endregion
     }
 }

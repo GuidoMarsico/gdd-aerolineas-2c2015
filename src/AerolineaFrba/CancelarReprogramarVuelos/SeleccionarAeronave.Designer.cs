@@ -72,6 +72,7 @@
             this.botonVolver.TabIndex = 48;
             this.botonVolver.Text = "Volver";
             this.botonVolver.UseVisualStyleBackColor = true;
+            this.botonVolver.Click += new System.EventHandler(this.botonVolver_Click);
             // 
             // buttonAceptar
             // 
@@ -83,8 +84,9 @@
             this.buttonAceptar.TabIndex = 49;
             this.buttonAceptar.Text = "Aceptar";
             this.buttonAceptar.UseVisualStyleBackColor = true;
+            this.buttonAceptar.Click += new System.EventHandler(this.buttonAceptar_Click);
             // 
-            // ReprogramarVuelo
+            // SeleccionarAeronave
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -94,7 +96,7 @@
             this.Controls.Add(this.buttonAceptar);
             this.Controls.Add(this.botonVolver);
             this.Controls.Add(this.groupBoxAeronaves);
-            this.Name = "ReprogramarVuelo";
+            this.Name = "SeleccionarAeronave";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Seleccionar Aeronave";
             this.groupBoxAeronaves.ResumeLayout(false);
