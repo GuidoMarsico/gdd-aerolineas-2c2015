@@ -70,12 +70,6 @@
             this.textBoxTipoForm = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.dataGridEnco = new System.Windows.Forms.DataGridView();
-            this.botonCargarEnco = new System.Windows.Forms.Button();
-            this.botonLimpiarEnco = new System.Windows.Forms.Button();
-            this.botonEliminarEnco = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
-            this.textBoxIdCliente = new System.Windows.Forms.TextBox();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -86,6 +80,12 @@
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.botonCargarEnco = new System.Windows.Forms.Button();
+            this.botonLimpiarEnco = new System.Windows.Forms.Button();
+            this.botonEliminarEnco = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
+            this.textBoxIdCliente = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -320,6 +320,7 @@
             this.botonEliminarPasaje.TabIndex = 40;
             this.botonEliminarPasaje.Text = "Eliminar";
             this.botonEliminarPasaje.UseVisualStyleBackColor = true;
+            this.botonEliminarPasaje.Click += new System.EventHandler(this.botonEliminarPasaje_Click);
             // 
             // botonLimpiarPas
             // 
@@ -331,6 +332,7 @@
             this.botonLimpiarPas.TabIndex = 37;
             this.botonLimpiarPas.Text = "Limpiar";
             this.botonLimpiarPas.UseVisualStyleBackColor = true;
+            this.botonLimpiarPas.Click += new System.EventHandler(this.botonLimpiarPas_Click);
             // 
             // botonCargarPas
             // 
@@ -403,6 +405,10 @@
             // 
             // dataGridPasaje
             // 
+            this.dataGridPasaje.AllowUserToAddRows = false;
+            this.dataGridPasaje.AllowUserToDeleteRows = false;
+            this.dataGridPasaje.AllowUserToResizeColumns = false;
+            this.dataGridPasaje.AllowUserToResizeRows = false;
             this.dataGridPasaje.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridPasaje.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridPasaje.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -571,79 +577,6 @@
             this.dataGridEnco.Size = new System.Drawing.Size(734, 122);
             this.dataGridEnco.TabIndex = 0;
             // 
-            // botonCargarEnco
-            // 
-            this.botonCargarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.botonCargarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonCargarEnco.Location = new System.Drawing.Point(631, 130);
-            this.botonCargarEnco.Name = "botonCargarEnco";
-            this.botonCargarEnco.Size = new System.Drawing.Size(98, 42);
-            this.botonCargarEnco.TabIndex = 36;
-            this.botonCargarEnco.Text = "Cargar";
-            this.botonCargarEnco.UseVisualStyleBackColor = true;
-            this.botonCargarEnco.Click += new System.EventHandler(this.botonCargarEnco_Click);
-            // 
-            // botonLimpiarEnco
-            // 
-            this.botonLimpiarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.botonLimpiarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonLimpiarEnco.Location = new System.Drawing.Point(631, 81);
-            this.botonLimpiarEnco.Name = "botonLimpiarEnco";
-            this.botonLimpiarEnco.Size = new System.Drawing.Size(98, 42);
-            this.botonLimpiarEnco.TabIndex = 38;
-            this.botonLimpiarEnco.Text = "Limpiar";
-            this.botonLimpiarEnco.UseVisualStyleBackColor = true;
-            // 
-            // botonEliminarEnco
-            // 
-            this.botonEliminarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.botonEliminarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonEliminarEnco.Location = new System.Drawing.Point(631, 21);
-            this.botonEliminarEnco.Name = "botonEliminarEnco";
-            this.botonEliminarEnco.Size = new System.Drawing.Size(98, 42);
-            this.botonEliminarEnco.TabIndex = 39;
-            this.botonEliminarEnco.Text = "Eliminar";
-            this.botonEliminarEnco.UseVisualStyleBackColor = true;
-            this.botonEliminarEnco.Click += new System.EventHandler(this.botonEliminarEnco_Click);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.botonLimpiarPas);
-            this.groupBox4.Controls.Add(this.groupBox5);
-            this.groupBox4.Controls.Add(this.botonCargarPas);
-            this.groupBox4.Controls.Add(this.botonEliminarPasaje);
-            this.groupBox4.Controls.Add(this.groupBox3);
-            this.groupBox4.Controls.Add(this.botonEliminarEnco);
-            this.groupBox4.Controls.Add(this.botonLimpiarEnco);
-            this.groupBox4.Controls.Add(this.botonCargarEnco);
-            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(12, 144);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(752, 182);
-            this.groupBox4.TabIndex = 1;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Pasajes/Encomiendas";
-            // 
-            // textBoxIDVuelo
-            // 
-            this.textBoxIDVuelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIDVuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIDVuelo.Location = new System.Drawing.Point(618, 593);
-            this.textBoxIDVuelo.Name = "textBoxIDVuelo";
-            this.textBoxIDVuelo.Size = new System.Drawing.Size(33, 26);
-            this.textBoxIDVuelo.TabIndex = 80;
-            this.textBoxIDVuelo.Visible = false;
-            // 
-            // textBoxIdCliente
-            // 
-            this.textBoxIdCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIdCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIdCliente.Location = new System.Drawing.Point(406, 595);
-            this.textBoxIdCliente.Name = "textBoxIdCliente";
-            this.textBoxIdCliente.Size = new System.Drawing.Size(33, 26);
-            this.textBoxIdCliente.TabIndex = 81;
-            this.textBoxIdCliente.Visible = false;
-            // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.HeaderText = "IdCliente";
@@ -709,6 +642,80 @@
             this.dataGridViewTextBoxColumn10.ReadOnly = true;
             this.dataGridViewTextBoxColumn10.Visible = false;
             // 
+            // botonCargarEnco
+            // 
+            this.botonCargarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.botonCargarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.botonCargarEnco.Location = new System.Drawing.Point(631, 130);
+            this.botonCargarEnco.Name = "botonCargarEnco";
+            this.botonCargarEnco.Size = new System.Drawing.Size(98, 42);
+            this.botonCargarEnco.TabIndex = 36;
+            this.botonCargarEnco.Text = "Cargar";
+            this.botonCargarEnco.UseVisualStyleBackColor = true;
+            this.botonCargarEnco.Click += new System.EventHandler(this.botonCargarEnco_Click);
+            // 
+            // botonLimpiarEnco
+            // 
+            this.botonLimpiarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.botonLimpiarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.botonLimpiarEnco.Location = new System.Drawing.Point(631, 81);
+            this.botonLimpiarEnco.Name = "botonLimpiarEnco";
+            this.botonLimpiarEnco.Size = new System.Drawing.Size(98, 42);
+            this.botonLimpiarEnco.TabIndex = 38;
+            this.botonLimpiarEnco.Text = "Limpiar";
+            this.botonLimpiarEnco.UseVisualStyleBackColor = true;
+            this.botonLimpiarEnco.Click += new System.EventHandler(this.botonLimpiarEnco_Click);
+            // 
+            // botonEliminarEnco
+            // 
+            this.botonEliminarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.botonEliminarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.botonEliminarEnco.Location = new System.Drawing.Point(631, 21);
+            this.botonEliminarEnco.Name = "botonEliminarEnco";
+            this.botonEliminarEnco.Size = new System.Drawing.Size(98, 42);
+            this.botonEliminarEnco.TabIndex = 39;
+            this.botonEliminarEnco.Text = "Eliminar";
+            this.botonEliminarEnco.UseVisualStyleBackColor = true;
+            this.botonEliminarEnco.Click += new System.EventHandler(this.botonEliminarEnco_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.botonLimpiarPas);
+            this.groupBox4.Controls.Add(this.groupBox5);
+            this.groupBox4.Controls.Add(this.botonCargarPas);
+            this.groupBox4.Controls.Add(this.botonEliminarPasaje);
+            this.groupBox4.Controls.Add(this.groupBox3);
+            this.groupBox4.Controls.Add(this.botonEliminarEnco);
+            this.groupBox4.Controls.Add(this.botonLimpiarEnco);
+            this.groupBox4.Controls.Add(this.botonCargarEnco);
+            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox4.Location = new System.Drawing.Point(12, 144);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(752, 182);
+            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Pasajes/Encomiendas";
+            // 
+            // textBoxIDVuelo
+            // 
+            this.textBoxIDVuelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIDVuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIDVuelo.Location = new System.Drawing.Point(618, 593);
+            this.textBoxIDVuelo.Name = "textBoxIDVuelo";
+            this.textBoxIDVuelo.Size = new System.Drawing.Size(33, 26);
+            this.textBoxIDVuelo.TabIndex = 80;
+            this.textBoxIDVuelo.Visible = false;
+            // 
+            // textBoxIdCliente
+            // 
+            this.textBoxIdCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIdCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIdCliente.Location = new System.Drawing.Point(406, 595);
+            this.textBoxIdCliente.Name = "textBoxIdCliente";
+            this.textBoxIdCliente.Size = new System.Drawing.Size(33, 26);
+            this.textBoxIdCliente.TabIndex = 81;
+            this.textBoxIdCliente.Visible = false;
+            // 
             // cargaDeDatos
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -728,6 +735,7 @@
             this.Name = "cargaDeDatos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Carga de Pasajes/Encomiendas";
+            this.Load += new System.EventHandler(this.cargar);
             this.Enter += new System.EventHandler(this.cargaDeDatos_Enter);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

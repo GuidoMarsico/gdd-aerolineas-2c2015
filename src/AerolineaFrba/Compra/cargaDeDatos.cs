@@ -16,11 +16,12 @@ namespace AerolineaFrba.Compra
         Int32 cantidadPasajes = 0;
         Double cantidadKg = 0;
         Double kgAcumulados=0;
+        Double precioBasePasaje;
+        Double precioBaseKg;
 
         public cargaDeDatos()
         {
             InitializeComponent();
-            
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -31,13 +32,14 @@ namespace AerolineaFrba.Compra
         private void botonComprar_Click(object sender, EventArgs e)
         {
             //Abre formulario segun sea el rol
-            if (funcionesComunes.getRol() == "administrador")
-            {
-                funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.formaDePago());
-            }else{
-                funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.registrarPagoTarjeta());
+            DialogResult dialogResult = MessageBox.Show("¿Esta seguro que quiere realizar la compra?", "Realizar Compra", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes){
+                if (funcionesComunes.getRol() == "administrador"){
+                    funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.formaDePago());
+                }else{
+                    funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.registrarPagoTarjeta());
+                }
             }
-
         }
 
         private void valida(object sender, KeyPressEventArgs e)
@@ -53,38 +55,30 @@ namespace AerolineaFrba.Compra
         private void consultarContactos()
         {
             String dni = this.textBoxDniPas.Text;
-            if (dni != "")
-            {
-                if (dni.Length >= 7)
-                {
-                    if (validarDni(dni))
-                    {
-                        //TODO Hacer que mueste un nueva vista tal vez con los resultados de clientes con ese dni para elegir uno 
+            if (dni != ""){
+                if (dni.Length >= 7){
+                    if (validarDni(dni)){
                         Form listadoClientes = new Registro_de_Usuario.bajaModificacionDeCliente();
                         int valor = 1;
                        
                         ((TextBox)listadoClientes.Controls["textBoxTipoForm"]).Text = valor.ToString();
                         ((TextBox)listadoClientes.Controls["textBoxDniCompra"]).Text = dni;
                         funcionesComunes.deshabilitarVentanaYAbrirNueva(listadoClientes);
+                    }else{
+                        DialogResult dialogResult = MessageBox.Show("Debe dar de alta el cliente con ese DNI, ¿esta seguro?", "Dni de Cliente Inexistente", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes){
+                            Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente();
+                            int valor = 1;
+                            ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
+                            altaDeCliente.Text = "Alta de Cliente";
+                            ((TextBox)altaDeCliente.Controls["textBoxDNI"]).Text = dni;
+                            ((TextBox)altaDeCliente.Controls["textBoxDNI"]).ReadOnly = true;
+                            funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
+                        }
                     }
-                    else
-                    {
-                        MessageBox.Show("Dni de cliente inexistente, debe darlo de alta para poder seguir con las operaciones");
-
-                        Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-                        int valor = 1;
-                        ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
-                        altaDeCliente.Text = "Alta de Cliente";
-                        ((TextBox)altaDeCliente.Controls["textBoxDNI"]).Text = dni;
-                        ((TextBox)altaDeCliente.Controls["textBoxDNI"]).ReadOnly = true;
-                        funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
-                    }
-                }
-                else
-                    MessageBox.Show("Numero de documento invalido debe poseer al menos 7 digitos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
+                }else
+                    MessageBox.Show("Numero de documento invalido, debe poseer al menos 7 digitos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }else{
                 MessageBox.Show("Ingrese un numero de documento", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -145,21 +139,17 @@ namespace AerolineaFrba.Compra
         {
             DataGridView tabla = new DataGridView();
             tabla.DataSource = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT b.TIPO as Tipo
-                                         FROM AERO.butacas b where b.ID = " + this.comboBoxNumeroButaca.SelectedValue);
+                FROM AERO.butacas b where b.ID = " + this.comboBoxNumeroButaca.SelectedValue);
             this.textBoxUbicacion.Text = tabla.SelectedCells[0].Value.ToString();
         }
 
         private void botonCargarPas_Click(object sender, EventArgs e)
         {
-            if (validarCargaPasaje())
-            {
-                MessageBox.Show("Carga valida de pasaje");
+            if (validarCargaPasaje()){
                 this.cargarPasaje();
                 this.limpiarPasaje();
-            }
-            else
-            {
-                MessageBox.Show("Carga invalida de pasaje");
+            }else{
+                MessageBox.Show("Debe completar los campos requeridos");
             }
         }
 
@@ -173,12 +163,9 @@ namespace AerolineaFrba.Compra
             this.dataGridPasaje.SelectedCells[3].Value = this.textBoxDniPas.Text;
             this.dataGridPasaje.SelectedCells[4].Value = this.comboBoxNumeroButaca.SelectedValue;
             this.dataGridPasaje.SelectedCells[5].Value = this.textBoxUbicacion.Text;
-            //aca deberia ir el precio que sale de la ruta que se eligio
-            //this.dataGridPasaje.SelectedCells[6].Value = this.textBoxIdCliente;
-            /* TODO: fijarse la cant de pasajes restantes para cargar
-             * this.kgAcumulados = this.kgAcumulados + Int32.Parse(this.textBoxKg.Text);
-            Int32 disponible = this.cantidadKg - this.kgAcumulados;
-            MessageBox.Show("Cantidad Restante para enviar " + disponible);*/
+            this.dataGridPasaje.SelectedCells[6].Value = this.precioBasePasaje;
+            this.cantidadPasajes = this.cantidadPasajes - 1;
+            MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
         }
 
         private void limpiarPasaje()
@@ -190,8 +177,9 @@ namespace AerolineaFrba.Compra
         private void resetearComboBox()
         {
             this.comboBoxNumeroButaca.DataSource = null;
-            funcionesComunes.llenarCombobox(this.comboBoxNumeroButaca, "NUMERO", @"SELECT b.ID,b.NUMERO FROM AERO.butacas_por_vuelo bxv
-            join AERO.butacas b on b.ID = bxv.BUTACA_ID where bxv.VUELO_ID = " + this.textBoxIDVuelo.Text + "AND bxv.ESTADO = 'LIBRE'");
+            funcionesComunes.llenarCombobox(this.comboBoxNumeroButaca, "NUMERO", @"SELECT b.ID,
+                b.NUMERO FROM AERO.butacas_por_vuelo bxv join AERO.butacas b on b.ID = bxv.BUTACA_ID 
+                where bxv.VUELO_ID = " + this.textBoxIDVuelo.Text + "AND bxv.ESTADO = 'LIBRE'");
         }
 
         private bool validarCargaPasaje()
@@ -216,16 +204,22 @@ namespace AerolineaFrba.Compra
 
         private void botonCargarEnco_Click(object sender, EventArgs e)
         {
-            if (validarCargaEncomienda())
-            {
-                MessageBox.Show("Carga valida encomienda");
+            if (validarCargaEncomienda()){
                 this.cargarEncomienda();
                 this.limpiarEncomienda();
+            }else{
+                MessageBox.Show("Debe completar los campos requeridos");
             }
-            else
-            {
-                MessageBox.Show(" Carga invalida encomienda");
-            }
+        }
+
+        private void buscarPreciosDeRuta()
+        {
+            DataTable tabla = new DataTable();
+            tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT r.PRECIO_BASE_KG, 
+                r.PRECIO_BASE_PASAJE FROM AERO.vuelos v join AERO.rutas r on r.ID = v.RUTA_ID WHERE 
+                v.ID = " + this.textBoxIDVuelo.Text);
+            precioBaseKg = Double.Parse(tabla.Rows[0].ItemArray[0].ToString());
+            precioBasePasaje = Double.Parse(tabla.Rows[0].ItemArray[1].ToString());
         }
 
         private void cargarEncomienda()
@@ -237,21 +231,18 @@ namespace AerolineaFrba.Compra
             this.dataGridEnco.SelectedCells[2].Value = this.textBoxApellidoPas.Text;
             this.dataGridEnco.SelectedCells[3].Value = this.textBoxDniPas.Text;
             this.dataGridEnco.SelectedCells[4].Value = this.textBoxKg.Text;
-            //aca deberia ir el precio que sale de la ruta que se eligio
-            //this.dataGridEnco.SelectedCells[5].Value = this.textBoxIdCliente;
+            this.dataGridEnco.SelectedCells[5].Value = this.precioBaseKg * Double.Parse(this.textBoxKg.Text);
             this.dataGridEnco.SelectedCells[6].Value = this.timePickerFecha.Value;
             this.dataGridEnco.SelectedCells[7].Value = this.textBoxMailPas.Text;
             this.dataGridEnco.SelectedCells[8].Value = this.textBoxDireccionPas.Text;
             this.dataGridEnco.SelectedCells[9].Value = this.textBoxTelefonoPas.Text;
             this.kgAcumulados = this.kgAcumulados + Double.Parse(this.textBoxKg.Text);
             Double disponible = this.cantidadKg - this.kgAcumulados;
-            MessageBox.Show("Cantidad Restante para enviar " + disponible);
+            MessageBox.Show("Cantidad restante para enviar " + disponible);
         }
 
         private void limpiarEncomienda()
         {
-            this.limpiarDatosPasajero();
-            this.textBoxIdCliente.Text = "";
             this.textBoxKg.Text = "";
         }
 
@@ -268,7 +259,7 @@ namespace AerolineaFrba.Compra
         private bool seleccionKg()
         {
             if (this.textBoxKg.Text == "") {
-                MessageBox.Show("Debe ingresar una cantidad de Kg a enviar");
+                MessageBox.Show("Debe ingresar una cantidad de Kg a enviar via encomienda");
                 return false;
             }
             Double cantidadElegida = Double.Parse(this.textBoxKg.Text);
@@ -285,7 +276,7 @@ namespace AerolineaFrba.Compra
             if (this.dataGridEnco.Rows.Count > 0){
                 this.kgAcumulados = this.kgAcumulados - Double.Parse(this.dataGridEnco.SelectedCells[4].Value.ToString());
                 Double disponible = this.cantidadKg - this.kgAcumulados;
-                MessageBox.Show("Cantidad Restante para enviar " + disponible);
+                MessageBox.Show("Cantidad restante para enviar " + disponible);
                 this.dataGridEnco.Rows.RemoveAt(this.dataGridEnco.CurrentRow.Index);
             }else{
                 MessageBox.Show("Tabla vacia, no hay nada que eliminar");
@@ -295,6 +286,33 @@ namespace AerolineaFrba.Compra
         private void validadorInput(object sender, KeyPressEventArgs e)
         {
             funcionesComunes.precioONumeros(this.textBoxKg, e);
+        }
+
+        private void botonEliminarPasaje_Click(object sender, EventArgs e)
+        {
+            if (this.dataGridPasaje.Rows.Count > 0){
+                this.cantidadPasajes = this.cantidadPasajes + 1;
+                MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
+                this.dataGridPasaje.Rows.RemoveAt(this.dataGridPasaje.CurrentRow.Index);
+            }else{
+                MessageBox.Show("Tabla vacia, no hay nada que eliminar");
+            }
+        }
+
+        private void botonLimpiarPas_Click(object sender, EventArgs e)
+        {
+            this.textBoxUbicacion.Clear();
+            this.comboBoxNumeroButaca.SelectedIndex = -1;
+        }
+
+        private void botonLimpiarEnco_Click(object sender, EventArgs e)
+        {
+            this.textBoxKg.Clear();
+        }
+
+        private void cargar(object sender, EventArgs e)
+        {
+            this.buscarPreciosDeRuta();
         }
     }
 

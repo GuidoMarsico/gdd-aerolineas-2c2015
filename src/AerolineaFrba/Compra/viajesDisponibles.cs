@@ -17,6 +17,7 @@ namespace AerolineaFrba.Compra
         public viajesDisponibles()
         {
             InitializeComponent();
+            this.textBoxKgEncomienda.Text = "0";
             funcionesComunes.consultarViajesDisponibles(this.dataGridViajes, String.Format("{0:yyyyMMdd HH:mm:ss}", DateTime.Today.Subtract(TimeSpan.FromDays(1))));
         }
 
@@ -106,7 +107,7 @@ namespace AerolineaFrba.Compra
         private void Limpiar()
         {
             this.timePickerFecha.ResetText();
-            this.textBoxKgEncomienda.Text="0";
+            this.textBoxKgEncomienda.Clear();
             this.numericUpDownPasajes.Value=0;
             this.comboBoxOrigen.SelectedIndex = 0;
             this.comboBoxDestino.SelectedIndex = 0;
