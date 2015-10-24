@@ -67,15 +67,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.botonVolver = new System.Windows.Forms.Button();
             this.botonComprar = new System.Windows.Forms.Button();
-            this.textBoxTipoForm = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxCantPasajes = new System.Windows.Forms.TextBox();
+            this.textBoxKgEncomiendas = new System.Windows.Forms.TextBox();
             this.dataGridEnco = new System.Windows.Forms.DataGridView();
-            this.botonCargarEnco = new System.Windows.Forms.Button();
-            this.botonLimpiarEnco = new System.Windows.Forms.Button();
-            this.botonEliminarEnco = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
-            this.textBoxIdCliente = new System.Windows.Forms.TextBox();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -86,6 +80,12 @@
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.botonCargarEnco = new System.Windows.Forms.Button();
+            this.botonLimpiarEnco = new System.Windows.Forms.Button();
+            this.botonEliminarEnco = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
+            this.textBoxIdCliente = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -114,7 +114,7 @@
             // 
             this.butonDesElegir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.butonDesElegir.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butonDesElegir.Location = new System.Drawing.Point(206, 92);
+            this.butonDesElegir.Location = new System.Drawing.Point(146, 93);
             this.butonDesElegir.Name = "butonDesElegir";
             this.butonDesElegir.Size = new System.Drawing.Size(91, 27);
             this.butonDesElegir.TabIndex = 32;
@@ -126,7 +126,7 @@
             // 
             this.botonBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.botonBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonBuscar.Location = new System.Drawing.Point(87, 92);
+            this.botonBuscar.Location = new System.Drawing.Point(49, 93);
             this.botonBuscar.Name = "botonBuscar";
             this.botonBuscar.Size = new System.Drawing.Size(91, 27);
             this.botonBuscar.TabIndex = 25;
@@ -160,11 +160,11 @@
             // 
             this.timePickerFecha.CustomFormat = "dd/MM/yyyy";
             this.timePickerFecha.Enabled = false;
-            this.timePickerFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timePickerFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timePickerFecha.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.timePickerFecha.Location = new System.Drawing.Point(296, 83);
+            this.timePickerFecha.Location = new System.Drawing.Point(297, 82);
             this.timePickerFecha.Name = "timePickerFecha";
-            this.timePickerFecha.Size = new System.Drawing.Size(109, 26);
+            this.timePickerFecha.Size = new System.Drawing.Size(119, 21);
             this.timePickerFecha.TabIndex = 44;
             // 
             // textBoxTelefonoPas
@@ -172,7 +172,7 @@
             this.textBoxTelefonoPas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxTelefonoPas.BackColor = System.Drawing.Color.White;
             this.textBoxTelefonoPas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTelefonoPas.Location = new System.Drawing.Point(56, 84);
+            this.textBoxTelefonoPas.Location = new System.Drawing.Point(18, 83);
             this.textBoxTelefonoPas.Name = "textBoxTelefonoPas";
             this.textBoxTelefonoPas.ReadOnly = true;
             this.textBoxTelefonoPas.Size = new System.Drawing.Size(103, 20);
@@ -183,10 +183,10 @@
             this.textBoxMailPas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxMailPas.BackColor = System.Drawing.Color.White;
             this.textBoxMailPas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMailPas.Location = new System.Drawing.Point(179, 83);
+            this.textBoxMailPas.Location = new System.Drawing.Point(137, 83);
             this.textBoxMailPas.Name = "textBoxMailPas";
             this.textBoxMailPas.ReadOnly = true;
-            this.textBoxMailPas.Size = new System.Drawing.Size(90, 20);
+            this.textBoxMailPas.Size = new System.Drawing.Size(132, 20);
             this.textBoxMailPas.TabIndex = 42;
             // 
             // label7
@@ -194,7 +194,7 @@
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(293, 63);
+            this.label7.Location = new System.Drawing.Point(294, 67);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(93, 13);
             this.label7.TabIndex = 41;
@@ -205,7 +205,7 @@
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(176, 63);
+            this.label6.Location = new System.Drawing.Point(134, 67);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(26, 13);
             this.label6.TabIndex = 39;
@@ -216,7 +216,7 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(53, 63);
+            this.label5.Location = new System.Drawing.Point(15, 67);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(49, 13);
             this.label5.TabIndex = 37;
@@ -227,10 +227,10 @@
             this.textBoxDireccionPas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDireccionPas.BackColor = System.Drawing.Color.White;
             this.textBoxDireccionPas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDireccionPas.Location = new System.Drawing.Point(297, 40);
+            this.textBoxDireccionPas.Location = new System.Drawing.Point(297, 37);
             this.textBoxDireccionPas.Name = "textBoxDireccionPas";
             this.textBoxDireccionPas.ReadOnly = true;
-            this.textBoxDireccionPas.Size = new System.Drawing.Size(90, 20);
+            this.textBoxDireccionPas.Size = new System.Drawing.Size(119, 20);
             this.textBoxDireccionPas.TabIndex = 36;
             // 
             // label4
@@ -249,10 +249,10 @@
             this.textBoxNombrePas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxNombrePas.BackColor = System.Drawing.Color.White;
             this.textBoxNombrePas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxNombrePas.Location = new System.Drawing.Point(179, 40);
+            this.textBoxNombrePas.Location = new System.Drawing.Point(164, 37);
             this.textBoxNombrePas.Name = "textBoxNombrePas";
             this.textBoxNombrePas.ReadOnly = true;
-            this.textBoxNombrePas.Size = new System.Drawing.Size(90, 20);
+            this.textBoxNombrePas.Size = new System.Drawing.Size(105, 20);
             this.textBoxNombrePas.TabIndex = 34;
             // 
             // label3
@@ -260,7 +260,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(176, 21);
+            this.label3.Location = new System.Drawing.Point(161, 21);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 13);
             this.label3.TabIndex = 33;
@@ -271,10 +271,10 @@
             this.textBoxApellidoPas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxApellidoPas.BackColor = System.Drawing.Color.White;
             this.textBoxApellidoPas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxApellidoPas.Location = new System.Drawing.Point(56, 37);
+            this.textBoxApellidoPas.Location = new System.Drawing.Point(18, 38);
             this.textBoxApellidoPas.Name = "textBoxApellidoPas";
             this.textBoxApellidoPas.ReadOnly = true;
-            this.textBoxApellidoPas.Size = new System.Drawing.Size(90, 20);
+            this.textBoxApellidoPas.Size = new System.Drawing.Size(118, 20);
             this.textBoxApellidoPas.TabIndex = 32;
             // 
             // label2
@@ -282,7 +282,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(56, 20);
+            this.label2.Location = new System.Drawing.Point(18, 21);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 31;
@@ -303,7 +303,7 @@
             // 
             this.textBoxDniPas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDniPas.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDniPas.Location = new System.Drawing.Point(188, 22);
+            this.textBoxDniPas.Location = new System.Drawing.Point(87, 53);
             this.textBoxDniPas.MaxLength = 8;
             this.textBoxDniPas.Name = "textBoxDniPas";
             this.textBoxDniPas.Size = new System.Drawing.Size(109, 26);
@@ -529,25 +529,25 @@
             this.botonComprar.UseVisualStyleBackColor = true;
             this.botonComprar.Click += new System.EventHandler(this.botonComprar_Click);
             // 
-            // textBoxTipoForm
+            // textBoxCantPasajes
             // 
-            this.textBoxTipoForm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTipoForm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTipoForm.Location = new System.Drawing.Point(657, 595);
-            this.textBoxTipoForm.Name = "textBoxTipoForm";
-            this.textBoxTipoForm.Size = new System.Drawing.Size(33, 26);
-            this.textBoxTipoForm.TabIndex = 78;
-            this.textBoxTipoForm.Visible = false;
+            this.textBoxCantPasajes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCantPasajes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxCantPasajes.Location = new System.Drawing.Point(708, 471);
+            this.textBoxCantPasajes.Name = "textBoxCantPasajes";
+            this.textBoxCantPasajes.Size = new System.Drawing.Size(33, 26);
+            this.textBoxCantPasajes.TabIndex = 78;
+            this.textBoxCantPasajes.Visible = false;
             // 
-            // textBox1
+            // textBoxKgEncomiendas
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(708, 602);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(33, 26);
-            this.textBox1.TabIndex = 79;
-            this.textBox1.Visible = false;
+            this.textBoxKgEncomiendas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxKgEncomiendas.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxKgEncomiendas.Location = new System.Drawing.Point(708, 520);
+            this.textBoxKgEncomiendas.Name = "textBoxKgEncomiendas";
+            this.textBoxKgEncomiendas.Size = new System.Drawing.Size(33, 26);
+            this.textBoxKgEncomiendas.TabIndex = 79;
+            this.textBoxKgEncomiendas.Visible = false;
             // 
             // dataGridEnco
             // 
@@ -576,80 +576,6 @@
             this.dataGridEnco.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridEnco.Size = new System.Drawing.Size(308, 76);
             this.dataGridEnco.TabIndex = 0;
-            // 
-            // botonCargarEnco
-            // 
-            this.botonCargarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.botonCargarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonCargarEnco.Location = new System.Drawing.Point(631, 130);
-            this.botonCargarEnco.Name = "botonCargarEnco";
-            this.botonCargarEnco.Size = new System.Drawing.Size(98, 42);
-            this.botonCargarEnco.TabIndex = 36;
-            this.botonCargarEnco.Text = "Cargar";
-            this.botonCargarEnco.UseVisualStyleBackColor = true;
-            this.botonCargarEnco.Click += new System.EventHandler(this.botonCargarEnco_Click);
-            // 
-            // botonLimpiarEnco
-            // 
-            this.botonLimpiarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.botonLimpiarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonLimpiarEnco.Location = new System.Drawing.Point(631, 81);
-            this.botonLimpiarEnco.Name = "botonLimpiarEnco";
-            this.botonLimpiarEnco.Size = new System.Drawing.Size(98, 42);
-            this.botonLimpiarEnco.TabIndex = 38;
-            this.botonLimpiarEnco.Text = "Limpiar";
-            this.botonLimpiarEnco.UseVisualStyleBackColor = true;
-            this.botonLimpiarEnco.Click += new System.EventHandler(this.botonLimpiarEnco_Click);
-            // 
-            // botonEliminarEnco
-            // 
-            this.botonEliminarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.botonEliminarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonEliminarEnco.Location = new System.Drawing.Point(631, 21);
-            this.botonEliminarEnco.Name = "botonEliminarEnco";
-            this.botonEliminarEnco.Size = new System.Drawing.Size(98, 42);
-            this.botonEliminarEnco.TabIndex = 39;
-            this.botonEliminarEnco.Text = "Eliminar";
-            this.botonEliminarEnco.UseVisualStyleBackColor = true;
-            this.botonEliminarEnco.Click += new System.EventHandler(this.botonEliminarEnco_Click);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.botonLimpiarPas);
-            this.groupBox4.Controls.Add(this.groupBox5);
-            this.groupBox4.Controls.Add(this.botonCargarPas);
-            this.groupBox4.Controls.Add(this.botonEliminarPasaje);
-            this.groupBox4.Controls.Add(this.groupBox3);
-            this.groupBox4.Controls.Add(this.botonEliminarEnco);
-            this.groupBox4.Controls.Add(this.botonLimpiarEnco);
-            this.groupBox4.Controls.Add(this.botonCargarEnco);
-            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(12, 144);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(752, 182);
-            this.groupBox4.TabIndex = 1;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Pasajes/Encomiendas";
-            // 
-            // textBoxIDVuelo
-            // 
-            this.textBoxIDVuelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIDVuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIDVuelo.Location = new System.Drawing.Point(618, 593);
-            this.textBoxIDVuelo.Name = "textBoxIDVuelo";
-            this.textBoxIDVuelo.Size = new System.Drawing.Size(33, 26);
-            this.textBoxIDVuelo.TabIndex = 80;
-            this.textBoxIDVuelo.Visible = false;
-            // 
-            // textBoxIdCliente
-            // 
-            this.textBoxIdCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIdCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIdCliente.Location = new System.Drawing.Point(406, 595);
-            this.textBoxIdCliente.Name = "textBoxIdCliente";
-            this.textBoxIdCliente.Size = new System.Drawing.Size(33, 26);
-            this.textBoxIdCliente.TabIndex = 81;
-            this.textBoxIdCliente.Visible = false;
             // 
             // dataGridViewTextBoxColumn2
             // 
@@ -719,6 +645,80 @@
             this.dataGridViewTextBoxColumn10.ReadOnly = true;
             this.dataGridViewTextBoxColumn10.Visible = false;
             // 
+            // botonCargarEnco
+            // 
+            this.botonCargarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.botonCargarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.botonCargarEnco.Location = new System.Drawing.Point(631, 130);
+            this.botonCargarEnco.Name = "botonCargarEnco";
+            this.botonCargarEnco.Size = new System.Drawing.Size(98, 42);
+            this.botonCargarEnco.TabIndex = 36;
+            this.botonCargarEnco.Text = "Cargar";
+            this.botonCargarEnco.UseVisualStyleBackColor = true;
+            this.botonCargarEnco.Click += new System.EventHandler(this.botonCargarEnco_Click);
+            // 
+            // botonLimpiarEnco
+            // 
+            this.botonLimpiarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.botonLimpiarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.botonLimpiarEnco.Location = new System.Drawing.Point(631, 74);
+            this.botonLimpiarEnco.Name = "botonLimpiarEnco";
+            this.botonLimpiarEnco.Size = new System.Drawing.Size(98, 42);
+            this.botonLimpiarEnco.TabIndex = 38;
+            this.botonLimpiarEnco.Text = "Limpiar";
+            this.botonLimpiarEnco.UseVisualStyleBackColor = true;
+            this.botonLimpiarEnco.Click += new System.EventHandler(this.botonLimpiarEnco_Click);
+            // 
+            // botonEliminarEnco
+            // 
+            this.botonEliminarEnco.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.botonEliminarEnco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.botonEliminarEnco.Location = new System.Drawing.Point(631, 21);
+            this.botonEliminarEnco.Name = "botonEliminarEnco";
+            this.botonEliminarEnco.Size = new System.Drawing.Size(98, 42);
+            this.botonEliminarEnco.TabIndex = 39;
+            this.botonEliminarEnco.Text = "Eliminar";
+            this.botonEliminarEnco.UseVisualStyleBackColor = true;
+            this.botonEliminarEnco.Click += new System.EventHandler(this.botonEliminarEnco_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.botonLimpiarPas);
+            this.groupBox4.Controls.Add(this.groupBox5);
+            this.groupBox4.Controls.Add(this.botonCargarPas);
+            this.groupBox4.Controls.Add(this.botonEliminarPasaje);
+            this.groupBox4.Controls.Add(this.groupBox3);
+            this.groupBox4.Controls.Add(this.botonEliminarEnco);
+            this.groupBox4.Controls.Add(this.botonLimpiarEnco);
+            this.groupBox4.Controls.Add(this.botonCargarEnco);
+            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox4.Location = new System.Drawing.Point(12, 144);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(752, 182);
+            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Pasajes/Encomiendas";
+            // 
+            // textBoxIDVuelo
+            // 
+            this.textBoxIDVuelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIDVuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIDVuelo.Location = new System.Drawing.Point(657, 520);
+            this.textBoxIDVuelo.Name = "textBoxIDVuelo";
+            this.textBoxIDVuelo.Size = new System.Drawing.Size(33, 26);
+            this.textBoxIDVuelo.TabIndex = 80;
+            this.textBoxIDVuelo.Visible = false;
+            // 
+            // textBoxIdCliente
+            // 
+            this.textBoxIdCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIdCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIdCliente.Location = new System.Drawing.Point(657, 471);
+            this.textBoxIdCliente.Name = "textBoxIdCliente";
+            this.textBoxIdCliente.Size = new System.Drawing.Size(33, 26);
+            this.textBoxIdCliente.TabIndex = 81;
+            this.textBoxIdCliente.Visible = false;
+            // 
             // cargaDeDatos
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -727,8 +727,8 @@
             this.ControlBox = false;
             this.Controls.Add(this.textBoxIdCliente);
             this.Controls.Add(this.textBoxIDVuelo);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.textBoxTipoForm);
+            this.Controls.Add(this.textBoxKgEncomiendas);
+            this.Controls.Add(this.textBoxCantPasajes);
             this.Controls.Add(this.botonVolver);
             this.Controls.Add(this.dataGridPasaje);
             this.Controls.Add(this.botonComprar);
@@ -788,8 +788,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxApellidoPas;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBoxTipoForm;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxCantPasajes;
+        private System.Windows.Forms.TextBox textBoxKgEncomiendas;
         private System.Windows.Forms.DataGridView dataGridEnco;
         private System.Windows.Forms.Button botonCargarEnco;
         private System.Windows.Forms.Button botonLimpiarEnco;
