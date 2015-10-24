@@ -16,5 +16,11 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
         {
             InitializeComponent();
         }
+
+        private void botonBajaTodos_Click(object sender, EventArgs e)
+        {
+            funcionesComunes.habilitarAnterior();
+            //TODO 
+        }
     }
 }

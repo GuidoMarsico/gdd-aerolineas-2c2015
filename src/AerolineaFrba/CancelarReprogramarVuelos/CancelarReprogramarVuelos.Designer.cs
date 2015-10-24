@@ -40,8 +40,9 @@
             this.botonBajaTodos.Name = "botonBajaTodos";
             this.botonBajaTodos.Size = new System.Drawing.Size(189, 66);
             this.botonBajaTodos.TabIndex = 62;
-            this.botonBajaTodos.Text = "Dar Baja Todos";
+            this.botonBajaTodos.Text = "Cancelar Vuelos";
             this.botonBajaTodos.UseVisualStyleBackColor = true;
+            this.botonBajaTodos.Click += new System.EventHandler(this.botonBajaTodos_Click);
             // 
             // buttonReprogramar
             // 

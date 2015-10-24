@@ -55,7 +55,8 @@ namespace AerolineaFrba.Registro_de_Usuario
             this.textBoxMail.Clear();
             this.textBoxNombre.Clear();
             this.textBoxTelefono.Clear();
-            this.textBoxDNI.Clear();
+            if(this.textBoxTipoForm.Text != "1")
+                 this.textBoxDNI.Clear();
             this.TimePickerNacimiento.ResetText();
         }
 

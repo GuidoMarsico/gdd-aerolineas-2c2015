@@ -86,10 +86,42 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private void botonBaja_Click(object sender, EventArgs e)
         {
+            
+           bool resultado = this.cancelarVuelosVinculados();
+            if(resultado)
+                this.darDeBaja();
+            
+        }
+
+        private Boolean cancelarVuelosVinculados()
+        {
+            int vuelos =this.vuelosVinculados().Rows.Count;
+            MessageBox.Show("cantidad de vuelos " + vuelos+ " "+ dataGridListadoAeronaves.SelectedCells[0].Value.ToString() );
+            if (vuelos > 0)
+            {
+                Form opcion = new CancelarReprogramarVuelos.CancelarReprogramarVuelos();
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(opcion);
+                return false;
+            }
+            return true;
+        }
+
+        private DataTable vuelosVinculados()
+        {   
+             String id= dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
+            return SqlConnector.obtenerTablaSegunConsultaString(@"SELECT v.ID as Id,v.FECHA_SALIDA as Salida,v.FECHA_LLEGADA 
+                        ,v.FECHA_LLEGADA_ESTIMADA as Estimada,v.AERONAVE_ID as Aeronave,v.RUTA_ID as Ruta
+                        FROM AERO.vuelos v
+                        where v.AERONAVE_ID ="+ id +" AND v.INVALIDO = 0 AND v.FECHA_SALIDA > CURRENT_TIMESTAMP ");
+        }
+
+        private void darDeBaja()
+        {
             List<string> lista = new List<string>();
-            lista.Add("@id");       
+            lista.Add("@id");
             bool resultado = SqlConnector.executeProcedure("AERO.bajaAeronave", lista, dataGridListadoAeronaves.SelectedCells[0].Value.ToString());
-            if (resultado){
+            if (resultado)
+            {
                 MessageBox.Show("La aeronave se dio de baja exitosamente");
             }
             funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);

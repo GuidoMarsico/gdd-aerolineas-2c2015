@@ -31,15 +31,50 @@ namespace AerolineaFrba.Compra
 
         private void botonComprar_Click(object sender, EventArgs e)
         {
+            if (!this.compraInvalida())
+            {
+                this.validoComprar();
+            }
+        }
+
+        private bool compraInvalida()
+        {
+            if (this.textBoxTipoForm.Text != "0" && this.dataGridPasaje.RowCount < Int32.Parse(this.textBoxTipoForm.Text))
+            {
+                MessageBox.Show("Debe cargar " + this.textBoxTipoForm.Text + " pasajes para poder seguir con la siguiente etapa de compra");
+                return true;
+            }
+            if (this.textBox1.Text != "0" && this.kgAcumulados < this.cantidadKg) 
+            {
+                MessageBox.Show("Debe cargar " + this.textBox1.Text + " kg en encomiendas y solo cargo "+ this.kgAcumulados.ToString()+" kg");
+                return true;
+            }
+            return false;
+        }
+        private void validoComprar() 
+        {
             //Abre formulario segun sea el rol
+
             DialogResult dialogResult = MessageBox.Show("¿Esta seguro que quiere realizar la compra?", "Realizar Compra", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes){
-                if (funcionesComunes.getRol() == "administrador"){
+            if (dialogResult == DialogResult.Yes)
+            {
+                if (funcionesComunes.getRol() == "administrador")
+                {
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.formaDePago());
-                }else{
+                }
+                else
+                {
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.registrarPagoTarjeta());
                 }
             }
+            this.limpiarDatos();
+        }
+
+        private void limpiarDatos()
+        {
+            this.limpiarDatosPasajero();
+            this.limpiarEncomienda();
+            this.limpiarEncomienda();
         }
 
         private void valida(object sender, KeyPressEventArgs e)
@@ -207,8 +242,6 @@ namespace AerolineaFrba.Compra
             if (validarCargaEncomienda()){
                 this.cargarEncomienda();
                 this.limpiarEncomienda();
-            }else{
-                MessageBox.Show("Debe completar los campos requeridos");
             }
         }
 
@@ -226,16 +259,8 @@ namespace AerolineaFrba.Compra
         {
             int index= this.dataGridEnco.Rows.Add(1);
             this.dataGridEnco.Rows[index].Selected = true;
-            this.dataGridEnco.SelectedCells[0].Value = this.textBoxIdCliente.Text;
-            this.dataGridEnco.SelectedCells[1].Value = this.textBoxNombrePas.Text;
-            this.dataGridEnco.SelectedCells[2].Value = this.textBoxApellidoPas.Text;
-            this.dataGridEnco.SelectedCells[3].Value = this.textBoxDniPas.Text;
             this.dataGridEnco.SelectedCells[4].Value = this.textBoxKg.Text;
             this.dataGridEnco.SelectedCells[5].Value = this.precioBaseKg * Double.Parse(this.textBoxKg.Text);
-            this.dataGridEnco.SelectedCells[6].Value = this.timePickerFecha.Value;
-            this.dataGridEnco.SelectedCells[7].Value = this.textBoxMailPas.Text;
-            this.dataGridEnco.SelectedCells[8].Value = this.textBoxDireccionPas.Text;
-            this.dataGridEnco.SelectedCells[9].Value = this.textBoxTelefonoPas.Text;
             this.kgAcumulados = this.kgAcumulados + Double.Parse(this.textBoxKg.Text);
             Double disponible = this.cantidadKg - this.kgAcumulados;
             MessageBox.Show("Cantidad restante para enviar " + disponible);
@@ -248,9 +273,6 @@ namespace AerolineaFrba.Compra
 
         private bool validarCargaEncomienda()
         {
-            if (!ingresoPasajero())
-                return false;
-
             if (!seleccionKg())
                 return false;
             return true;
