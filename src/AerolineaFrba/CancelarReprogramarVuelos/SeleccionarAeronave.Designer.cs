@@ -1,6 +1,6 @@
 ﻿namespace AerolineaFrba.CancelarReprogramarVuelos
 {
-    partial class ReprogramarVuelo
+    partial class SeleccionarAeronave
     {
         /// <summary>
         /// Required designer variable.
@@ -96,7 +96,7 @@
             this.Controls.Add(this.groupBoxAeronaves);
             this.Name = "ReprogramarVuelo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Reprogramar Vuelo";
+            this.Text = "Seleccionar Aeronave";
             this.groupBoxAeronaves.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridListadoAeronaves)).EndInit();
             this.ResumeLayout(false);

@@ -10,17 +10,13 @@ using System.Windows.Forms;
 
 namespace AerolineaFrba.CancelarReprogramarVuelos
 {
-    public partial class CancelarReprogramarVuelos : Form
+    public partial class SeleccionarAeronave : Form
     {
-        public CancelarReprogramarVuelos()
+        DataTable aeronavesDisponibles;
+        public SeleccionarAeronave(DataTable tabla)
         {
             InitializeComponent();
-        }
-
-        private void botonBajaTodos_Click(object sender, EventArgs e)
-        {
-            funcionesComunes.habilitarAnterior();
-            //TODO 
+            this.aeronavesDisponibles = tabla;
         }
     }
 }

@@ -108,23 +108,23 @@
       <DependentUpon>generarViaje.cs</DependentUpon>
     </Compile>
     <Compile Include="Base.cs" />
-    <Compile Include="CancelarReprogramarVuelos\CancelarReprogramarVuelos.cs">
+    <Compile Include="CancelarReprogramarVuelos\CancelarVuelos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CancelarReprogramarVuelos\CancelarReprogramarVuelos.Designer.cs">
-      <DependentUpon>CancelarReprogramarVuelos.cs</DependentUpon>
+    <Compile Include="CancelarReprogramarVuelos\CancelarVuelos.Designer.cs">
+      <DependentUpon>CancelarVuelos.cs</DependentUpon>
     </Compile>
-    <Compile Include="CancelarReprogramarVuelos\ReprogramarVuelo.cs">
+    <Compile Include="CancelarReprogramarVuelos\SeleccionarAeronave.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CancelarReprogramarVuelos\ReprogramarVuelo.Designer.cs">
-      <DependentUpon>ReprogramarVuelo.cs</DependentUpon>
+    <Compile Include="CancelarReprogramarVuelos\SeleccionarAeronave.Designer.cs">
+      <DependentUpon>SeleccionarAeronave.cs</DependentUpon>
     </Compile>
-    <Compile Include="CancelarReprogramarVuelos\VuelosAReprogramar.cs">
+    <Compile Include="CancelarReprogramarVuelos\VuelosARemplazar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CancelarReprogramarVuelos\VuelosAReprogramar.Designer.cs">
-      <DependentUpon>VuelosAReprogramar.cs</DependentUpon>
+    <Compile Include="CancelarReprogramarVuelos\VuelosARemplazar.Designer.cs">
+      <DependentUpon>VuelosARemplazar.cs</DependentUpon>
     </Compile>
     <Compile Include="Canje Millas\realizarCanjeMillas.cs">
       <SubType>Form</SubType>
@@ -262,14 +262,14 @@
     <EmbeddedResource Include="Abm Vuelos\generarViaje.resx">
       <DependentUpon>generarViaje.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CancelarReprogramarVuelos\CancelarReprogramarVuelos.resx">
-      <DependentUpon>CancelarReprogramarVuelos.cs</DependentUpon>
+    <EmbeddedResource Include="CancelarReprogramarVuelos\CancelarVuelos.resx">
+      <DependentUpon>CancelarVuelos.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CancelarReprogramarVuelos\ReprogramarVuelo.resx">
-      <DependentUpon>ReprogramarVuelo.cs</DependentUpon>
+    <EmbeddedResource Include="CancelarReprogramarVuelos\SeleccionarAeronave.resx">
+      <DependentUpon>SeleccionarAeronave.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CancelarReprogramarVuelos\VuelosAReprogramar.resx">
-      <DependentUpon>VuelosAReprogramar.cs</DependentUpon>
+    <EmbeddedResource Include="CancelarReprogramarVuelos\VuelosARemplazar.resx">
+      <DependentUpon>VuelosARemplazar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Canje Millas\realizarCanjeMillas.resx">
       <DependentUpon>realizarCanjeMillas.cs</DependentUpon>
