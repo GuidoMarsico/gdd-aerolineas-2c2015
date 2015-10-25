@@ -50,9 +50,8 @@ namespace AerolineaFrba.Abm_Rol
         {
             //Aca haria todo el procedure de creacion de Rol en la tabla roles, me devuelve el Id y lo guardo en textId
             //Si guarda bien hace lo siguiente:
-            List<string> lista = new List<string>();
-            lista.Add("@nombreRol");
-            int id = SqlConnector.executeProcedureWithReturnValue("AERO.agregarRol", lista, textRol.Text);
+            int id = SqlConnector.executeProcedureWithReturnValue("AERO.agregarRol",
+                funcionesComunes.generarListaParaProcedure("@nombreRol"), textRol.Text);
             if (id != -1){
                 MessageBox.Show("El rol fue creado exitosamente");
                 botonCrearRol.Visible = false;
@@ -61,7 +60,7 @@ namespace AerolineaFrba.Abm_Rol
                 idRol = id;
                 textId.Text = Convert.ToString(idRol);
             }else{
-                MessageBox.Show("No hace naranja");
+                MessageBox.Show("Ocurrio un error al intentar crear el rol");
             }
         }
 
@@ -70,11 +69,9 @@ namespace AerolineaFrba.Abm_Rol
             idFuncionalidad = Convert.ToInt32(comboBoxFuncionalidades.SelectedValue);
             idRol = Convert.ToInt32(textId.Text);
             if (!(existeFuncionalidad(idFuncionalidad))){
-                  List<string> lista = new List<string>();
-            lista.Add("@idRol");
-            lista.Add("@idFunc");
-            SqlConnector.executeProcedure("AERO.agregarFuncionalidad", lista, idRol,idFuncionalidad);
-            funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text),
+                SqlConnector.executeProcedure("AERO.agregarFuncionalidad",
+                    funcionesComunes.generarListaParaProcedure("@idRol", "@idFunc"), idRol, idFuncionalidad);
+                funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text),
                     dataGridFuncionalidades);
             }else{
                 MessageBox.Show("La funcionalidad seleccionada ya existe");
@@ -96,10 +93,8 @@ namespace AerolineaFrba.Abm_Rol
         {
             idFuncionalidad = Convert.ToInt32(dataGridFuncionalidades.SelectedCells[0].Value);
             idRol = Convert.ToInt32(textId.Text);
-            List<string> lista = new List<string>();
-            lista.Add("@idRol");
-            lista.Add("@idFunc");
-            SqlConnector.executeProcedure("AERO.quitarFuncionalidad", lista, idRol, idFuncionalidad);
+            SqlConnector.executeProcedure("AERO.quitarFuncionalidad",
+                funcionesComunes.generarListaParaProcedure("@idRol", "@idFunc"), idRol, idFuncionalidad);
             funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text),
                     dataGridFuncionalidades);
         }

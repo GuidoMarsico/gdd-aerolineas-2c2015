@@ -44,19 +44,15 @@ namespace AerolineaFrba.Ingreso
                         idRol = (Int32)usuario.Rows[0].ItemArray[4];
                     if (activo == 1) {
                         if (contr == Base.pasarASha256(this.textPassword.Text)) {
-                          
-                            List < string > lista = new List<string>();
-                            lista.Add("@nombre");
-                            lista.Add("@exitoso");
-                            SqlConnector.executeProcedure("AERO.updateIntento",lista, this.textUsuario.Text,1);
+                            SqlConnector.executeProcedure("AERO.updateIntento",
+                                funcionesComunes.generarListaParaProcedure("@nombre", "@exitoso"), 
+                                this.textUsuario.Text, 1);
                             menuPrincipal menu = new menuPrincipal();
                             funcionesComunes.setRol(nombreRol);
                             funcionesComunes.deshabilitarVentanaYAbrirNueva(menu);
                         }else{
-                            List<string> lista = new List<string>();
-                            lista.Add("@nombre");
-                            lista.Add("@exitoso");
-                            SqlConnector.executeProcedure("AERO.updateIntento", lista, this.textUsuario.Text,2);
+                            SqlConnector.executeProcedure("AERO.updateIntento",
+                                funcionesComunes.generarListaParaProcedure("@nombre", "@exitoso"), this.textUsuario.Text, 2);
                             MessageBox.Show("Contraseña inválida, le quedan " + (2 - intentos) + " intentos"); 
                         }
                     }else{

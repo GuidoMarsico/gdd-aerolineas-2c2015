@@ -84,9 +84,8 @@ namespace AerolineaFrba.Abm_Ruta
 
         private void botonBaja_Click(object sender, EventArgs e)
         {
-            List<string> lista = new List<string>();
-            lista.Add("@id");
-            bool resultado = SqlConnector.executeProcedure("AERO.bajaRuta",lista,
+            bool resultado = SqlConnector.executeProcedure("AERO.bajaRuta",
+                funcionesComunes.generarListaParaProcedure("@id"),
                 dataGridListadoRutas.SelectedCells[0].Value.ToString());
             if(resultado){
                 MessageBox.Show("La ruta se dio de baja exitosamente");

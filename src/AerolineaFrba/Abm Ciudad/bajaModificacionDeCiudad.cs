@@ -48,9 +48,9 @@ namespace AerolineaFrba.Abm_Ciudad
         {
             if (dataGridListadoCiudades.SelectedRows.Count > 0)
             {
-                List<string> lista = new List<string>();
-                lista.Add("@id");
-                bool resultado = SqlConnector.executeProcedure("AERO.bajaCiudad", lista, dataGridListadoCiudades.SelectedCells[0].Value.ToString());
+                bool resultado = SqlConnector.executeProcedure("AERO.bajaCiudad",
+                    funcionesComunes.generarListaParaProcedure("@id"), 
+                    dataGridListadoCiudades.SelectedCells[0].Value.ToString());
                 if (resultado)
                 {
                     MessageBox.Show("La ciudad se dio de baja exitosamente");
@@ -88,7 +88,5 @@ namespace AerolineaFrba.Abm_Ciudad
         {
             funcionesComunes.habilitarAnterior();
         }
-
- 
     }
 }

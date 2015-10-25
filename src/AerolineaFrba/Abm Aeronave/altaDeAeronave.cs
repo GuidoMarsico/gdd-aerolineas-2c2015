@@ -61,15 +61,10 @@ namespace AerolineaFrba.Abm_Aeronave
                 servicio = (Int32)this.comboBoxServicio.SelectedValue;
             if (cantButacas > 0 && kg > 0 && matricula != "" && modelo != "" && fabricante > 0 && servicio > 0)
                 if(validarMatricula(matricula)){
-                    List<string> lista = new List<string>();
-                    lista.Add("@matricula");
-                    lista.Add("@modelo");
-                    lista.Add("@kg_disponibles");
-                    lista.Add("@fabricante");
-                    lista.Add("@tipo_servicio");
-                    lista.Add("@alta");
-                    lista.Add("@cantButacas");
-                    bool resultado = SqlConnector.executeProcedure("AERO.agregarAeronave", lista,matricula,modelo,kg,fabricante, servicio,
+                    bool resultado = SqlConnector.executeProcedure("AERO.agregarAeronave",
+                        funcionesComunes.generarListaParaProcedure("@matricula","@modelo","@kg_disponibles",
+                        "@fabricante","@tipo_servicio","@alta","@cantButacas"),
+                        matricula, modelo, kg, fabricante, servicio,
                         String.Format("{0:yyyyMMdd HH:mm:ss}",this.timePickerAlta.Value), cantButacas);
                     if (resultado){
                         MessageBox.Show("Se guardo exitosamente");

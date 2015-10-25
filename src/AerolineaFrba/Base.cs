@@ -25,7 +25,6 @@ namespace AerolineaFrba
            }
        }
 
-        
         public static string pasarASha256(string input)
         {
             SHA256CryptoServiceProvider provider = new SHA256CryptoServiceProvider();
@@ -40,22 +39,5 @@ namespace AerolineaFrba
                 output.Append(hashedBytes[i].ToString("x2").ToLower());
             return output.ToString();
         }
-
-        public static void cargarEnDataGridView(DataGridView unDataGrid, string consultaSelect)
-        {
-
-           /*SqlConnection con = new SqlConnection(@""+ Globals.getConnectionString()+""  );
-           con.Open();
-           SqlCommand cmd = con.CreateCommand();
-           cmd.CommandType = CommandType.Text;
-           cmd.CommandText = consultaSelect;
-           DataTable dt = new DataTable();
-           SqlDataAdapter da = new SqlDataAdapter(cmd);
-           da.Fill(dt);
-           unDataGrid.DataSource = dt;
-           con.Close();    */
-       }
-
-
     }
 }

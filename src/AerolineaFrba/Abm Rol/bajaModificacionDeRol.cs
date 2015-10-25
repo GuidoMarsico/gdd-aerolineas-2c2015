@@ -44,9 +44,8 @@ namespace AerolineaFrba.Abm_Rol
         {
             if (rolActivo())
             {
-                List<string> lista = new List<string>();
-                lista.Add("@idRol");
-                bool resultado = SqlConnector.executeProcedure("AERO.inhabilitarRol", lista, Convert.ToInt32(dataGridListadoRoles.SelectedCells[0].Value));
+                bool resultado = SqlConnector.executeProcedure("AERO.inhabilitarRol",
+                    funcionesComunes.generarListaParaProcedure("@idRol"), Convert.ToInt32(dataGridListadoRoles.SelectedCells[0].Value));
                 if (resultado)
                 {
                     MessageBox.Show("El rol fue inhabilitado exitosamente");
@@ -128,15 +127,13 @@ namespace AerolineaFrba.Abm_Rol
         {
             if (!rolActivo())
             {
-                List<string> lista = new List<string>();
-                lista.Add("@idRol");
-                bool resultado = SqlConnector.executeProcedure("AERO.habilitarRol", lista, Convert.ToInt32(dataGridListadoRoles.SelectedCells[0].Value));
+                bool resultado = SqlConnector.executeProcedure("AERO.habilitarRol",
+                    funcionesComunes.generarListaParaProcedure("@idRol"), Convert.ToInt32(dataGridListadoRoles.SelectedCells[0].Value));
                 if (resultado)
                 {
                     MessageBox.Show("El rol fue habilitado exitosamente");
                     listado = funcionesComunes.consultarRoles(dataGridListadoRoles);
                 }
-                
             }
             else
             {

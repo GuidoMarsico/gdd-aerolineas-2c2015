@@ -134,16 +134,9 @@ namespace AerolineaFrba.Registro_de_Usuario
 
         private bool persistirCliente()
         {
-            List<string> lista = new List<string>();
-            lista.Add("@rol_id");
-            lista.Add("@nombreCliente");
-            lista.Add("@apellidoCliente");
-            lista.Add("@documentoCliente");
-            lista.Add("@direccion");
-            lista.Add("@telefono");
-            lista.Add("@mail");
-            lista.Add("@fechaNac");
-            bool resultado = SqlConnector.executeProcedure("AERO.agregarCliente", lista,
+            bool resultado = SqlConnector.executeProcedure("AERO.agregarCliente",
+                funcionesComunes.generarListaParaProcedure("@rol_id", "@nombreCliente","@apellidoCliente",
+                "@documentoCliente","@direccion","@telefono","@mail","@fechaNac"),
                 funcionesComunes.getIdRolCliente(), nombre, apellido, dni, direccion,
                 telefono, mail, String.Format("{0:yyyyMMdd HH:mm:ss}", this.TimePickerNacimiento.Value));
             return resultado;
@@ -154,13 +147,9 @@ namespace AerolineaFrba.Registro_de_Usuario
             this.setearCamposIngresados();
             if (direccion != "" && telefono > 0)
             {
-                List<string> lista = new List<string>();
-                lista.Add("@id");
-                lista.Add("@direccion");
-                lista.Add("@telefono");
-                lista.Add("@mail");
-                bool resultado = SqlConnector.executeProcedure("AERO.updateCliente", lista, id,
-                    direccion, telefono, mail);
+                bool resultado = SqlConnector.executeProcedure("AERO.updateCliente",
+                    funcionesComunes.generarListaParaProcedure("@id", "@direccion","@telefono","@mail"),
+                    id, direccion, telefono, mail);
                 if (resultado)
                 {
                     MessageBox.Show("Se modificó exitosamente");

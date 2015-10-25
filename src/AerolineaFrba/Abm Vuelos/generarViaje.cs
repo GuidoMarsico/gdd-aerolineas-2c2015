@@ -105,12 +105,9 @@ namespace AerolineaFrba.Abm_Vuelos
         {
             if (this.validar())
             {
-                List<string> lista = new List<string>();
-                lista.Add("@fechaSalida");
-                lista.Add("@fechaLlegadaEstimada");
-                lista.Add("@idAeronave");
-                lista.Add("@idRuta");
-                bool resultado = SqlConnector.executeProcedure("AERO.generarViaje", lista, 
+                bool resultado = SqlConnector.executeProcedure("AERO.generarViaje",
+                    funcionesComunes.generarListaParaProcedure("@fechaSalida", "@fechaLlegadaEstimada",
+                    "@idAeronave","@idRuta"), 
                     String.Format("{0:yyyyMMdd HH:mm:ss}",this.timePickerSalida.Value),
                     String.Format("{0:yyyyMMdd HH:mm:ss}", this.timePickerLlegadaEstimada.Value),
                     dataGridListadoAeronaves.SelectedCells[0].Value,
@@ -144,11 +141,8 @@ namespace AerolineaFrba.Abm_Vuelos
                 MessageBox.Show("La aeronave y la ruta elegida deben tener el mismo tipo de servicio");
                 return false;
             }
-            List<string> lista = new List<string>();
-            lista.Add("@id");
-            lista.Add("@fechaSalida");
-            lista.Add("@fechaLlegadaEstimada");
-            DataTable resultado = SqlConnector.obtenerTablaSegunProcedure("AERO.validarVuelo", lista, 
+            DataTable resultado = SqlConnector.obtenerTablaSegunProcedure("AERO.validarVuelo",
+                funcionesComunes.generarListaParaProcedure("@id", "@fechaSalida", "@fechaLlegadaEstimada"),
                 dataGridListadoAeronaves.SelectedCells[0].Value, 
                String.Format("{0:yyyyMMdd HH:mm:ss}",this.timePickerSalida.Value), 
                String.Format("{0:yyyyMMdd HH:mm:ss}",this.timePickerLlegadaEstimada.Value));
@@ -157,7 +151,6 @@ namespace AerolineaFrba.Abm_Vuelos
                 return false;
             }
             return true;
-        }
-        
+        }   
     }
 }

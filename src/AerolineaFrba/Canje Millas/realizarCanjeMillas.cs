@@ -27,9 +27,8 @@ namespace AerolineaFrba.Canje_Millas
             String dni = this.textDni.Text;
             if (dni != "")
             {
-                List<string> lista = new List<string>();
-                lista.Add("@dni");
-                DataTable resultado = SqlConnector.obtenerTablaSegunProcedure("AERO.obtenerClienteConMillas", lista, dni);
+                DataTable resultado = SqlConnector.obtenerTablaSegunProcedure("AERO.obtenerClienteConMillas",
+                    funcionesComunes.generarListaParaProcedure("@dni"), dni);
                 dataGridCliente.DataSource = resultado;
                 dataGridCliente.Columns[0].Visible = false;
             }
@@ -58,11 +57,8 @@ namespace AerolineaFrba.Canje_Millas
                         Int32 cantidadACanjear = Int32.Parse(cantidad);
                         Int32 millasRequeridas = Int32.Parse(dataGridProductos.SelectedCells[2].Value.ToString());
                         if ( millas > (cantidadACanjear * millasRequeridas)){
-                            List<string> lista = new List<string>();
-                            lista.Add("@idCliente");
-                            lista.Add("@idProducto");
-                            lista.Add("@cantidad");
-                            bool resultado = SqlConnector.executeProcedure("AERO.altaCanje", lista,
+                            bool resultado = SqlConnector.executeProcedure("AERO.altaCanje",
+                                funcionesComunes.generarListaParaProcedure("@idCliente","@idProducto","@cantidad"),
                                 dataGridCliente.SelectedCells[0].Value, dataGridProductos.SelectedCells[0].Value,
                                 cantidad);
                             if (resultado == true){

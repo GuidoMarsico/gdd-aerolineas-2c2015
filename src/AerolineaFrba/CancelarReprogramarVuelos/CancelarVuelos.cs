@@ -28,8 +28,7 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
                 foreach(DataRow vuelo in vuelos.Rows)
                 {
                     funcionesComunes.darDebajaVuelo(Int32.Parse(vuelo[0].ToString()));
-                }
-                
+                }                
             }
             else 
             {
@@ -38,15 +37,9 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
                     funcionesComunes.darDebajaVuelo(Int32.Parse(vuelo[0].ToString()));
                 }
                 funcionesComunes.darDeBajaAeronave(this.textBoxTipoIdAero.Text);
-
             }
-            funcionesComunes.volverAMenuPrincipal();
-            
+            funcionesComunes.volverAMenuPrincipal();   
         }
-
-       
-
-       
 
         private void buttonReprogramar_Click(object sender, EventArgs e)
         {

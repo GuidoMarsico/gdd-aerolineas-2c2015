@@ -40,9 +40,8 @@ namespace AerolineaFrba.Consulta_Millas
                 from AERO.clientes where BAJA = 0 AND DNI = " + dni);
                 if (tablaClientes.Rows.Count > 0)
                 {
-                    List<string> lista = new List<string>();
-                    lista.Add("@dni");
-                    DataTable resultado = SqlConnector.obtenerTablaSegunProcedure("AERO.consultarMillas", lista, dni);
+                    DataTable resultado = SqlConnector.obtenerTablaSegunProcedure("AERO.consultarMillas",
+                        funcionesComunes.generarListaParaProcedure("@dni"), dni);
                     dataGridConsultaMillas.DataSource = resultado;
                     Int32 millas = 0;
                     foreach (DataRow row in resultado.Rows)

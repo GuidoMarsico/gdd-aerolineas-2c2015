@@ -30,11 +30,11 @@ namespace AerolineaFrba.Abm_Aeronave
             if (this.fechaFinInactividad.Value < this.fechaInicioInactividad.Value){
                 MessageBox.Show("La fecha de fin de la inactividad no puede ser menor que la de inicio");
             } else {
-                List<string> lista = new List<string>();
-                lista.Add("@id");
-                lista.Add("@fechaInicio");
-                lista.Add("@fechaFin");
-                bool resultado = SqlConnector.executeProcedure("AERO.updateAeronave", lista, this.textBoxId.Text, String.Format("{0:yyyyMMdd HH:mm:ss}",this.fechaInicioInactividad.Value), String.Format("{0:yyyyMMdd HH:mm:ss}",this.fechaFinInactividad.Value));
+                bool resultado = SqlConnector.executeProcedure("AERO.updateAeronave",
+                    funcionesComunes.generarListaParaProcedure("@id","@fechaInicio","@fechaFin"), 
+                    this.textBoxId.Text, 
+                    String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value), 
+                    String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaFinInactividad.Value));
                 if (resultado){
                     MessageBox.Show("La aeronave se actualizo exitosamente");
                     funcionesComunes.habilitarAnterior();

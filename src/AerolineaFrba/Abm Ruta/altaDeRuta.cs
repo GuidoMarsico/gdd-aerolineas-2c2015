@@ -69,14 +69,9 @@ namespace AerolineaFrba.Abm_Ruta
             Int32 servicio = (Int32)comboBoxServicios.SelectedValue;
             if(this.validarCampos(origen,destino,precioKg,precioPasaje,codigo))
             {
-                List<string> lista = new List<string>();
-                lista.Add("@codigo");
-                lista.Add("@precioKg");
-                lista.Add("@precioPasaje");
-                lista.Add("@origen");
-                lista.Add("@destino");
-                lista.Add("@servicio");
-                bool resultado = SqlConnector.executeProcedure("AERO.agregarRuta", lista, codigo, precioKg, precioPasaje, 
+                bool resultado = SqlConnector.executeProcedure("AERO.agregarRuta",
+                    funcionesComunes.generarListaParaProcedure("@codigo","@precioKg","@precioPasaje",
+                    "@origen","@destino","@servicio"), codigo, precioKg, precioPasaje, 
                     origen, destino, servicio);
                 if (resultado)
                 {
@@ -109,10 +104,7 @@ namespace AerolineaFrba.Abm_Ruta
                 this.textBoxCodigo.Clear();
                 return false;
             }
-
             return true;
         }
-
-       
     }
 }

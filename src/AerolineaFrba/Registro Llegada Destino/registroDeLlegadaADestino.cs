@@ -74,10 +74,10 @@ namespace AerolineaFrba.Registro_Llegada_Destino
         private void botonRegistrar_Click(object sender, EventArgs e)
         {
             if (validarRegistro()) {
-                List<string> lista = new List<string>();
-                lista.Add("@idVuelo");
-                lista.Add("@fechaLlegada");
-                bool resultado = SqlConnector.executeProcedure("AERO.registrarLlegada", lista, dataGridListadoVuelos.SelectedCells[0].Value.ToString(), String.Format("{0:yyyyMMdd HH:mm:ss}",this.timePickerLlegada.Value));
+                bool resultado = SqlConnector.executeProcedure("AERO.registrarLlegada",
+                    funcionesComunes.generarListaParaProcedure("@idVuelo","@fechaLlegada"),
+                    dataGridListadoVuelos.SelectedCells[0].Value.ToString(), 
+                    String.Format("{0:yyyyMMdd HH:mm:ss}", this.timePickerLlegada.Value));
                 if (resultado)
                 {
                     MessageBox.Show("Se registro exitosamente la fecha de llegada");

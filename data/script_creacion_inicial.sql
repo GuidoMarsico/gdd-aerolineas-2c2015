@@ -1147,22 +1147,6 @@ WHERE ID=@id;
 END
 GO
 
---Vuelos
-CREATE PROCEDURE AERO.vuelosDisponibles(@fecha varchar(50))
-AS BEGIN
-	Select v.ID as ID ,v.FECHA_SALIDA as 'Salida', v.FECHA_LLEGADA_ESTIMADA as 'Llegada Estimada', o.NOMBRE as Origen, d.NOMBRE as Destino,
-	 AERO.cantButacasLibres(v.ID) as 'Butacas Libres', AERO.kgLibres(v.ID) as 'Kg Disponibles'
-	from AERO.vuelos v
-	join AERO.rutas r on r.ID = v.RUTA_ID
-	join AERO.aeropuertos o on r.ORIGEN_ID = o.ID
-	join AERO.aeropuertos d on r.DESTINO_ID = d.ID
-	join AERO.aeronaves a on v.AERONAVE_ID = a.ID
-	where (v.INVALIDO = 0) AND (v.FECHA_SALIDA > convert(datetime, @fecha,109)) 
-	AND( (AERO.cantButacasLibres(v.ID)  != 0 ) OR (AERO.kgLibres(v.ID) !=0 ))
-END
-GO
-
-
 --LISTADOS ESTADISTICOS
 --TOP 5 de los destino con mas pasajes comprados
 CREATE PROCEDURE AERO.top5DestinosConPasajes(@fechaFrom varchar(50), @fechaTo varchar(50))
@@ -1274,6 +1258,20 @@ AS BEGIN
 UPDATE AERO.vuelos
 SET FECHA_LLEGADA = convert(datetime, @fechaLlegada,109)
 WHERE ID = @idVuelo
+END
+GO
+
+CREATE PROCEDURE AERO.vuelosDisponibles(@fecha varchar(50))
+AS BEGIN
+	Select v.ID as ID ,v.FECHA_SALIDA as 'Salida', v.FECHA_LLEGADA_ESTIMADA as 'Llegada Estimada', o.NOMBRE as Origen, d.NOMBRE as Destino,
+	 AERO.cantButacasLibres(v.ID) as 'Butacas Libres', AERO.kgLibres(v.ID) as 'Kg Disponibles'
+	from AERO.vuelos v
+	join AERO.rutas r on r.ID = v.RUTA_ID
+	join AERO.aeropuertos o on r.ORIGEN_ID = o.ID
+	join AERO.aeropuertos d on r.DESTINO_ID = d.ID
+	join AERO.aeronaves a on v.AERONAVE_ID = a.ID
+	where (v.INVALIDO = 0) AND (v.FECHA_SALIDA > convert(datetime, @fecha,109)) 
+	AND( (AERO.cantButacasLibres(v.ID)  != 0 ) OR (AERO.kgLibres(v.ID) !=0 ))
 END
 GO
 

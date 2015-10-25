@@ -52,17 +52,13 @@ namespace AerolineaFrba.Abm_Ruta
             Double precioPasaje = Math.Round(Double.Parse(textBoxPrecioPasaje.Text), 2);
             Int32 servicio = (Int32)comboBoxServicios.SelectedValue;
             if (this.validarPrecios(precioKg,precioPasaje)) {
-                List<string> lista = new List<string>();
-                lista.Add("@id");
-                lista.Add("@precioKg");
-                lista.Add("@precioPasaje");
-                lista.Add("@servicio");
-                bool resultado=SqlConnector.executeProcedure("AERO.updateRuta",lista,this.textBoxId.Text,precioKg,precioPasaje,servicio);
+                bool resultado=SqlConnector.executeProcedure("AERO.updateRuta",
+                    funcionesComunes.generarListaParaProcedure("@id","@precioKg","@precioPasaje",
+                    "@servicio"), this.textBoxId.Text, precioKg, precioPasaje, servicio);
                 if (resultado)
                 {
                     MessageBox.Show("La ruta se actualizo exitosamente");
                     funcionesComunes.habilitarAnterior();
-
                 }
             }
         }

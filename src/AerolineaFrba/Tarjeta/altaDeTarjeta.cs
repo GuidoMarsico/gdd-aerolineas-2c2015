@@ -105,20 +105,17 @@ namespace AerolineaFrba.Tarjeta
         {
             if (validarDatos())
             {
-                List<string> lista = new List<string>();
-                lista.Add("@idCliente");
-                lista.Add("@nroTarjeta");
-                lista.Add("@idTipo");
-                lista.Add("@fechaVto");
-                bool resultado = SqlConnector.executeProcedure("AERO.altaTarjeta", lista, long.Parse(dataGridCliente.SelectedCells[0].Value.ToString()), long.Parse(this.textBoxNumero.Text),
-                                              this.comboBoxTipoTarjeta.SelectedValue, String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechavencimiento.Value));
+                bool resultado = SqlConnector.executeProcedure("AERO.altaTarjeta",
+                    funcionesComunes.generarListaParaProcedure("@idCliente","@nroTarjeta","@idTipo","@fechaVto"), 
+                    long.Parse(dataGridCliente.SelectedCells[0].Value.ToString()), 
+                    long.Parse(this.textBoxNumero.Text),
+                    this.comboBoxTipoTarjeta.SelectedValue, 
+                    String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechavencimiento.Value));
                 if (resultado)
                 {
                     MessageBox.Show("Se dio de alta la tarjeta exitosamente");
                     funcionesComunes.habilitarAnterior();
                 }
-
-
             }
         }
 
@@ -135,8 +132,5 @@ namespace AerolineaFrba.Tarjeta
             this.dataGridCliente.DataSource = null;
             this.fechavencimiento.ResetText();
         }
-
-
-
     }
 }

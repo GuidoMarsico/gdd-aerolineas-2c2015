@@ -260,10 +260,9 @@ namespace AerolineaFrba
 
        public static DataTable consultarViajesDisponibles(DataGridView datagridview,string fecha)
         {
-            List<string> lista = new List<string>();
-            lista.Add("@fecha");
             DataTable listado;
-            listado = SqlConnector.obtenerTablaSegunProcedure("AERO.vuelosDisponibles", lista,fecha);
+            listado = SqlConnector.obtenerTablaSegunProcedure("AERO.vuelosDisponibles",
+                generarListaParaProcedure("@fecha"), fecha);
             datagridview.DataSource = listado;
             datagridview.Columns[0].Visible = false;
             return listado;
@@ -271,20 +270,27 @@ namespace AerolineaFrba
 
          public  static void darDeBajaAeronave(String id)
         {
-            List<string> lista = new List<string>();
-            lista.Add("@id");
-            bool resultado = SqlConnector.executeProcedure("AERO.bajaAeronave", lista, id);
+            bool resultado = SqlConnector.executeProcedure("AERO.bajaAeronave", 
+                generarListaParaProcedure("@id"), id);
             if (resultado)
             {
                 MessageBox.Show("La aeronave se dio de baja exitosamente");
             }
         }
-       public static void darDebajaVuelo(int id)
+        public static void darDebajaVuelo(int id)
        {
-           List<String> lista = new List<string>();
-           lista.Add("@id");
-           SqlConnector.executeProcedure("AERO.bajaVuelo", lista, id);
+           SqlConnector.executeProcedure("AERO.bajaVuelo", generarListaParaProcedure("@id"), id);
        }
+
+        public static List<string> generarListaParaProcedure(params Object[] parametros)
+        {
+            List<string> lista = new List<string>();
+            for (int i = 0; i < parametros.Length; i++ )
+            {
+                lista.Add(parametros[i].ToString());
+            }            
+            return lista;
+        }
 
         #endregion
     }

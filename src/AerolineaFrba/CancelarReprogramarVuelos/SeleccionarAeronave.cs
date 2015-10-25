@@ -12,17 +12,19 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 {
     public partial class SeleccionarAeronave : Form
     {
-        DataTable aeronavesDisponibles;
         public SeleccionarAeronave(DataTable tabla)
         {
             InitializeComponent();
-            this.aeronavesDisponibles = tabla;
+            this.dataGridListadoAeronaves.DataSource = tabla;
+            this.dataGridListadoAeronaves.Columns[0].Visible = false;
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-
-            //Se tiene que hacer el update
+            SqlConnector.executeProcedure("AERO.cambiarAeronaveDeVuelo", 
+                funcionesComunes.generarListaParaProcedure("@idVuelo", "@idAeronaveNueva"), 
+                Int32.Parse(this.textBoxIdVuelo.Text),
+                Int32.Parse(this.dataGridListadoAeronaves.SelectedCells[0].Value.ToString())); 
             funcionesComunes.habilitarAnterior();
         }
 
