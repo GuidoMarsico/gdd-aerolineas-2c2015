@@ -13,9 +13,13 @@ namespace AerolineaFrba.Compra
 {
     public partial class registrarPagoTarjeta : Form
     {
-        public registrarPagoTarjeta()
+        public DataGridView pasajes;
+        public DataGridView encomiendas;
+        public registrarPagoTarjeta(DataGridView tablaPasajes,DataGridView tablaEncomiendas)
         {
             InitializeComponent();
+            this.pasajes = tablaPasajes;
+            this.encomiendas = tablaEncomiendas;
         }
 
         private void botonVolver_Click(object sender, EventArgs e)

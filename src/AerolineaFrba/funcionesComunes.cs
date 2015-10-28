@@ -293,5 +293,17 @@ namespace AerolineaFrba
         }
 
         #endregion
+
+        public static double precioEncomienda(DataGridViewRow encomienda)
+        {
+            return Double.Parse(encomienda.Cells[5].Value.ToString());
+        }
+
+
+
+        public static double precioPasaje(DataGridViewRow pasaje)
+        {
+            return Double.Parse(pasaje.Cells[6].Value.ToString());
+        }
     }
 }

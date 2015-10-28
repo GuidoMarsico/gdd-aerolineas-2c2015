@@ -12,9 +12,46 @@ namespace AerolineaFrba.Compra
 {
     public partial class registrarPagoEfectivo : Form
     {
-        public registrarPagoEfectivo()
+        public DataGridView pasajes;
+        public DataGridView encomiendas;
+        public registrarPagoEfectivo(DataGridView tablaPasajes,DataGridView tablaEncomiendas)
         {
             InitializeComponent();
+            this.pasajes = tablaPasajes;
+            this.encomiendas = tablaEncomiendas;
+            this.calcularImporte();
+        }
+
+        private void calcularImporte()
+        {
+            Double importe = this.importePasajes() + this.importeEncomiendas();
+            this.textBoxImporte.Text = importe.ToString();
+        }
+
+        private double importeEncomiendas()
+        {
+            if (this.encomiendas != null) 
+            {
+                Double importe = 0;
+                foreach (DataGridViewRow encomienda in this.encomiendas.Rows)
+                    importe += funcionesComunes.precioEncomienda(encomienda);
+                return importe;
+            }
+            else
+                return 0;
+        }
+
+        private double importePasajes()
+        {
+            if (this.pasajes != null)
+            {
+                Double importe = 0;
+                foreach (DataGridViewRow pasaje in this.pasajes.Rows)
+                    importe += funcionesComunes.precioPasaje(pasaje);
+                return importe;
+            }
+            else
+                return 0;
         }
 
         private void botonVolver_Click(object sender, EventArgs e)

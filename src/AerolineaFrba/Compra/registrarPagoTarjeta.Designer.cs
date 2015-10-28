@@ -52,7 +52,9 @@
             this.textBoxDni = new System.Windows.Forms.TextBox();
             this.botonLimpiarTitular = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.botonNuevaTarj = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.comboBoxCuotas = new System.Windows.Forms.ComboBox();
             this.textBoxTipo = new System.Windows.Forms.TextBox();
@@ -67,8 +69,7 @@
             this.botonVolver = new System.Windows.Forms.Button();
             this.botonConfirmar = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
+            this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -381,6 +382,17 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tarjeta";
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.ForeColor = System.Drawing.Color.Red;
+            this.label16.Location = new System.Drawing.Point(423, 93);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(15, 20);
+            this.label16.TabIndex = 79;
+            this.label16.Text = "*";
+            // 
             // botonNuevaTarj
             // 
             this.botonNuevaTarj.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -392,6 +404,17 @@
             this.botonNuevaTarj.Text = "Nueva";
             this.botonNuevaTarj.UseVisualStyleBackColor = true;
             this.botonNuevaTarj.Click += new System.EventHandler(this.botonNuevaTarj_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.Color.Red;
+            this.label15.Location = new System.Drawing.Point(344, 93);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(15, 20);
+            this.label15.TabIndex = 78;
+            this.label15.Text = "*";
             // 
             // label13
             // 
@@ -551,27 +574,15 @@
             this.label14.TabIndex = 79;
             this.label14.Text = "*Campos Obligatorios";
             // 
-            // label15
+            // textBoxIDVuelo
             // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.ForeColor = System.Drawing.Color.Red;
-            this.label15.Location = new System.Drawing.Point(344, 93);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(15, 20);
-            this.label15.TabIndex = 78;
-            this.label15.Text = "*";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.ForeColor = System.Drawing.Color.Red;
-            this.label16.Location = new System.Drawing.Point(423, 93);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(15, 20);
-            this.label16.TabIndex = 79;
-            this.label16.Text = "*";
+            this.textBoxIDVuelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIDVuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIDVuelo.Location = new System.Drawing.Point(442, 423);
+            this.textBoxIDVuelo.Name = "textBoxIDVuelo";
+            this.textBoxIDVuelo.Size = new System.Drawing.Size(33, 26);
+            this.textBoxIDVuelo.TabIndex = 81;
+            this.textBoxIDVuelo.Visible = false;
             // 
             // registrarPagoTarjeta
             // 
@@ -579,6 +590,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(512, 461);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxIDVuelo);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.botonVolver);
             this.Controls.Add(this.botonConfirmar);
@@ -642,5 +654,6 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBoxIDVuelo;
     }
 }

@@ -58,13 +58,20 @@ namespace AerolineaFrba.Compra
             DialogResult dialogResult = MessageBox.Show("¿Esta seguro que quiere realizar la compra?", "Realizar Compra", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
+                
+                   
+                string idVuelo = this.textBoxIDVuelo.Text;
                 if (funcionesComunes.getRol() == "administrador")
                 {
-                    funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.formaDePago());
+                    Form tipoPago = new Compra.formaDePago(this.dataGridPasaje,this.dataGridEnco);
+                    ((TextBox)tipoPago.Controls["textBoxIDVuelo"]).Text = idVuelo;
+                    funcionesComunes.deshabilitarVentanaYAbrirNueva(tipoPago);
                 }
                 else
                 {
-                    funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.registrarPagoTarjeta());
+                    Form porTarjeta = new Compra.registrarPagoTarjeta(this.dataGridPasaje,this.dataGridEnco);
+                    ((TextBox)porTarjeta.Controls["textBoxIDVuelo"]).Text = idVuelo;
+                    funcionesComunes.deshabilitarVentanaYAbrirNueva(porTarjeta);
                 }
             }
             this.limpiarDatos();

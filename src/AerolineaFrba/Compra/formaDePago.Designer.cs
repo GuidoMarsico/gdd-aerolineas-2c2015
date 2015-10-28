@@ -31,6 +31,7 @@
             this.botonVolver = new System.Windows.Forms.Button();
             this.buttonTarjeta = new System.Windows.Forms.Button();
             this.botonEfectivo = new System.Windows.Forms.Button();
+            this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // botonVolver
@@ -69,12 +70,23 @@
             this.botonEfectivo.UseVisualStyleBackColor = true;
             this.botonEfectivo.Click += new System.EventHandler(this.botonEfectivo_Click);
             // 
+            // textBoxIDVuelo
+            // 
+            this.textBoxIDVuelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIDVuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIDVuelo.Location = new System.Drawing.Point(411, 160);
+            this.textBoxIDVuelo.Name = "textBoxIDVuelo";
+            this.textBoxIDVuelo.Size = new System.Drawing.Size(33, 26);
+            this.textBoxIDVuelo.TabIndex = 81;
+            this.textBoxIDVuelo.Visible = false;
+            // 
             // formaDePago
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(503, 209);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxIDVuelo);
             this.Controls.Add(this.botonVolver);
             this.Controls.Add(this.buttonTarjeta);
             this.Controls.Add(this.botonEfectivo);
@@ -82,6 +94,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Seleccione Forma de Pago";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -90,5 +103,6 @@
         private System.Windows.Forms.Button botonVolver;
         private System.Windows.Forms.Button buttonTarjeta;
         private System.Windows.Forms.Button botonEfectivo;
+        private System.Windows.Forms.TextBox textBoxIDVuelo;
     }
 }

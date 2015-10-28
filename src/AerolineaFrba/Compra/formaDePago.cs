@@ -12,9 +12,13 @@ namespace AerolineaFrba.Compra
 {
     public partial class formaDePago : Form
     {
-        public formaDePago()
+        public DataGridView pasajes;
+        public DataGridView encomiendas;
+        public formaDePago(DataGridView tablaPasajes,DataGridView tablaEncomiendas)
         {
             InitializeComponent();
+            this.pasajes = tablaPasajes;
+            this.encomiendas = tablaEncomiendas;
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -24,12 +28,16 @@ namespace AerolineaFrba.Compra
 
         private void buttonTarjeta_Click(object sender, EventArgs e)
         {
-            funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.registrarPagoTarjeta());
+            Form porTarjeta = new Compra.registrarPagoTarjeta(this.pasajes, this.encomiendas);
+            ((TextBox)porTarjeta.Controls["textBoxIDVuelo"]).Text = this.textBoxIDVuelo.Text;
+            funcionesComunes.deshabilitarVentanaYAbrirNueva(porTarjeta);
         }
 
         private void botonEfectivo_Click(object sender, EventArgs e)
         {
-            funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.registrarPagoEfectivo());
+            Form porEfectivo = new Compra.registrarPagoEfectivo(this.pasajes, this.encomiendas);
+            ((TextBox)porEfectivo.Controls["textBoxIDVuelo"]).Text = this.textBoxIDVuelo.Text;
+            funcionesComunes.deshabilitarVentanaYAbrirNueva(porEfectivo);
         }
     }
 }
