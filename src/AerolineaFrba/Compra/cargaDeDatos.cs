@@ -208,6 +208,11 @@ namespace AerolineaFrba.Compra
                 this.dataGridPasaje.SelectedCells[4].Value = this.comboBoxNumeroButaca.SelectedValue;
                 this.dataGridPasaje.SelectedCells[5].Value = this.textBoxUbicacion.Text;
                 this.dataGridPasaje.SelectedCells[6].Value = this.precioBasePasaje;
+                this.dataGridPasaje.SelectedCells[7].Value = this.textBoxTelefonoPas.Text;
+                this.dataGridPasaje.SelectedCells[8].Value= this.textBoxDireccionPas.Text;
+                this.dataGridPasaje.SelectedCells[9].Value=this.textBoxMailPas.Text;
+                this.dataGridPasaje.SelectedCells[10].Value = this.timePickerFecha.Value.ToString();
+                this.dataGridPasaje.SelectedCells[11].Value = this.comboBoxNumeroButaca.SelectedValue;
                 this.cantidadPasajes = this.cantidadPasajes - 1;
                 MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
             }
@@ -311,10 +316,11 @@ namespace AerolineaFrba.Compra
         private void botonEliminarEnco_Click(object sender, EventArgs e)
         {
             if (this.dataGridEnco.Rows.Count > 0){
+                int index = this.dataGridEnco.CurrentRow.Index;
                 this.kgAcumulados = this.kgAcumulados - Double.Parse(this.dataGridEnco.SelectedCells[4].Value.ToString());
                 Double disponible = this.cantidadKg - this.kgAcumulados;
                 MessageBox.Show("Cantidad restante para enviar " + disponible);
-                this.dataGridEnco.Rows.RemoveAt(this.dataGridEnco.CurrentRow.Index);
+                this.dataGridEnco.Rows.RemoveAt(index);
             }else{
                 MessageBox.Show("Tabla vacia, no hay nada que eliminar");
             }

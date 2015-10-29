@@ -305,5 +305,60 @@ namespace AerolineaFrba
         {
             return Double.Parse(pasaje.Cells[6].Value.ToString());
         }
+
+        public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, string tipoCompra, Int32 idCliente, Int32 millas,Int32 idVuelo )
+        {
+
+            Int32 idBoleto = 0;/*Aca llamariamos al procedure que nos devuelve el id del boleto
+                              mandanlo el precio de compra,tipo,el id del cliente,las millas, el id del vuelo
+                              y la fecha de compra en el procedure le pondriamos la de hoy
+                              */
+            if (pasajes != null)
+                funcionesComunes.darAltaPasajes(pasajes,idBoleto);
+            if (encomiendas != null)
+                funcionesComunes.darAltaEncomiendas(encomiendas,idBoleto);
+         
+            return idBoleto.ToString();
+        }
+
+        private static void darAltaEncomiendas(DataGridView encomiendas,Int32 idBoleto)
+        {
+            foreach (DataGridViewRow encomienda in encomiendas.Rows) 
+            { 
+                /*Aca por cada encomienda que me ahora veo que le decimos paquete
+                 le mandamos al procedure el precio , los kg, id boleto de compra
+                 */ 
+            }
+        }
+
+        private static void darAltaPasajes(DataGridView pasajes,Int32 idBoleto)
+        {
+            foreach (DataGridViewRow pasaje in pasajes.Rows) 
+            {
+                Int32 idPasajero = Int32.Parse(pasaje.Cells[0].Value.ToString());
+                if ( idPasajero == 0) {
+                    idPasajero = funcionesComunes.darAltaCliente(pasaje);
+                }
+                //Aca hacemos el insert del pasaje usando el idBoleto , el idPasajero, el precio , el id de la butaca
+            }
+        }
+
+        private static int darAltaCliente(DataGridViewRow pasaje)
+        {
+            string nombre = pasaje.Cells[1].Value.ToString();
+            string apellido=pasaje.Cells[2].Value.ToString();
+            long dni = long.Parse(pasaje.Cells[3].Value.ToString());
+            long telefono= long.Parse(pasaje.Cells[7].Value.ToString());
+            string direccion= pasaje.Cells[8].Value.ToString();
+            string mail= pasaje.Cells[9].Value.ToString();
+            SqlConnector.executeProcedure("AERO.agregarCliente",
+                funcionesComunes.generarListaParaProcedure("@rol_id", "@nombreCliente", "@apellidoCliente",
+                "@documentoCliente", "@direccion", "@telefono", "@mail", "@fechaNac"),
+                funcionesComunes.getIdRolCliente(), nombre, apellido, dni, direccion,
+                telefono, mail, String.Format("{0:yyyyMMdd HH:mm:ss}", Convert.ToDateTime(pasaje.Cells[10].Value.ToString())));
+            // Tenemos que hacer que me devuelva el id del cliente dado de alta para despues usarlo en el alta del pasaje
+            return 0;
+        }
+
     }
 }

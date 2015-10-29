@@ -15,11 +15,44 @@ namespace AerolineaFrba.Compra
     {
         public DataGridView pasajes;
         public DataGridView encomiendas;
+        double importeApagar = 0;
         public registrarPagoTarjeta(DataGridView tablaPasajes,DataGridView tablaEncomiendas)
         {
             InitializeComponent();
             this.pasajes = tablaPasajes;
             this.encomiendas = tablaEncomiendas;
+            this.calcularImporte();
+        }
+
+        private void calcularImporte()
+        {
+            this.importeApagar = this.importePasajes() + this.importeEncomiendas();
+        }
+
+        private double importeEncomiendas()
+        {
+            if (this.encomiendas != null)
+            {
+                Double importe = 0;
+                foreach (DataGridViewRow encomienda in this.encomiendas.Rows)
+                    importe += funcionesComunes.precioEncomienda(encomienda);
+                return importe;
+            }
+            else
+                return 0;
+        }
+
+        private double importePasajes()
+        {
+            if (this.pasajes != null)
+            {
+                Double importe = 0;
+                foreach (DataGridViewRow pasaje in this.pasajes.Rows)
+                    importe += funcionesComunes.precioPasaje(pasaje);
+                return importe;
+            }
+            else
+                return 0;
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -32,6 +65,11 @@ namespace AerolineaFrba.Compra
             if (comboBoxCuotas.SelectedIndex != -1 && textBoxCodigo.Text != "")
             {
                 /* Si guarda bien en boleto de compra el pago entonces muestra el procesocompraexitoso */
+                Int32 idCliente = Int32.Parse(this.textBoxIdTitular.Text);
+                Int32 millas = 0;//Hay que hacer el calculo de las millas
+                Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
+                String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas, this.importeApagar, "TARJETA", idCliente, millas, idVuelo);
+
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso());
             }
             else
