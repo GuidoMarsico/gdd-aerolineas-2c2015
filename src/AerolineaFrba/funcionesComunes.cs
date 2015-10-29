@@ -306,11 +306,11 @@ namespace AerolineaFrba
             return Double.Parse(pasaje.Cells[6].Value.ToString());
         }
 
-        public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, string tipoCompra, Int32 idCliente, Int32 millas,Int32 idVuelo )
+        public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, string tipoCompra, Int32 idCliente,Int32 idVuelo )
         {
 
             Int32 idBoleto = 0;/*Aca llamariamos al procedure que nos devuelve el id del boleto
-                              mandanlo el precio de compra,tipo,el id del cliente,las millas, el id del vuelo
+                              mandanlo el precio de compra,tipo,el id del cliente, el id del vuelo
                               y la fecha de compra en el procedure le pondriamos la de hoy
                               */
             if (pasajes != null)

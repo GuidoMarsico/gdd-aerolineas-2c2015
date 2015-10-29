@@ -63,9 +63,9 @@ namespace AerolineaFrba.Compra
         {
             Double precio =double.Parse (this.textBoxImporte.Text);
             Int32 idCliente = Int32.Parse( this.textBoxId.Text);
-            Int32 millas = 0;//Hay que hacer el calculo de las millas
             Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
-            String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas,precio , "EFECTIVO",idCliente,millas,idVuelo);
+            String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas,precio , "EFECTIVO",idCliente,idVuelo);
+            // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
             funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso());
         }
 
