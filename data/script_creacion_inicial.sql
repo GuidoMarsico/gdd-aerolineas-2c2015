@@ -303,7 +303,7 @@ CREATE TABLE AERO.paquetes(
     ID   INT  IDENTITY(1,1)     PRIMARY KEY,
     CODIGO         NUMERIC(18,0)    UNIQUE NOT NULL,
     PRECIO         NUMERIC(18,2)	NOT NULL,
-    KG             NUMERIC(18,0)	NOT NULL,
+    KG             NUMERIC(18,2)	NOT NULL,
     BOLETO_COMPRA_ID     INT		NOT NULL,
     CANCELACION_ID INT DEFAULT NULL
 )
@@ -879,6 +879,24 @@ BEGIN
 END;
 GO
 
+IF OBJECT_ID('AERO.altaPasaje') IS NOT NULL
+BEGIN
+	DROP PROCEDURE AERO.altaPasaje;
+END;
+GO
+​
+IF OBJECT_ID('AERO.altaPaquete') IS NOT NULL
+BEGIN
+	DROP PROCEDURE AERO.altaPaquete;
+END;
+GO
+​
+IF OBJECT_ID('AERO.altaBoletoDeCompra') IS NOT NULL
+BEGIN
+	DROP PROCEDURE AERO.altaBoletoDeCompra;
+END;
+GO
+
 --CREATE
 CREATE FUNCTION AERO.corrigeMail (@s NVARCHAR (255)) 
 RETURNS NVARCHAR(255)
@@ -1450,6 +1468,28 @@ WHERE ID = @idCiudad
 END
 GO
 
+--COMPRAS
+CREATE PROCEDURE AERO.altaPasaje (@idCliente int, @idButaca int, @idBoletoCompra int, @precio numeric(18,2), @codigo numeric(18,0))
+AS BEGIN
+INSERT INTO AERO.pasajes (CLIENTE_ID, BUTACA_ID, BOLETO_COMPRA_ID, PRECIO, CODIGO, CANCELACION_ID)
+VALUES (@idCliente, @idButaca, @idBoletoCompra, @precio, @codigo, NULL)
+END
+GO
+​
+CREATE PROCEDURE AERO.altaBoletoDeCompra (@precio numeric(18,2), @tipo nvarchar(255), @idCliente int, @idVuelo int)
+AS BEGIN
+INSERT INTO AERO.boletos_de_compra (PRECIO_COMPRA, TIPO_COMPRA, CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
+VALUES (@precio, @tipo, @idCliente, @idVuelo, CURRENT_TIMESTAMP, NULL)
+END
+GO
+
+--select * from AERO.paquetes
+CREATE PROCEDURE AERO.altaPaquete (@idBoletoCompra int, @kg numeric(18,2), @precio numeric(18,2), @codigo numeric(18,0))
+AS BEGIN
+INSERT INTO AERO.paquetes (BOLETO_COMPRA_ID, KG, PRECIO, CODIGO, CANCELACION_ID)
+VALUES (@idBoletoCompra, @kg, @precio, @codigo, NULL)
+END
+GO
 -----------------------------------------------------------------------
 -- TRIGGERS
 
@@ -1728,3 +1768,5 @@ GO
 
 EXEC AERO.top5AeronavesFueraDeServicio @fechaFrom='20150101', @fechaTo ='20150601';
 GO
+
+select top 10 * from gd_esquema.Maestra m 
