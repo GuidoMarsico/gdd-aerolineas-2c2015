@@ -316,11 +316,10 @@ namespace AerolineaFrba.Compra
         private void botonEliminarEnco_Click(object sender, EventArgs e)
         {
             if (this.dataGridEnco.Rows.Count > 0){
-                int index = this.dataGridEnco.CurrentRow.Index;
                 this.kgAcumulados = this.kgAcumulados - Double.Parse(this.dataGridEnco.SelectedCells[4].Value.ToString());
                 Double disponible = this.cantidadKg - this.kgAcumulados;
                 MessageBox.Show("Cantidad restante para enviar " + disponible);
-                this.dataGridEnco.Rows.RemoveAt(index);
+                this.dataGridEnco.Rows.Remove(this.dataGridEnco.SelectedRows[0]); 
             }else{
                 MessageBox.Show("Tabla vacia, no hay nada que eliminar");
             }
@@ -336,7 +335,7 @@ namespace AerolineaFrba.Compra
             if (this.dataGridPasaje.Rows.Count > 0){
                 this.cantidadPasajes = this.cantidadPasajes + 1;
                 MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
-                this.dataGridPasaje.Rows.RemoveAt(this.dataGridPasaje.CurrentRow.Index);
+                this.dataGridPasaje.Rows.Remove(this.dataGridPasaje.SelectedRows[0]);
             }else{
                 MessageBox.Show("Tabla vacia, no hay nada que eliminar");
             }
