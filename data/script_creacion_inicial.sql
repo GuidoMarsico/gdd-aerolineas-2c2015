@@ -1276,6 +1276,9 @@ AS BEGIN
 UPDATE AERO.vuelos
 SET FECHA_LLEGADA = convert(datetime, @fechaLlegada,109)
 WHERE ID = @idVuelo
+UPDATE AERO.boletos_de_compra
+SET MILLAS = FLOOR(PRECIO_COMPRA/10)
+WHERE VUELO_ID = @idVuelo
 END
 GO
 
@@ -1412,7 +1415,7 @@ CREATE TABLE #Result (
 )
 INSERT INTO #Result EXEC AERO.consultarMillas @dni
 
-SELECT c.ID, c.NOMBRE, c.APELLIDO, c.DNI, c.FECHA_NACIMIENTO, SUM(r.Millas) as Millas
+SELECT c.ID, c.NOMBRE as Nombre, c.APELLIDO as Apellido, c.DNI as Dni, c.FECHA_NACIMIENTO as 'Fecha de Nacimiento', SUM(r.Millas) as Millas
 FROM #Result r
 join AERO.clientes c on c.DNI = @dni
 group by c.ID, c.NOMBRE, c.APELLIDO, c.DNI, c.FECHA_NACIMIENTO

@@ -157,6 +157,7 @@ namespace AerolineaFrba.Compra
                 this.textBoxDniPas.Enabled = false;
             this.cantidadPasajes = Int32.Parse(this.textBoxCantPasajes.Text);
             this.cantidadKg = Double.Parse(this.textBoxKgEncomiendas.Text);
+            this.resetearComboBox();
         }
 
         private void butonDesElegir_Click(object sender, EventArgs e)
@@ -179,10 +180,10 @@ namespace AerolineaFrba.Compra
 
         private void settearUbicacion(object sender, EventArgs e)
         {
-            DataGridView tabla = new DataGridView();
-            tabla.DataSource = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT b.TIPO as Tipo
-                FROM AERO.butacas b where b.ID = " + this.comboBoxNumeroButaca.SelectedValue);
-            this.textBoxUbicacion.Text = tabla.SelectedCells[0].Value.ToString();
+            DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT b.TIPO as tipo
+               FROM AERO.butacas_por_vuelo bxv join AERO.butacas b on b.ID = bxv.BUTACA_ID 
+                where bxv.VUELO_ID = " + this.textBoxIDVuelo.Text + "AND b.ID = "+ comboBoxNumeroButaca.SelectedValue.ToString());
+            this.textBoxUbicacion.Text= tabla.Rows[0].ItemArray[0].ToString();
         }
 
         private void botonCargarPas_Click(object sender, EventArgs e)

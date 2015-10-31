@@ -309,16 +309,26 @@ namespace AerolineaFrba
         public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, string tipoCompra, Int32 idCliente,Int32 idVuelo )
         {
 
-            Int32 idBoleto = 0;/*Aca llamariamos al procedure que nos devuelve el id del boleto
-                              mandanlo el precio de compra,tipo,el id del cliente, el id del vuelo
-                              y la fecha de compra en el procedure le pondriamos la de hoy
-                              */
+
+            SqlConnector.executeProcedure("AERO.altaBoletoDeCompra",
+                funcionesComunes.generarListaParaProcedure("@precio", "@tipo", "@idCliente", "@idVuelo"),
+                precioCompra, tipoCompra, idCliente, idVuelo);
+
+            Int32 idBoleto = funcionesComunes.obtenerBoleto();
             if (pasajes != null)
                 funcionesComunes.darAltaPasajes(pasajes,idBoleto);
             if (encomiendas != null)
                 funcionesComunes.darAltaEncomiendas(encomiendas,idBoleto);
          
             return idBoleto.ToString();
+        }
+
+        private static int obtenerBoleto()
+        {
+            DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 bc.ID as id
+                                                                    FROM AERO.boletos_de_compra bc
+                                                                    order by 1 desc");
+            return Convert.ToInt32(tabla.Rows[0].ItemArray[0]);
         }
 
         private static void darAltaEncomiendas(DataGridView encomiendas,Int32 idBoleto)
@@ -328,6 +338,12 @@ namespace AerolineaFrba
                 /*Aca por cada encomienda que me ahora veo que le decimos paquete
                  le mandamos al procedure el precio , los kg, id boleto de compra
                  */ 
+                double kg = Convert.ToDouble(encomienda.Cells[4].Value);
+                double precio = Convert.ToDouble(encomienda.Cells[5].Value);
+                SqlConnector.executeProcedure("AERO.altaPaquete",
+                    funcionesComunes.generarListaParaProcedure("@idBoletoCompra", "@kg", "@precio", "@codigo"),
+                    idBoleto,kg,precio,1);
+                //Ahora le mando un 1 al codigo pero hay que ver como generar
             }
         }
 
@@ -336,10 +352,16 @@ namespace AerolineaFrba
             foreach (DataGridViewRow pasaje in pasajes.Rows) 
             {
                 Int32 idPasajero = Int32.Parse(pasaje.Cells[0].Value.ToString());
+                Int32 idButaca = Int32.Parse(pasaje.Cells[11].Value.ToString());
+                Double precio = Convert.ToDouble(pasaje.Cells[6].Value.ToString());
+
                 if ( idPasajero == 0) {
                     idPasajero = funcionesComunes.darAltaCliente(pasaje);
                 }
-                //Aca hacemos el insert del pasaje usando el idBoleto , el idPasajero, el precio , el id de la butaca
+                SqlConnector.executeProcedure("AERO.altaPasaje",
+                funcionesComunes.generarListaParaProcedure("@idCliente","@idButaca","@idBoletoCompra","@precio"," @codigo"),
+                idPasajero,idButaca,idBoleto,precio,1  );
+                //Aca hacemos el insert del pasaje usando el idBoleto , el idPasajero, el precio , el id de la butaca y el codigo que hay que ver como generar
             }
         }
 
@@ -357,7 +379,11 @@ namespace AerolineaFrba
                 funcionesComunes.getIdRolCliente(), nombre, apellido, dni, direccion,
                 telefono, mail, String.Format("{0:yyyyMMdd HH:mm:ss}", Convert.ToDateTime(pasaje.Cells[10].Value.ToString())));
             // Tenemos que hacer que me devuelva el id del cliente dado de alta para despues usarlo en el alta del pasaje
-            return 0;
+            DataTable tabla= SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
+                                                                    FROM AERO.clientes c
+                                                                    order by 1 desc");
+
+            return Convert.ToInt32( tabla.Rows[0].ItemArray[0]);
         }
 
     }
