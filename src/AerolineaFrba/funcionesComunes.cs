@@ -359,8 +359,8 @@ namespace AerolineaFrba
                     idPasajero = funcionesComunes.darAltaCliente(pasaje);
                 }
                 SqlConnector.executeProcedure("AERO.altaPasaje",
-                funcionesComunes.generarListaParaProcedure("@idCliente","@idButaca","@idBoletoCompra","@precio"," @codigo"),
-                idPasajero,idButaca,idBoleto,precio,1  );
+                funcionesComunes.generarListaParaProcedure("@idCliente","@idButaca","@idBoletoCompra","@precio","@codigo"),
+                idPasajero,idButaca,idBoleto,precio,1);
                 //Aca hacemos el insert del pasaje usando el idBoleto , el idPasajero, el precio , el id de la butaca y el codigo que hay que ver como generar
             }
         }

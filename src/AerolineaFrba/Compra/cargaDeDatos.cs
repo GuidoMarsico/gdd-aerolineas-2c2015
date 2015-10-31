@@ -236,6 +236,7 @@ namespace AerolineaFrba.Compra
             funcionesComunes.llenarCombobox(this.comboBoxNumeroButaca, "NUMERO", @"SELECT b.ID,
                 b.NUMERO FROM AERO.butacas_por_vuelo bxv join AERO.butacas b on b.ID = bxv.BUTACA_ID 
                 where bxv.VUELO_ID = " + this.textBoxIDVuelo.Text + "AND bxv.ESTADO = 'LIBRE'");
+            this.textBoxUbicacion.Clear();
         }
 
         private bool validarCargaPasaje()
@@ -250,7 +251,7 @@ namespace AerolineaFrba.Compra
 
         private bool seleccionButaca()
         {
-            return this.comboBoxNumeroButaca.SelectedText != "";
+            return this.comboBoxNumeroButaca.SelectedValue != "";
         }
 
         private bool ingresoPasajero()
