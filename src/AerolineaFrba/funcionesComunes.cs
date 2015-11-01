@@ -315,9 +315,9 @@ namespace AerolineaFrba
                 precioCompra, tipoCompra, idCliente, idVuelo);
 
             Int32 idBoleto = funcionesComunes.obtenerBoleto();
-            if (pasajes != null)
+            if (pasajes.RowCount != 0)
                 funcionesComunes.darAltaPasajes(pasajes,idBoleto);
-            if (encomiendas != null)
+            if (encomiendas.RowCount != 0)
                 funcionesComunes.darAltaEncomiendas(encomiendas,idBoleto);
          
             return idBoleto.ToString();

@@ -72,7 +72,7 @@ namespace AerolineaFrba.Compra
                 Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
                 String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas, this.importeApagar, "TARJETA", idCliente,idVuelo);
                 // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
-                funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso());
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso(idBoleto,pasajes,encomiendas));
             }
             else
             {
@@ -177,6 +177,7 @@ namespace AerolineaFrba.Compra
                             altaDeCliente.Text = "Alta de Cliente";
                             ((TextBox)altaDeCliente.Controls["textBoxDNI"]).Text = dni;
                             ((TextBox)altaDeCliente.Controls["textBoxDNI"]).ReadOnly = true;
+                            ((Button)altaDeCliente.Controls["botonVolver"]).Visible = false;
                             funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
                             this.botonLimpiar.Enabled = false;
                         }
