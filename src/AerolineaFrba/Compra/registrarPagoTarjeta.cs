@@ -16,6 +16,7 @@ namespace AerolineaFrba.Compra
         public DataGridView pasajes;
         public DataGridView encomiendas;
         double importeApagar = 0;
+        public Boolean modificarDatos = false;
         public registrarPagoTarjeta(DataGridView tablaPasajes,DataGridView tablaEncomiendas)
         {
             InitializeComponent();
@@ -141,6 +142,7 @@ namespace AerolineaFrba.Compra
                             textBoxTelefono.Text = row["Teléfono"].ToString();
                             textBoxMail.Text = row["Mail"].ToString();
                             timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+                            this.textBoxDni.Enabled = false;
 
                             DataTable tablaTarjetas = SqlConnector.obtenerTablaSegunConsultaString(@"select tc.ID as Id, tc.NUMERO as Número, tc.FECHA_VTO as Vencimiento, t.NOMBRE as Nombre, t.CUOTAS as cuotas
                              from AERO.tarjetas_de_credito tc inner join AERO.tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text));
@@ -196,10 +198,11 @@ namespace AerolineaFrba.Compra
 
         private void registrarPagoTarjeta_Enter(object sender, EventArgs e)
         {
-            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
+            if (this.textBoxIdCliente.Text != "" ){
                 this.cargarDatosPasajero();
-            if (this.textBoxIdCliente.Text == "0")
+                this.modificarDatos = false;
                 this.textBoxDni.Enabled = false;
+            }
         }
 
         private void cargarDatosPasajero()
@@ -251,11 +254,41 @@ namespace AerolineaFrba.Compra
             textBoxTelefono.Clear();
             textBoxMail.Clear();
             textBoxMail.Clear();
+            this.textBoxIdTarj.Clear();
+            this.textBoxNumero.Clear();
+            this.textBoxCodigo.Clear();
+            this.textBoxTipo.Clear();
             this.textBoxDni.Enabled = true;
         }
 
-
-
+        private void buttonModificar_Click_1(object sender, EventArgs e)
+        {
+            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
+            {
+                this.modificarDatos = true;
+                Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente();
+                int valor = 3;
+                ((Label)modificarCliente.Controls["campoRequeridoApellido"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoNombre"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoDNI"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoNacimiento"]).Visible = false;
+                ((TextBox)modificarCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
+                ((TextBox)modificarCliente.Controls["textBoxId"]).Text = this.textBoxIdCliente.Text;
+                ((TextBox)modificarCliente.Controls["textBoxNombre"]).Text = this.textBoxNombre.Text;
+                ((TextBox)modificarCliente.Controls["textBoxApellido"]).Text = this.textBoxApellido.Text;
+                ((TextBox)modificarCliente.Controls["textBoxDni"]).Text = this.textBoxDni.Text;
+                ((TextBox)modificarCliente.Controls["textBoxDireccion"]).Text = this.textBoxDireccion.Text;
+                ((TextBox)modificarCliente.Controls["textBoxTelefono"]).Text = this.textBoxTelefono.Text;
+                ((TextBox)modificarCliente.Controls["textBoxMail"]).Text = this.textBoxMail.Text;
+                ((DateTimePicker)modificarCliente.Controls["TimePickerNacimiento"]).Value = this.timePickerNacimiento.Value;
+                modificarCliente.Text = "Modificación de Cliente";
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(modificarCliente);
+            }
+            else
+            {
+                MessageBox.Show("Debe tener un cliente dado de alta para modificar");
+            }
+        }
        
     }
 }

@@ -18,6 +18,7 @@ namespace AerolineaFrba.Compra
         Double kgAcumulados=0;
         Double precioBasePasaje;
         Double precioBaseKg;
+        Boolean modificarDatos = false;
 
         public cargaDeDatos()
         {
@@ -172,9 +173,29 @@ namespace AerolineaFrba.Compra
                 this.cargarDatosPasajero();
             if (this.textBoxIdCliente.Text == "0")
                 this.textBoxDniPas.Enabled = false;
+            if (this.modificarDatos)
+            {
+                this.setCliente();
+                this.modificarDatos = false;
+            }
             this.cantidadPasajes = Int32.Parse(this.textBoxCantPasajes.Text);
             this.cantidadKg = Double.Parse(this.textBoxKgEncomiendas.Text);
             this.resetearComboBox();
+        }
+
+        private void setCliente()
+        {
+
+            DataRow row = funcionesComunes.getcliente(this.textBoxIdCliente.Text);
+            this.textBoxIdCliente.Text = row["Id"].ToString();
+            this.textBoxNombre.Text = row["Nombre"].ToString();
+            this.textBoxApellido.Text = row["Apellido"].ToString();
+            this.textBoxDireccion.Text = row["Dirección"].ToString();
+
+            this.textBoxTelefono.Text = row["Teléfono"].ToString();
+            this.textBoxMail.Text = row["Mail"].ToString();
+            this.timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+            this.textBoxDniPas.Enabled = false;
         }
 
         private void cargarDatosPasajero()
@@ -435,6 +456,35 @@ namespace AerolineaFrba.Compra
         private void cargar(object sender, EventArgs e)
         {
             this.buscarPreciosDeRuta();
+        }
+
+        private void buttonModificar_Click(object sender, EventArgs e)
+        {
+            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
+            {
+                this.modificarDatos = true;
+                Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente();
+                int valor = 3;
+                ((Label)modificarCliente.Controls["campoRequeridoApellido"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoNombre"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoDNI"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoNacimiento"]).Visible = false;
+                ((TextBox)modificarCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
+                ((TextBox)modificarCliente.Controls["textBoxId"]).Text = this.textBoxIdCliente.Text;
+                ((TextBox)modificarCliente.Controls["textBoxNombre"]).Text = this.textBoxNombre.Text;
+                ((TextBox)modificarCliente.Controls["textBoxApellido"]).Text = this.textBoxApellido.Text;
+                ((TextBox)modificarCliente.Controls["textBoxDni"]).Text = this.textBoxDniPas.Text;
+                ((TextBox)modificarCliente.Controls["textBoxDireccion"]).Text = this.textBoxDireccion.Text;
+                ((TextBox)modificarCliente.Controls["textBoxTelefono"]).Text = this.textBoxTelefono.Text;
+                ((TextBox)modificarCliente.Controls["textBoxMail"]).Text = this.textBoxMail.Text;
+                ((DateTimePicker)modificarCliente.Controls["TimePickerNacimiento"]).Value = this.timePickerNacimiento.Value;
+                modificarCliente.Text = "Modificación de Cliente";
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(modificarCliente);
+            }
+            else
+            {
+                MessageBox.Show("Debe tener un cliente dado de alta para modificar");
+            }
         }
     }
 

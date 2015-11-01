@@ -91,6 +91,7 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
             this.textBoxIdCliente = new System.Windows.Forms.TextBox();
+            this.buttonModificar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -102,6 +103,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.buttonModificar);
             this.groupBox1.Controls.Add(this.butonDesElegir);
             this.groupBox1.Controls.Add(this.botonBuscar);
             this.groupBox1.Controls.Add(this.groupBox2);
@@ -110,7 +112,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(12, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(752, 135);
+            this.groupBox1.Size = new System.Drawing.Size(752, 160);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Pasajero";
@@ -119,7 +121,7 @@
             // 
             this.butonDesElegir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.butonDesElegir.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butonDesElegir.Location = new System.Drawing.Point(108, 93);
+            this.butonDesElegir.Location = new System.Drawing.Point(108, 105);
             this.butonDesElegir.Name = "butonDesElegir";
             this.butonDesElegir.Size = new System.Drawing.Size(91, 27);
             this.butonDesElegir.TabIndex = 32;
@@ -131,7 +133,7 @@
             // 
             this.botonBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.botonBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonBuscar.Location = new System.Drawing.Point(11, 93);
+            this.botonBuscar.Location = new System.Drawing.Point(11, 105);
             this.botonBuscar.Name = "botonBuscar";
             this.botonBuscar.Size = new System.Drawing.Size(91, 27);
             this.botonBuscar.TabIndex = 25;
@@ -154,9 +156,9 @@
             this.groupBox2.Controls.Add(this.textBoxApellido);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(258, 9);
+            this.groupBox2.Location = new System.Drawing.Point(232, 9);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(488, 120);
+            this.groupBox2.Size = new System.Drawing.Size(488, 108);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Datos del Pasajero";
@@ -167,7 +169,7 @@
             this.timePickerNacimiento.Enabled = false;
             this.timePickerNacimiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timePickerNacimiento.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.timePickerNacimiento.Location = new System.Drawing.Point(340, 80);
+            this.timePickerNacimiento.Location = new System.Drawing.Point(337, 81);
             this.timePickerNacimiento.Name = "timePickerNacimiento";
             this.timePickerNacimiento.Size = new System.Drawing.Size(142, 21);
             this.timePickerNacimiento.TabIndex = 44;
@@ -177,7 +179,7 @@
             this.textBoxTelefono.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxTelefono.BackColor = System.Drawing.Color.White;
             this.textBoxTelefono.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTelefono.Location = new System.Drawing.Point(3, 83);
+            this.textBoxTelefono.Location = new System.Drawing.Point(9, 82);
             this.textBoxTelefono.Name = "textBoxTelefono";
             this.textBoxTelefono.ReadOnly = true;
             this.textBoxTelefono.Size = new System.Drawing.Size(159, 20);
@@ -188,7 +190,7 @@
             this.textBoxMail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxMail.BackColor = System.Drawing.Color.White;
             this.textBoxMail.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMail.Location = new System.Drawing.Point(182, 83);
+            this.textBoxMail.Location = new System.Drawing.Point(174, 81);
             this.textBoxMail.Name = "textBoxMail";
             this.textBoxMail.ReadOnly = true;
             this.textBoxMail.Size = new System.Drawing.Size(152, 20);
@@ -210,7 +212,7 @@
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(179, 67);
+            this.label6.Location = new System.Drawing.Point(179, 64);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(26, 13);
             this.label6.TabIndex = 39;
@@ -221,7 +223,7 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1, 67);
+            this.label5.Location = new System.Drawing.Point(16, 64);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(49, 13);
             this.label5.TabIndex = 37;
@@ -232,7 +234,7 @@
             this.textBoxDireccion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDireccion.BackColor = System.Drawing.Color.White;
             this.textBoxDireccion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDireccion.Location = new System.Drawing.Point(340, 37);
+            this.textBoxDireccion.Location = new System.Drawing.Point(332, 35);
             this.textBoxDireccion.Name = "textBoxDireccion";
             this.textBoxDireccion.ReadOnly = true;
             this.textBoxDireccion.Size = new System.Drawing.Size(142, 20);
@@ -243,7 +245,7 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(337, 21);
+            this.label4.Location = new System.Drawing.Point(337, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 13);
             this.label4.TabIndex = 35;
@@ -254,7 +256,7 @@
             this.textBoxNombre.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxNombre.BackColor = System.Drawing.Color.White;
             this.textBoxNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxNombre.Location = new System.Drawing.Point(182, 37);
+            this.textBoxNombre.Location = new System.Drawing.Point(174, 35);
             this.textBoxNombre.Name = "textBoxNombre";
             this.textBoxNombre.ReadOnly = true;
             this.textBoxNombre.Size = new System.Drawing.Size(152, 20);
@@ -265,7 +267,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(179, 16);
+            this.label3.Location = new System.Drawing.Point(179, 19);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 13);
             this.label3.TabIndex = 33;
@@ -276,7 +278,7 @@
             this.textBoxApellido.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxApellido.BackColor = System.Drawing.Color.White;
             this.textBoxApellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxApellido.Location = new System.Drawing.Point(3, 37);
+            this.textBoxApellido.Location = new System.Drawing.Point(9, 35);
             this.textBoxApellido.Name = "textBoxApellido";
             this.textBoxApellido.ReadOnly = true;
             this.textBoxApellido.Size = new System.Drawing.Size(159, 20);
@@ -287,7 +289,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 21);
+            this.label2.Location = new System.Drawing.Point(6, 19);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 31;
@@ -298,7 +300,7 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(45, 30);
+            this.label1.Location = new System.Drawing.Point(45, 42);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(37, 20);
             this.label1.TabIndex = 30;
@@ -308,7 +310,7 @@
             // 
             this.textBoxDniPas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDniPas.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDniPas.Location = new System.Drawing.Point(49, 53);
+            this.textBoxDniPas.Location = new System.Drawing.Point(49, 65);
             this.textBoxDniPas.MaxLength = 8;
             this.textBoxDniPas.Name = "textBoxDniPas";
             this.textBoxDniPas.Size = new System.Drawing.Size(109, 26);
@@ -429,7 +431,7 @@
             this.Column9,
             this.Column10,
             this.Column11});
-            this.dataGridPasaje.Location = new System.Drawing.Point(24, 332);
+            this.dataGridPasaje.Location = new System.Drawing.Point(23, 345);
             this.dataGridPasaje.MultiSelect = false;
             this.dataGridPasaje.Name = "dataGridPasaje";
             this.dataGridPasaje.ReadOnly = true;
@@ -613,13 +615,13 @@
             this.dataGridViewTextBoxColumn8,
             this.dataGridViewTextBoxColumn9,
             this.dataGridViewTextBoxColumn10});
-            this.dataGridEnco.Location = new System.Drawing.Point(244, 458);
+            this.dataGridEnco.Location = new System.Drawing.Point(244, 475);
             this.dataGridEnco.MultiSelect = false;
             this.dataGridEnco.Name = "dataGridEnco";
             this.dataGridEnco.ReadOnly = true;
             this.dataGridEnco.RowHeadersVisible = false;
             this.dataGridEnco.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridEnco.Size = new System.Drawing.Size(308, 122);
+            this.dataGridEnco.Size = new System.Drawing.Size(308, 105);
             this.dataGridEnco.TabIndex = 0;
             // 
             // dataGridViewTextBoxColumn2
@@ -737,7 +739,7 @@
             this.groupBox4.Controls.Add(this.botonLimpiarEnco);
             this.groupBox4.Controls.Add(this.botonCargarEnco);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(12, 144);
+            this.groupBox4.Location = new System.Drawing.Point(12, 157);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(752, 182);
             this.groupBox4.TabIndex = 1;
@@ -763,6 +765,18 @@
             this.textBoxIdCliente.Size = new System.Drawing.Size(33, 26);
             this.textBoxIdCliente.TabIndex = 81;
             this.textBoxIdCliente.Visible = false;
+            // 
+            // buttonModificar
+            // 
+            this.buttonModificar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.buttonModificar.Location = new System.Drawing.Point(414, 128);
+            this.buttonModificar.Name = "buttonModificar";
+            this.buttonModificar.Size = new System.Drawing.Size(127, 26);
+            this.buttonModificar.TabIndex = 41;
+            this.buttonModificar.Text = "Modificar Datos";
+            this.buttonModificar.UseVisualStyleBackColor = true;
+            this.buttonModificar.Click += new System.EventHandler(this.buttonModificar_Click);
             // 
             // cargaDeDatos
             // 
@@ -866,5 +880,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.Button buttonModificar;
     }
 }

@@ -341,8 +341,8 @@ namespace AerolineaFrba
                 double kg = Convert.ToDouble(encomienda.Cells[4].Value);
                 double precio = Convert.ToDouble(encomienda.Cells[5].Value);
                 SqlConnector.executeProcedure("AERO.altaPaquete",
-                    funcionesComunes.generarListaParaProcedure("@idBoletoCompra", "@kg", "@precio", "@codigo"),
-                    idBoleto,kg,precio,1);
+                    funcionesComunes.generarListaParaProcedure("@idBoletoCompra", "@kg", "@precio"),
+                    idBoleto,kg,precio);
                 //Ahora le mando un 1 al codigo pero hay que ver como generar
             }
         }
@@ -359,8 +359,8 @@ namespace AerolineaFrba
                     idPasajero = funcionesComunes.darAltaCliente(pasaje);
                 }
                 SqlConnector.executeProcedure("AERO.altaPasaje",
-                funcionesComunes.generarListaParaProcedure("@idCliente","@idButaca","@idBoletoCompra","@precio","@codigo"),
-                idPasajero,idButaca,idBoleto,precio,1);
+                funcionesComunes.generarListaParaProcedure("@idCliente","@idButaca","@idBoletoCompra","@precio"),
+                idPasajero,idButaca,idBoleto,precio);
                 //Aca hacemos el insert del pasaje usando el idBoleto , el idPasajero, el precio , el id de la butaca y el codigo que hay que ver como generar
             }
         }
@@ -395,5 +395,14 @@ namespace AerolineaFrba
             return tablaClientes.Rows.Count != 0;
         }
 
+
+        public static DataRow getcliente(string id)
+        {
+            DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
+                         NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
+                         TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
+                         from AERO.clientes where BAJA = 0 AND ID = " + id);
+            return tablaClientes.Rows[0];
+        }
     }
 }

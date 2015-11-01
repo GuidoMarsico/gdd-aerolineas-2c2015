@@ -14,6 +14,7 @@ namespace AerolineaFrba.Compra
     {
         public DataGridView pasajes;
         public DataGridView encomiendas;
+        public Boolean modificarDatos = false;
         public registrarPagoEfectivo(DataGridView tablaPasajes,DataGridView tablaEncomiendas)
         {
             InitializeComponent();
@@ -63,12 +64,28 @@ namespace AerolineaFrba.Compra
         {
             Double precio =double.Parse (this.textBoxImporte.Text);
             Int32 idCliente = Int32.Parse( this.textBoxIdCliente.Text);
-            if (idCliente == 0) ;
-                //dar de alta al comprador
+            if (idCliente == 0)
+            {
+                idCliente = this.darDeAltaCliente();
+            }
             Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
             String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas,precio , "EFECTIVO",idCliente,idVuelo);
             // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
             funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso());
+        }
+
+        private int darDeAltaCliente()
+        {
+            string nombre = this.textBoxNombre.Text;
+            string apellido = this.textBoxApellido.Text;
+            long dni = long.Parse(this.textBoxDni.Text);
+            long telefono = long.Parse(this.textBoxTelefono.Text);
+            string direccion = this.textBoxDireccion.Text;
+            string mail = this.textBoxMail.Text;
+            DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
+                                                                    FROM AERO.clientes c
+                                                                    order by 1 desc");
+            return Convert.ToInt32(tabla.Rows[0].ItemArray[0]);
         }
 
         private void botonBuscar_Click(object sender, EventArgs e)
@@ -174,6 +191,43 @@ namespace AerolineaFrba.Compra
                 this.cargarDatosPasajero();
             if (this.textBoxIdCliente.Text == "0")
                 this.textBoxDni.Enabled = false;
+            if (this.modificarDatos)
+            {
+                this.cargarDatosPasajero();
+                this.modificarDatos = false;
+            }
+        }
+
+        
+
+        private void buttonModificar_Click_1(object sender, EventArgs e)
+        {
+            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
+            {
+                this.modificarDatos = true;
+                Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente();
+                int valor = 3;
+                ((Label)modificarCliente.Controls["campoRequeridoApellido"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoNombre"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoDNI"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoNacimiento"]).Visible = false;
+                ((TextBox)modificarCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
+                ((TextBox)modificarCliente.Controls["textBoxId"]).Text = this.textBoxIdCliente.Text;
+                ((TextBox)modificarCliente.Controls["textBoxNombre"]).Text = this.textBoxNombre.Text;
+                ((TextBox)modificarCliente.Controls["textBoxApellido"]).Text = this.textBoxApellido.Text;
+                ((TextBox)modificarCliente.Controls["textBoxDni"]).Text = this.textBoxDni.Text;
+                ((TextBox)modificarCliente.Controls["textBoxDireccion"]).Text = this.textBoxDireccion.Text;
+                ((TextBox)modificarCliente.Controls["textBoxTelefono"]).Text = this.textBoxTelefono.Text;
+                ((TextBox)modificarCliente.Controls["textBoxMail"]).Text = this.textBoxMail.Text;
+                ((DateTimePicker)modificarCliente.Controls["TimePickerNacimiento"]).Value = this.timePickerNacimiento.Value;
+                modificarCliente.Text = "Modificación de Cliente";
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(modificarCliente);
+            }
+            else
+            {
+                MessageBox.Show("Debe tener un cliente dado de alta para modificar");
+            }
+
         }
 
    
