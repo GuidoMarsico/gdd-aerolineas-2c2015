@@ -143,7 +143,7 @@ END;
 CREATE TABLE AERO.aeronaves (
     ID  INT   IDENTITY(1,1)    PRIMARY KEY,
     MATRICULA        NVARCHAR(255)    UNIQUE NOT NULL,
-    MODELO        NVARCHAR(255) DEFAULT 'modelo',
+    MODELO        NVARCHAR(255) DEFAULT 'MODELO',
     KG_DISPONIBLES    NUMERIC(18,0)    NOT NULL,
     FABRICANTE_ID    INT            NOT NULL,
     TIPO_SERVICIO_ID    INT            NOT NULL,
@@ -185,7 +185,7 @@ PRIMARY KEY(VUELO_ID,BUTACA_ID)
 CREATE TABLE AERO.pasajes (
     ID    INT    IDENTITY(1,1)    PRIMARY KEY,
     PRECIO        NUMERIC(18,2)		NOT NULL,
-    CODIGO        NUMERIC(18,0)     NOT NULL,
+    CODIGO        NUMERIC(18,0)     UNIQUE NOT NULL,
     BUTACA_ID        INT            NOT NULL,
     CLIENTE_ID        INT            NOT NULL,
     BOLETO_COMPRA_ID INT             NOT NULL,
@@ -636,18 +636,18 @@ INSERT INTO AERO.funcionalidades VALUES
 ('Consultar Listado');
 
 INSERT INTO AERO.roles (nombre, activo) VALUES
-('administrador', 1),
-('cliente', 1);
+('Administrador', 1),
+('Cliente', 1);
 
 INSERT INTO AERO.usuarios  (ROL_ID, USERNAME, PASSWORD, FECHA_CREACION, ULTIMA_MODIFICACION, INTENTOS_LOGIN, ACTIVO) VALUES 
 (1, 'admin', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', GETDATE(), GETDATE(), 0, 1);
 
 INSERT INTO AERO.productos (NOMBRE, MILLAS_REQUERIDAS, STOCK)
-VALUES ('Valija', 150, 50),
-('Candado', 10, 200),
-('Almohada', 45, 100),
-('Auto', 10000, 15),
-('Calefactor', 500, 150);
+VALUES ('VALIJA', 150, 50),
+('CANDADO', 10, 200),
+('ALMOHADA', 45, 100),
+('AUTO', 10000, 15),
+('CALEFACTOR', 500, 150);
 
 INSERT INTO AERO.tipos_tarjeta (NOMBRE, CUOTAS)
 VALUES ('VISA', 6),
@@ -1106,11 +1106,11 @@ set @i = 1
 	begin
 		if((@i%2) = 0)
 		begin
-		set @tipo = 'Ventanilla'
+		set @tipo = 'VENTANILLA'
 		end
 		else
 		begin
-		set @tipo = 'Pasillo'
+		set @tipo = 'PASILLO'
 		end
 		INSERT INTO AERO.butacas (AERONAVE_ID, NUMERO, PISO, TIPO)
 		VALUES (@idAeronave, @i, 1, @tipo)
@@ -1121,10 +1121,10 @@ GO
 
 -- AERONAVES
 CREATE PROCEDURE AERO.agregarAeronave(@matricula nvarchar(255), @modelo nvarchar(255), @kg_disponibles numeric(18,0), 
-@fabricante nvarchar(255), @tipo_servicio nvarchar(255), @alta varchar(50), @cantButacas int)
+@fabricante int, @tipo_servicio int, @alta varchar(50), @cantButacas int)
 AS BEGIN
 	INSERT INTO AERO.aeronaves(MATRICULA, MODELO, KG_DISPONIBLES, FABRICANTE_ID, TIPO_SERVICIO_ID, FECHA_ALTA, CANT_BUTACAS)
-	VALUES (@matricula, @modelo, @kg_disponibles, @fabricante, @tipo_servicio, convert(datetime, @alta,109), @cantButacas)
+	VALUES (UPPER(@matricula), UPPER(@modelo), @kg_disponibles, @fabricante, @tipo_servicio, convert(datetime, @alta,109), @cantButacas)
 	declare @id int
 	set @id = SCOPE_IDENTITY()
 	EXEC AERO.crearButacas @idAeronave = @id, @butacas = @cantButacas
@@ -1407,7 +1407,7 @@ and c.DNI = @dni
 
 /*inserto en la tabla temporal los canjes*/
 insert into #tablaMillas 
-select cj.FECHA_CANJE as Fecha, 'Canje por '+CONVERT(varchar(10), cj.CANTIDAD)+' unidades de '+p.NOMBRE as Motivo, 
+select cj.FECHA_CANJE as Fecha, 'Canje por '+CONVERT(varchar(10), cj.CANTIDAD)+' unidades de '+LOWER(p.NOMBRE) as Motivo, 
 -p.MILLAS_REQUERIDAS*cj.CANTIDAD as Millas
 from AERO.clientes c
 join AERO.canjes cj on cj.CLIENTE_ID=c.ID
@@ -1492,24 +1492,30 @@ GO
 CREATE PROCEDURE AERO.altaBoletoDeCompra (@precio numeric(18,2), @tipo nvarchar(255), @idCliente int, @idVuelo int)
 AS BEGIN
 INSERT INTO AERO.boletos_de_compra (PRECIO_COMPRA, TIPO_COMPRA, CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
-VALUES (@precio, @tipo, @idCliente, @idVuelo, CURRENT_TIMESTAMP, 0)
+VALUES (@precio, UPPER(@tipo), @idCliente, @idVuelo, CURRENT_TIMESTAMP, 0)
 END
 GO
 
-CREATE PROCEDURE AERO.altaPasaje (@idCliente int, @idButaca int, @idBoletoCompra int, @precio numeric(18,2), @codigo numeric(18,0))
+CREATE PROCEDURE AERO.altaPasaje (@idCliente int, @idButaca int, @idBoletoCompra int, @precio numeric(18,2))
 AS BEGIN
+DECLARE @codigo numeric(18,0)
+select top 1 @codigo = CODIGO from AERO.pasajes
+order by CODIGO desc
 INSERT INTO AERO.pasajes (CLIENTE_ID, BUTACA_ID, BOLETO_COMPRA_ID, PRECIO, CODIGO, CANCELACION_ID)
-VALUES (@idCliente, @idButaca, @idBoletoCompra, @precio, @codigo, NULL)
+VALUES (@idCliente, @idButaca, @idBoletoCompra, @precio, @codigo+1, NULL)
 UPDATE AERO.butacas_por_vuelo
 SET ESTADO = 'COMPRADO'
 WHERE BUTACA_ID = @idButaca AND VUELO_ID = (SELECT bc.VUELO_ID FROM AERO.boletos_de_compra bc WHERE bc.ID = @idBoletoCompra)
 END
 GO
 
-CREATE PROCEDURE AERO.altaPaquete (@idBoletoCompra int, @kg numeric(18,2), @precio numeric(18,2), @codigo numeric(18,0))
+CREATE PROCEDURE AERO.altaPaquete (@idBoletoCompra int, @kg numeric(18,2), @precio numeric(18,2))
 AS BEGIN
+DECLARE @codigo numeric(18,0)
+select top 1 @codigo = CODIGO from AERO.paquetes
+order by CODIGO desc
 INSERT INTO AERO.paquetes (BOLETO_COMPRA_ID, KG, PRECIO, CODIGO, CANCELACION_ID)
-VALUES (@idBoletoCompra, @kg, @precio, @codigo, NULL)
+VALUES (@idBoletoCompra, @kg, @precio, @codigo+1, NULL)
 END
 GO
 
@@ -1570,7 +1576,7 @@ group by m.Cli_Dni, m.Cli_Nombre, m.Cli_Apellido, m.Cli_Fecha_Nac, m.Cli_Mail, m
 
 /*la fecha de creacion es CURRENT TIMESTAMP ya que las fechas de salida de las aeronaves son en 2016*/
 INSERT INTO AERO.aeronaves (MATRICULA, MODELO, KG_DISPONIBLES, FABRICANTE_ID, TIPO_SERVICIO_ID, FECHA_ALTA, CANT_BUTACAS)
-SELECT m.Aeronave_Matricula, m.Aeronave_Modelo, m.Aeronave_KG_Disponibles, f.ID, ts.ID, CURRENT_TIMESTAMP, m.Butaca_Nro
+SELECT UPPER(m.Aeronave_Matricula), UPPER(m.Aeronave_Modelo), m.Aeronave_KG_Disponibles, f.ID, ts.ID, CURRENT_TIMESTAMP, m.Butaca_Nro
 FROM GD2C2015.gd_esquema.Maestra m, AERO.fabricantes f, AERO.tipos_de_servicio ts
 where f.NOMBRE = m.Aeronave_Fabricante and ts.NOMBRE = m.Tipo_Servicio 
 /*QUERY PARA SABER CUAL ES EL MAYOR NUMERO DE BUTACA DE LAS AERONAVES, POR SI ES QUE SE USA ESE NUMERO PARA LA CANT_BUTACAS*/
@@ -1578,7 +1584,7 @@ and m.Butaca_Nro = (select max(Butaca_Nro) from [GD2C2015].[gd_esquema].[Maestra
 group by m.Aeronave_Matricula, m.Aeronave_Modelo, m.Aeronave_KG_Disponibles, f.ID, ts.ID, m.Butaca_Nro
 
 INSERT INTO AERO.butacas (NUMERO, TIPO, PISO, AERONAVE_ID)
-SELECT M.Butaca_Nro, M.Butaca_Tipo, M.Butaca_Piso, A.ID
+SELECT M.Butaca_Nro, UPPER(M.Butaca_Tipo), M.Butaca_Piso, A.ID
 FROM AERO.aeronaves A, GD2C2015.gd_esquema.Maestra M
 WHERE A.MATRICULA = M.Aeronave_Matricula AND M.Butaca_Nro != 0
 GROUP BY M.Butaca_Nro, M.Butaca_Tipo, M.Butaca_Piso, A.ID
