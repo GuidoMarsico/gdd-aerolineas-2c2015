@@ -97,7 +97,7 @@ namespace AerolineaFrba.Registro_de_Usuario
         private void botonModificacion_Click(object sender, EventArgs e)
         {
             Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-            int valor = 2;
+            int valor = 3;
             ((Label)modificarCliente.Controls["campoRequeridoApellido"]).Visible= false;
             ((Label)modificarCliente.Controls["campoRequeridoNombre"]).Visible = false;
             ((Label)modificarCliente.Controls["campoRequeridoDNI"]).Visible = false;
