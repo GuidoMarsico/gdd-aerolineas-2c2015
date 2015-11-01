@@ -62,7 +62,9 @@ namespace AerolineaFrba.Compra
         private void botonConfirmar_Click(object sender, EventArgs e)
         {
             Double precio =double.Parse (this.textBoxImporte.Text);
-            Int32 idCliente = Int32.Parse( this.textBoxId.Text);
+            Int32 idCliente = Int32.Parse( this.textBoxIdCliente.Text);
+            if (idCliente == 0) ;
+                //dar de alta al comprador
             Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
             String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas,precio , "EFECTIVO",idCliente,idVuelo);
             // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
@@ -71,82 +73,89 @@ namespace AerolineaFrba.Compra
 
         private void botonBuscar_Click(object sender, EventArgs e)
         {
-            if (textBoxDni.TextLength >= 6)
+            String dni = this.textBoxDni.Text;
+            if (dni != "")
             {
-                DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
-                NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
-                TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                from AERO.clientes where BAJA = 0 AND DNI = " + textBoxDni.Text);
-                if (tablaClientes.Rows.Count > 0)
+                if (dni.Length >= 6)
                 {
+                    if (funcionesComunes.validarDni(dni))
+                    {
+                        DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
+                         NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
+                         TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
+                         from AERO.clientes where BAJA = 0 AND DNI = " + dni);
+                        if (tablaClientes.Rows.Count > 1)
+                        {
+                            Form listadoClientes = new Registro_de_Usuario.bajaModificacionDeCliente();
+                            int valor = 1;
+                            ((TextBox)listadoClientes.Controls["textBoxTipoForm"]).Text = valor.ToString();
+                            ((TextBox)listadoClientes.Controls["textBoxDniCompra"]).Text = dni;
+                            funcionesComunes.deshabilitarVentanaYAbrirNueva(listadoClientes);
+                        }
+                        else
+                        {
+                            DataRow row = tablaClientes.Rows[0];
+                            textBoxIdCliente.Text = row["Id"].ToString();
+                            textBoxNombre.Text = row["Nombre"].ToString();
+                            textBoxApellido.Text = row["Apellido"].ToString();
+                            textBoxDireccion.Text = row["Dirección"].ToString();
+                            textBoxTelefono.Text = row["Teléfono"].ToString();
+                            textBoxMail.Text = row["Mail"].ToString();
+                            timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+                            textBoxImporte.Enabled = true;
+                            textBoxImporte.Focus();
+                            this.textBoxDni.Enabled = false;
+                        }
 
-                    DataRow row = tablaClientes.Rows[0];
-                    textBoxId.Text = row["Id"].ToString();
-                    textBoxNombre.Text = row["Nombre"].ToString();
-                    textBoxApellido.Text = row["Apellido"].ToString();
-                    textBoxDireccion.Text = row["Dirección"].ToString();
-                    textBoxDNICliente.Text = row["Dni"].ToString();
-                    textBoxTelefono.Text = row["Teléfono"].ToString();
-                    textBoxMail.Text = row["Mail"].ToString();
-                    timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
-                    textBoxImporte.Enabled = true;
-                    textBoxImporte.Focus();
+                    }
+                    else
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Debe dar de alta el cliente con ese DNI, ¿esta seguro?", "Dni de Cliente Inexistente", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente();
+                            int valor = 1;
+                            ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
+                            altaDeCliente.Text = "Alta de Cliente";
+                            ((TextBox)altaDeCliente.Controls["textBoxDNI"]).Text = dni;
+                            ((TextBox)altaDeCliente.Controls["textBoxDNI"]).ReadOnly = true;
+                            funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
+                        }
+                    }
                 }
                 else
-                {
-                    MessageBox.Show("No se encuentra al cliente seleccionado");
-                }   
+                    MessageBox.Show("Numero de documento invalido, debe poseer al menos 6 digitos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                MessageBox.Show("Ingrese el DNI completo");
-                textBoxDni.Focus();
+                MessageBox.Show("Ingrese un numero de documento", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void botonActualizarDatos_Click(object sender, EventArgs e)
+
+        private void cargarDatosPasajero()
         {
-            if (textBoxApellido.Text != "")
-            {
-                cargarFormulario(2, "Modificación de cliente");
-            }
-            else
-            {
-                MessageBox.Show("Busque un cliente para ser modificado");
-            }
-        }
+            DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
+                         NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
+                         TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
+                         from AERO.clientes where BAJA = 0 AND  ID = " + this.textBoxIdCliente.Text);
 
-        private void botonNuevo_Click(object sender, EventArgs e)
-        {
-            cargarFormulario(0, "Alta de Cliente");
-        }
-
-
-        private void cargarFormulario(int val, string nombre)
-        {
-            Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-            int valor = val;
-            ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = val.ToString();
-            ((TextBox)altaDeCliente.Controls["textBoxVolver"]).Text = "1";
-            altaDeCliente.Text = nombre;
-            if (val == 2)
-            {
-                ((TextBox)altaDeCliente.Controls["textBoxId"]).Text = textBoxId.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxNombre"]).Text = textBoxNombre.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxApellido"]).Text = textBoxApellido.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxDni"]).Text = textBoxDNICliente.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxDireccion"]).Text = textBoxDireccion.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxTelefono"]).Text = textBoxTelefono.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxMail"]).Text = textBoxMail.Text;
-                ((DateTimePicker)altaDeCliente.Controls["TimePickerNacimiento"]).Value = timePickerNacimiento.Value;
-            }
-            funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
-
+            DataRow row = tablaClientes.Rows[0];
+            textBoxIdCliente.Text = row["Id"].ToString();
+            textBoxNombre.Text = row["Nombre"].ToString();
+            textBoxApellido.Text = row["Apellido"].ToString();
+            textBoxDireccion.Text = row["Dirección"].ToString();
+            textBoxTelefono.Text = row["Teléfono"].ToString();
+            textBoxMail.Text = row["Mail"].ToString();
+            timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+            textBoxImporte.Enabled = true;
+            textBoxImporte.Focus();
+            this.textBoxDni.Enabled = false;
         }
 
         private void botonLimpiar_Click(object sender, EventArgs e)
         {
-            textBoxId.Clear();
+            textBoxIdCliente.Clear();
             textBoxNombre.Clear();
             textBoxApellido.Clear();
             textBoxDni.Clear();
@@ -154,9 +163,17 @@ namespace AerolineaFrba.Compra
             textBoxTelefono.Clear();
             textBoxMail.Clear();
             textBoxMail.Clear();
-            textBoxDNICliente.Clear();
             textBoxImporte.Enabled = false;
             textBoxDni.Focus();
+            this.textBoxDni.Enabled = true;
+        }
+
+        private void registrarPagoEfectivo_Enter(object sender, EventArgs e)
+        {
+            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
+                this.cargarDatosPasajero();
+            if (this.textBoxIdCliente.Text == "0")
+                this.textBoxDni.Enabled = false;
         }
 
    

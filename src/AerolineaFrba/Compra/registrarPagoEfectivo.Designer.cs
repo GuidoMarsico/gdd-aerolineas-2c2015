@@ -31,14 +31,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.botonBuscar = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBoxDNICliente = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.timePickerNacimiento = new System.Windows.Forms.DateTimePicker();
-            this.textBoxId = new System.Windows.Forms.TextBox();
-            this.botonLimpiar = new System.Windows.Forms.Button();
-            this.botonActualizarDatos = new System.Windows.Forms.Button();
             this.textBoxTelefono = new System.Windows.Forms.TextBox();
-            this.botonNuevo = new System.Windows.Forms.Button();
             this.textBoxMail = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -51,6 +45,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxDni = new System.Windows.Forms.TextBox();
+            this.botonLimpiar = new System.Windows.Forms.Button();
+            this.textBoxIdCliente = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
             this.textBoxImporte = new System.Windows.Forms.TextBox();
@@ -68,6 +64,7 @@
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.textBoxDni);
+            this.groupBox1.Controls.Add(this.botonLimpiar);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(38, 25);
             this.groupBox1.Name = "groupBox1";
@@ -90,14 +87,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.textBoxDNICliente);
-            this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.timePickerNacimiento);
-            this.groupBox2.Controls.Add(this.textBoxId);
-            this.groupBox2.Controls.Add(this.botonLimpiar);
-            this.groupBox2.Controls.Add(this.botonActualizarDatos);
             this.groupBox2.Controls.Add(this.textBoxTelefono);
-            this.groupBox2.Controls.Add(this.botonNuevo);
             this.groupBox2.Controls.Add(this.textBoxMail);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label6);
@@ -116,29 +107,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Datos del Cliente";
             // 
-            // textBoxDNICliente
-            // 
-            this.textBoxDNICliente.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBoxDNICliente.BackColor = System.Drawing.Color.White;
-            this.textBoxDNICliente.Enabled = false;
-            this.textBoxDNICliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDNICliente.Location = new System.Drawing.Point(9, 177);
-            this.textBoxDNICliente.Name = "textBoxDNICliente";
-            this.textBoxDNICliente.ReadOnly = true;
-            this.textBoxDNICliente.Size = new System.Drawing.Size(115, 20);
-            this.textBoxDNICliente.TabIndex = 65;
-            // 
-            // label8
-            // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(6, 161);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(26, 13);
-            this.label8.TabIndex = 64;
-            this.label8.Text = "DNI";
-            // 
             // timePickerNacimiento
             // 
             this.timePickerNacimiento.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -146,46 +114,10 @@
             this.timePickerNacimiento.Enabled = false;
             this.timePickerNacimiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timePickerNacimiento.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.timePickerNacimiento.Location = new System.Drawing.Point(146, 133);
+            this.timePickerNacimiento.Location = new System.Drawing.Point(187, 133);
             this.timePickerNacimiento.Name = "timePickerNacimiento";
             this.timePickerNacimiento.Size = new System.Drawing.Size(116, 22);
             this.timePickerNacimiento.TabIndex = 63;
-            // 
-            // textBoxId
-            // 
-            this.textBoxId.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBoxId.BackColor = System.Drawing.Color.White;
-            this.textBoxId.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxId.Location = new System.Drawing.Point(188, 12);
-            this.textBoxId.Name = "textBoxId";
-            this.textBoxId.ReadOnly = true;
-            this.textBoxId.Size = new System.Drawing.Size(48, 20);
-            this.textBoxId.TabIndex = 46;
-            this.textBoxId.Visible = false;
-            // 
-            // botonLimpiar
-            // 
-            this.botonLimpiar.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.botonLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonLimpiar.Location = new System.Drawing.Point(275, 134);
-            this.botonLimpiar.Name = "botonLimpiar";
-            this.botonLimpiar.Size = new System.Drawing.Size(62, 42);
-            this.botonLimpiar.TabIndex = 45;
-            this.botonLimpiar.Text = "Limpiar";
-            this.botonLimpiar.UseVisualStyleBackColor = true;
-            this.botonLimpiar.Click += new System.EventHandler(this.botonLimpiar_Click);
-            // 
-            // botonActualizarDatos
-            // 
-            this.botonActualizarDatos.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.botonActualizarDatos.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonActualizarDatos.Location = new System.Drawing.Point(275, 85);
-            this.botonActualizarDatos.Name = "botonActualizarDatos";
-            this.botonActualizarDatos.Size = new System.Drawing.Size(62, 42);
-            this.botonActualizarDatos.TabIndex = 35;
-            this.botonActualizarDatos.Text = "Actualizar Datos";
-            this.botonActualizarDatos.UseVisualStyleBackColor = true;
-            this.botonActualizarDatos.Click += new System.EventHandler(this.botonActualizarDatos_Click);
             // 
             // textBoxTelefono
             // 
@@ -193,23 +125,11 @@
             this.textBoxTelefono.BackColor = System.Drawing.Color.White;
             this.textBoxTelefono.Enabled = false;
             this.textBoxTelefono.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTelefono.Location = new System.Drawing.Point(146, 88);
+            this.textBoxTelefono.Location = new System.Drawing.Point(187, 88);
             this.textBoxTelefono.Name = "textBoxTelefono";
             this.textBoxTelefono.ReadOnly = true;
             this.textBoxTelefono.Size = new System.Drawing.Size(115, 20);
             this.textBoxTelefono.TabIndex = 43;
-            // 
-            // botonNuevo
-            // 
-            this.botonNuevo.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.botonNuevo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonNuevo.Location = new System.Drawing.Point(275, 32);
-            this.botonNuevo.Name = "botonNuevo";
-            this.botonNuevo.Size = new System.Drawing.Size(62, 42);
-            this.botonNuevo.TabIndex = 32;
-            this.botonNuevo.Text = "Nuevo";
-            this.botonNuevo.UseVisualStyleBackColor = true;
-            this.botonNuevo.Click += new System.EventHandler(this.botonNuevo_Click);
             // 
             // textBoxMail
             // 
@@ -217,7 +137,7 @@
             this.textBoxMail.BackColor = System.Drawing.Color.White;
             this.textBoxMail.Enabled = false;
             this.textBoxMail.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMail.Location = new System.Drawing.Point(146, 44);
+            this.textBoxMail.Location = new System.Drawing.Point(187, 44);
             this.textBoxMail.Name = "textBoxMail";
             this.textBoxMail.ReadOnly = true;
             this.textBoxMail.Size = new System.Drawing.Size(115, 20);
@@ -228,7 +148,7 @@
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(143, 117);
+            this.label7.Location = new System.Drawing.Point(184, 117);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(93, 13);
             this.label7.TabIndex = 41;
@@ -239,7 +159,7 @@
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(143, 28);
+            this.label6.Location = new System.Drawing.Point(184, 28);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(26, 13);
             this.label6.TabIndex = 39;
@@ -250,7 +170,7 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(143, 72);
+            this.label5.Location = new System.Drawing.Point(184, 72);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(49, 13);
             this.label5.TabIndex = 37;
@@ -262,7 +182,7 @@
             this.textBoxDireccion.BackColor = System.Drawing.Color.White;
             this.textBoxDireccion.Enabled = false;
             this.textBoxDireccion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDireccion.Location = new System.Drawing.Point(9, 133);
+            this.textBoxDireccion.Location = new System.Drawing.Point(50, 133);
             this.textBoxDireccion.Name = "textBoxDireccion";
             this.textBoxDireccion.ReadOnly = true;
             this.textBoxDireccion.Size = new System.Drawing.Size(115, 20);
@@ -273,7 +193,7 @@
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 117);
+            this.label4.Location = new System.Drawing.Point(47, 117);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 13);
             this.label4.TabIndex = 35;
@@ -285,7 +205,7 @@
             this.textBoxNombre.BackColor = System.Drawing.Color.White;
             this.textBoxNombre.Enabled = false;
             this.textBoxNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxNombre.Location = new System.Drawing.Point(9, 88);
+            this.textBoxNombre.Location = new System.Drawing.Point(50, 88);
             this.textBoxNombre.Name = "textBoxNombre";
             this.textBoxNombre.ReadOnly = true;
             this.textBoxNombre.Size = new System.Drawing.Size(115, 20);
@@ -296,7 +216,7 @@
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(6, 72);
+            this.label3.Location = new System.Drawing.Point(47, 72);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 13);
             this.label3.TabIndex = 33;
@@ -308,7 +228,7 @@
             this.textBoxApellido.BackColor = System.Drawing.Color.White;
             this.textBoxApellido.Enabled = false;
             this.textBoxApellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxApellido.Location = new System.Drawing.Point(9, 44);
+            this.textBoxApellido.Location = new System.Drawing.Point(50, 44);
             this.textBoxApellido.Name = "textBoxApellido";
             this.textBoxApellido.ReadOnly = true;
             this.textBoxApellido.Size = new System.Drawing.Size(115, 20);
@@ -319,7 +239,7 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 28);
+            this.label2.Location = new System.Drawing.Point(47, 28);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 31;
@@ -341,9 +261,34 @@
             this.textBoxDni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDni.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxDni.Location = new System.Drawing.Point(10, 85);
+            this.textBoxDni.MaxLength = 8;
             this.textBoxDni.Name = "textBoxDni";
             this.textBoxDni.Size = new System.Drawing.Size(117, 26);
             this.textBoxDni.TabIndex = 29;
+            // 
+            // botonLimpiar
+            // 
+            this.botonLimpiar.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.botonLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.botonLimpiar.Location = new System.Drawing.Point(10, 157);
+            this.botonLimpiar.Name = "botonLimpiar";
+            this.botonLimpiar.Size = new System.Drawing.Size(117, 26);
+            this.botonLimpiar.TabIndex = 45;
+            this.botonLimpiar.Text = "Limpiar";
+            this.botonLimpiar.UseVisualStyleBackColor = true;
+            this.botonLimpiar.Click += new System.EventHandler(this.botonLimpiar_Click);
+            // 
+            // textBoxIdCliente
+            // 
+            this.textBoxIdCliente.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.textBoxIdCliente.BackColor = System.Drawing.Color.White;
+            this.textBoxIdCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIdCliente.Location = new System.Drawing.Point(504, 384);
+            this.textBoxIdCliente.Name = "textBoxIdCliente";
+            this.textBoxIdCliente.ReadOnly = true;
+            this.textBoxIdCliente.Size = new System.Drawing.Size(48, 20);
+            this.textBoxIdCliente.TabIndex = 46;
+            this.textBoxIdCliente.Visible = false;
             // 
             // groupBox3
             // 
@@ -421,6 +366,7 @@
             this.ClientSize = new System.Drawing.Size(564, 417);
             this.ControlBox = false;
             this.Controls.Add(this.textBoxIDVuelo);
+            this.Controls.Add(this.textBoxIdCliente);
             this.Controls.Add(this.botonVolver);
             this.Controls.Add(this.botonConfirmar);
             this.Controls.Add(this.groupBox3);
@@ -428,6 +374,7 @@
             this.Name = "registrarPagoEfectivo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pago en Efectivo";
+            this.Enter += new System.EventHandler(this.registrarPagoEfectivo_Enter);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -445,9 +392,7 @@
         private System.Windows.Forms.Button botonBuscar;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button botonLimpiar;
-        private System.Windows.Forms.Button botonActualizarDatos;
         private System.Windows.Forms.TextBox textBoxTelefono;
-        private System.Windows.Forms.Button botonNuevo;
         private System.Windows.Forms.TextBox textBoxMail;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
@@ -465,10 +410,8 @@
         private System.Windows.Forms.TextBox textBoxImporte;
         private System.Windows.Forms.Button botonVolver;
         private System.Windows.Forms.Button botonConfirmar;
-        private System.Windows.Forms.TextBox textBoxId;
+        private System.Windows.Forms.TextBox textBoxIdCliente;
         private System.Windows.Forms.DateTimePicker timePickerNacimiento;
-        private System.Windows.Forms.TextBox textBoxDNICliente;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBoxIDVuelo;
     }
 }

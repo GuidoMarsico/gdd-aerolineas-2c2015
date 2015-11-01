@@ -141,27 +141,6 @@ namespace AerolineaFrba.Registro_de_Usuario
         {
             Form anterior = funcionesComunes.getVentanaAnterior();
             ((TextBox)anterior.Controls["textBoxIdCliente"]).Text = dataGridListadoClientes.SelectedCells[0].Value.ToString();
-            foreach (Control gb in anterior.Controls)
-            {
-                if (gb is GroupBox)
-                {
-                    if (gb.Name == "groupBox1")
-                    {
-                        foreach (Control subgb in gb.Controls)
-                        {
-                            if (subgb.Name == "groupBox2")
-                            {
-                                ((TextBox)subgb.Controls["textBoxApellidoPas"]).Text = dataGridListadoClientes.SelectedCells[2].Value.ToString();
-                                ((TextBox)subgb.Controls["textBoxNombrePas"]).Text = dataGridListadoClientes.SelectedCells[1].Value.ToString();
-                                ((TextBox)subgb.Controls["textBoxDireccionPas"]).Text = dataGridListadoClientes.SelectedCells[4].Value.ToString();
-                                ((TextBox)subgb.Controls["textBoxMailPas"]).Text = dataGridListadoClientes.SelectedCells[6].Value.ToString();
-                                ((TextBox)subgb.Controls["textBoxTelefonoPas"]).Text = dataGridListadoClientes.SelectedCells[5].Value.ToString();
-                                ((DateTimePicker)subgb.Controls["timePickerFecha"]).Value = Convert.ToDateTime(dataGridListadoClientes.SelectedCells[7].Value.ToString());
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }

@@ -65,7 +65,9 @@ namespace AerolineaFrba.Compra
             if (comboBoxCuotas.SelectedIndex != -1 && textBoxCodigo.Text != "")
             {
                 /* Si guarda bien en boleto de compra el pago entonces muestra el procesocompraexitoso */
-                Int32 idCliente = Int32.Parse(this.textBoxIdTitular.Text);
+                Int32 idCliente = Int32.Parse(this.textBoxIdCliente.Text);
+                if (idCliente == 0) ;
+                //Dar de alta el cliente y buscar devuelta el id
                 Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
                 String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas, this.importeApagar, "TARJETA", idCliente,idVuelo);
                 // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
@@ -83,27 +85,7 @@ namespace AerolineaFrba.Compra
             funcionesComunes.soloNumeros(e);
         }
 
-        private void cargarFormulario(int val, string nombre)
-        {
-            Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-            int valor = val;
-            ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = val.ToString();
-            ((TextBox)altaDeCliente.Controls["textBoxVolver"]).Text = "1";
-            altaDeCliente.Text = nombre;
-            if (val == 2)
-            {
-                ((TextBox)altaDeCliente.Controls["textBoxId"]).Text = textBoxIdTitular.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxNombre"]).Text = textBoxNombre.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxApellido"]).Text = textBoxApellido.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxDni"]).Text = textBoxDNITitular.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxDireccion"]).Text = textBoxDireccion.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxTelefono"]).Text = textBoxTelefono.Text;
-                ((TextBox)altaDeCliente.Controls["textBoxMail"]).Text = textBoxMail.Text;
-                ((DateTimePicker)altaDeCliente.Controls["TimePickerNacimiento"]).Value = timePickerNacimiento.Value;
-            }
-            funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
-
-        }
+        
 
         private void botonLimpiarTitular_Click(object sender, EventArgs e)
         {
@@ -111,7 +93,7 @@ namespace AerolineaFrba.Compra
             textBoxNombre.Clear();
             textBoxDni.Clear();
             textBoxDireccion.Clear();
-            textBoxIdTitular.Clear();
+            textBoxIdCliente.Clear();
             textBoxMail.Clear();
             textBoxTelefono.Clear();
             timePickerNacimiento.Value = DateTime.Today;
@@ -120,7 +102,6 @@ namespace AerolineaFrba.Compra
             textBoxCodigo.Clear();
             textBoxTipo.Clear();
             textBoxIdTarj.Clear();
-            textBoxDNITitular.Clear();
             comboBoxCuotas.Items.Clear();
         }
 
@@ -131,81 +112,149 @@ namespace AerolineaFrba.Compra
 
         private void botonGuardar_Click(object sender, EventArgs e)
         {
-            if (textBoxDni.TextLength >= 6)
+            String dni = this.textBoxDni.Text;
+            if (dni != "")
             {
-                DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
-                NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
-                TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                from AERO.clientes where BAJA = 0 AND DNI = " + textBoxDni.Text);
-                if (tablaClientes.Rows.Count > 0)
+                if (dni.Length >= 6)
                 {
-
-                    DataRow row = tablaClientes.Rows[0];
-                    textBoxIdTitular.Text = row["Id"].ToString();
-                    textBoxNombre.Text = row["Nombre"].ToString();
-                    textBoxApellido.Text = row["Apellido"].ToString();
-                    textBoxDireccion.Text = row["Dirección"].ToString();
-                    textBoxTelefono.Text = row["Teléfono"].ToString();
-                    textBoxMail.Text = row["Mail"].ToString();
-                    textBoxDNITitular.Text = row["Dni"].ToString();
-                    timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
-
-                    DataTable tablaTarjetas = SqlConnector.obtenerTablaSegunConsultaString(@"select tc.ID as Id, tc.NUMERO as Número, tc.FECHA_VTO as Vencimiento, t.NOMBRE as Nombre, t.CUOTAS as cuotas
-                    from AERO.tarjetas_de_credito tc inner join AERO.tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdTitular.Text));
-                    if (tablaTarjetas.Rows.Count > 0)
+                    if (funcionesComunes.validarDni(dni))
                     {
-                        DataRow rowTarj = tablaTarjetas.Rows[0];
-                        textBoxIdTarj.Text = rowTarj["Id"].ToString();
-                        textBoxNumero.Text = rowTarj["Número"].ToString();
-                        textBoxTipo.Text = rowTarj["Nombre"].ToString();
-                        timePickerVencimiento.Value = (DateTime)rowTarj["Vencimiento"];
-                        int cantCuotas = Convert.ToInt32(rowTarj["Cuotas"]);
-                        for (int i = 1; i <= cantCuotas; i++)
+                        DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
+                         NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
+                         TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
+                         from AERO.clientes where BAJA = 0 AND DNI = " + dni);
+                        if (tablaClientes.Rows.Count > 1)
                         {
-                            comboBoxCuotas.Items.Add(i.ToString());
+                            Form listadoClientes = new Registro_de_Usuario.bajaModificacionDeCliente();
+                            int valor = 1;
+                            ((TextBox)listadoClientes.Controls["textBoxTipoForm"]).Text = valor.ToString();
+                            ((TextBox)listadoClientes.Controls["textBoxDniCompra"]).Text = dni;
+                            funcionesComunes.deshabilitarVentanaYAbrirNueva(listadoClientes);
                         }
+                        else
+                        {
+                            DataRow row = tablaClientes.Rows[0];
+                            textBoxIdCliente.Text = row["Id"].ToString();
+                            textBoxNombre.Text = row["Nombre"].ToString();
+                            textBoxApellido.Text = row["Apellido"].ToString();
+                            textBoxDireccion.Text = row["Dirección"].ToString();
+                            textBoxTelefono.Text = row["Teléfono"].ToString();
+                            textBoxMail.Text = row["Mail"].ToString();
+                            timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+
+                            DataTable tablaTarjetas = SqlConnector.obtenerTablaSegunConsultaString(@"select tc.ID as Id, tc.NUMERO as Número, tc.FECHA_VTO as Vencimiento, t.NOMBRE as Nombre, t.CUOTAS as cuotas
+                             from AERO.tarjetas_de_credito tc inner join AERO.tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text));
+                            if (tablaTarjetas.Rows.Count > 0)
+                            {
+                                DataRow rowTarj = tablaTarjetas.Rows[0];
+                                textBoxIdTarj.Text = rowTarj["Id"].ToString();
+                                textBoxNumero.Text = rowTarj["Número"].ToString();
+                                textBoxTipo.Text = rowTarj["Nombre"].ToString();
+                                timePickerVencimiento.Value = (DateTime)rowTarj["Vencimiento"];
+                                int cantCuotas = Convert.ToInt32(rowTarj["Cuotas"]);
+                                for (int i = 1; i <= cantCuotas; i++)
+                                {
+                                    comboBoxCuotas.Items.Add(i.ToString());
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se puede encontrar una tarjeta de crédito para el cliente seleccionado, haga un alta de tarjeta para ese cliente");
+                            }
+                        }
+
                     }
                     else
                     {
-                        MessageBox.Show("No se puede encontrar una tarjeta de crédito para el cliente seleccionado");
-                        botonLimpiarTitular.PerformClick();
+                        DialogResult dialogResult = MessageBox.Show("Debe dar de alta el cliente con ese DNI, ¿esta seguro?", "Dni de Cliente Inexistente", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente();
+                            int valor = 2;
+                            ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
+                            altaDeCliente.Text = "Alta de Cliente";
+                            ((TextBox)altaDeCliente.Controls["textBoxDNI"]).Text = dni;
+                            ((TextBox)altaDeCliente.Controls["textBoxDNI"]).ReadOnly = true;
+                            funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
+                            this.botonLimpiar.Enabled = false;
+                        }
                     }
-
                 }
                 else
-                {
-                    MessageBox.Show("Cliente no encontrado. Ingrese nuevamente DNI o ingrese la alta");
-                    botonLimpiarTitular.PerformClick();
-                }
+                    MessageBox.Show("Numero de documento invalido, debe poseer al menos 6 digitos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                MessageBox.Show("Ingrese el DNI completo");
-                textBoxDni.Focus();
+                MessageBox.Show("Ingrese un numero de documento", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void botonActualizacionDeDatos_Click(object sender, EventArgs e)
-        {
-            if (textBoxApellido.Text != "")
-            {
-                cargarFormulario(2, "Modificación de cliente");
-            }
-            else
-            {
-                MessageBox.Show("Busque un cliente para ser modificado");
-            }
-        }
-
-        private void botonNuevoCliente_Click(object sender, EventArgs e)
-        {
-            cargarFormulario(0, "Alta de Cliente");
         }
 
         private void botonNuevaTarj_Click(object sender, EventArgs e)
         {
             funcionesComunes.deshabilitarVentanaYAbrirNueva(new Tarjeta.altaDeTarjeta());
         }
+
+        private void registrarPagoTarjeta_Enter(object sender, EventArgs e)
+        {
+            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
+                this.cargarDatosPasajero();
+            if (this.textBoxIdCliente.Text == "0")
+                this.textBoxDni.Enabled = false;
+        }
+
+        private void cargarDatosPasajero()
+        {
+            DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
+                         NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
+                         TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
+                         from AERO.clientes where BAJA = 0 AND  ID = " + this.textBoxIdCliente.Text);
+            DataRow row = tablaClientes.Rows[0];
+            textBoxIdCliente.Text = row["Id"].ToString();
+            textBoxNombre.Text = row["Nombre"].ToString();
+            textBoxApellido.Text = row["Apellido"].ToString();
+            textBoxDireccion.Text = row["Dirección"].ToString();
+            textBoxTelefono.Text = row["Teléfono"].ToString();
+            textBoxMail.Text = row["Mail"].ToString();
+            timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+            this.textBoxDni.Enabled = false;
+
+            DataTable tablaTarjetas = SqlConnector.obtenerTablaSegunConsultaString(@"select tc.ID as Id, tc.NUMERO as Número, tc.FECHA_VTO as Vencimiento, t.NOMBRE as Nombre, t.CUOTAS as cuotas
+                             from AERO.tarjetas_de_credito tc inner join AERO.tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text));
+            if (tablaTarjetas.Rows.Count > 0)
+            {
+                DataRow rowTarj = tablaTarjetas.Rows[0];
+                textBoxIdTarj.Text = rowTarj["Id"].ToString();
+                textBoxNumero.Text = rowTarj["Número"].ToString();
+                textBoxTipo.Text = rowTarj["Nombre"].ToString();
+                timePickerVencimiento.Value = (DateTime)rowTarj["Vencimiento"];
+                int cantCuotas = Convert.ToInt32(rowTarj["Cuotas"]);
+                for (int i = 1; i <= cantCuotas; i++)
+                {
+                    comboBoxCuotas.Items.Add(i.ToString());
+                }
+            }
+            else
+            {
+                MessageBox.Show("No se puede encontrar una tarjeta de crédito para el cliente seleccionado, haga un alta de tarjeta para ese cliente");
+            }
+           
+
+        }
+
+        private void botonLimpiar_Click(object sender, EventArgs e)
+        {
+            textBoxIdCliente.Clear();
+            textBoxNombre.Clear();
+            textBoxApellido.Clear();
+            textBoxDni.Clear();
+            textBoxDireccion.Clear();
+            textBoxTelefono.Clear();
+            textBoxMail.Clear();
+            textBoxMail.Clear();
+            this.textBoxDni.Enabled = true;
+        }
+
+
 
        
     }

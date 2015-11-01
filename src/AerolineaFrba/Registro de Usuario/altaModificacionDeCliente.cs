@@ -32,7 +32,7 @@ namespace AerolineaFrba.Registro_de_Usuario
 
         private void altaModificacionDeCliente_Load(object sender, EventArgs e)
         {
-            if (textBoxTipoForm.Text == "0" || textBoxTipoForm.Text == "1")
+            if (textBoxTipoForm.Text == "0" || textBoxTipoForm.Text == "1" || textBoxTipoForm.Text == "2")
             {
                 botonModificar.Visible = false;
             }
@@ -81,6 +81,16 @@ namespace AerolineaFrba.Registro_de_Usuario
                     }
                     else
                        resultado=  this.persistirCliente();
+                    if (textBoxTipoForm.Text == "2")
+                    {
+                        DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
+                                                                    FROM AERO.clientes c
+                                                                    order by 1 desc");
+                        Form anterior = funcionesComunes.getVentanaAnterior();
+                        ((TextBox)anterior.Controls["textBoxIdCliente"]).Text = Convert.ToString(tabla.Rows[0].ItemArray[0]);
+                        funcionesComunes.habilitarAnterior();
+                        return;
+                    }
                     if (resultado)
                     {
                         MessageBox.Show("Se guardo exitosamente");
@@ -118,12 +128,12 @@ namespace AerolineaFrba.Registro_de_Usuario
                         {
                             if (subgb.Name == "groupBox2")
                             {
-                                ((TextBox)subgb.Controls["textBoxApellidoPas"]).Text = this.textBoxApellido.Text;
-                                ((TextBox)subgb.Controls["textBoxNombrePas"]).Text = this.textBoxNombre.Text;
-                                ((TextBox)subgb.Controls["textBoxDireccionPas"]).Text = this.textBoxDireccion.Text;
-                                ((TextBox)subgb.Controls["textBoxMailPas"]).Text = this.textBoxMail.Text;
-                                ((TextBox)subgb.Controls["textBoxTelefonoPas"]).Text = this.textBoxTelefono.Text;
-                                ((DateTimePicker)subgb.Controls["timePickerFecha"]).Value = this.TimePickerNacimiento.Value;
+                                ((TextBox)subgb.Controls["textBoxApellido"]).Text = this.textBoxApellido.Text;
+                                ((TextBox)subgb.Controls["textBoxNombre"]).Text = this.textBoxNombre.Text;
+                                ((TextBox)subgb.Controls["textBoxDireccion"]).Text = this.textBoxDireccion.Text;
+                                ((TextBox)subgb.Controls["textBoxMail"]).Text = this.textBoxMail.Text;
+                                ((TextBox)subgb.Controls["textBoxTelefono"]).Text = this.textBoxTelefono.Text;
+                                ((DateTimePicker)subgb.Controls["timePickerNacimiento"]).Value = this.TimePickerNacimiento.Value;
                             }
                         }
                     }

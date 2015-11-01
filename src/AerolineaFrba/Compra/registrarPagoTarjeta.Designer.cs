@@ -29,15 +29,11 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.botonLimpiar = new System.Windows.Forms.Button();
             this.botonGuardar = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBoxDNITitular = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.textBoxIdTitular = new System.Windows.Forms.TextBox();
             this.timePickerNacimiento = new System.Windows.Forms.DateTimePicker();
-            this.botonActualizacionDeDatos = new System.Windows.Forms.Button();
             this.textBoxTelefono = new System.Windows.Forms.TextBox();
-            this.botonNuevoCliente = new System.Windows.Forms.Button();
             this.textBoxMail = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -50,6 +46,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxDni = new System.Windows.Forms.TextBox();
+            this.textBoxIdCliente = new System.Windows.Forms.TextBox();
             this.botonLimpiarTitular = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -77,6 +74,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.botonLimpiar);
             this.groupBox1.Controls.Add(this.botonGuardar);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.label1);
@@ -88,6 +86,18 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Titular";
+            // 
+            // botonLimpiar
+            // 
+            this.botonLimpiar.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.botonLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.botonLimpiar.Location = new System.Drawing.Point(10, 158);
+            this.botonLimpiar.Name = "botonLimpiar";
+            this.botonLimpiar.Size = new System.Drawing.Size(117, 26);
+            this.botonLimpiar.TabIndex = 46;
+            this.botonLimpiar.Text = "Limpiar";
+            this.botonLimpiar.UseVisualStyleBackColor = true;
+            this.botonLimpiar.Click += new System.EventHandler(this.botonLimpiar_Click);
             // 
             // botonGuardar
             // 
@@ -103,13 +113,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.textBoxDNITitular);
-            this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Controls.Add(this.textBoxIdTitular);
             this.groupBox2.Controls.Add(this.timePickerNacimiento);
-            this.groupBox2.Controls.Add(this.botonActualizacionDeDatos);
             this.groupBox2.Controls.Add(this.textBoxTelefono);
-            this.groupBox2.Controls.Add(this.botonNuevoCliente);
             this.groupBox2.Controls.Add(this.textBoxMail);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label6);
@@ -128,41 +133,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Datos del Pasajero";
             // 
-            // textBoxDNITitular
-            // 
-            this.textBoxDNITitular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDNITitular.BackColor = System.Drawing.Color.White;
-            this.textBoxDNITitular.Enabled = false;
-            this.textBoxDNITitular.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDNITitular.Location = new System.Drawing.Point(14, 165);
-            this.textBoxDNITitular.Name = "textBoxDNITitular";
-            this.textBoxDNITitular.ReadOnly = true;
-            this.textBoxDNITitular.Size = new System.Drawing.Size(115, 20);
-            this.textBoxDNITitular.TabIndex = 65;
-            // 
-            // label12
-            // 
-            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(11, 149);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(26, 13);
-            this.label12.TabIndex = 64;
-            this.label12.Text = "DNI";
-            // 
-            // textBoxIdTitular
-            // 
-            this.textBoxIdTitular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIdTitular.BackColor = System.Drawing.Color.White;
-            this.textBoxIdTitular.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIdTitular.Location = new System.Drawing.Point(177, 11);
-            this.textBoxIdTitular.Name = "textBoxIdTitular";
-            this.textBoxIdTitular.ReadOnly = true;
-            this.textBoxIdTitular.Size = new System.Drawing.Size(41, 20);
-            this.textBoxIdTitular.TabIndex = 63;
-            this.textBoxIdTitular.Visible = false;
-            // 
             // timePickerNacimiento
             // 
             this.timePickerNacimiento.CustomFormat = "dd/MM/yyyy";
@@ -173,18 +143,6 @@
             this.timePickerNacimiento.Name = "timePickerNacimiento";
             this.timePickerNacimiento.Size = new System.Drawing.Size(116, 22);
             this.timePickerNacimiento.TabIndex = 62;
-            // 
-            // botonActualizacionDeDatos
-            // 
-            this.botonActualizacionDeDatos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.botonActualizacionDeDatos.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonActualizacionDeDatos.Location = new System.Drawing.Point(280, 65);
-            this.botonActualizacionDeDatos.Name = "botonActualizacionDeDatos";
-            this.botonActualizacionDeDatos.Size = new System.Drawing.Size(62, 42);
-            this.botonActualizacionDeDatos.TabIndex = 54;
-            this.botonActualizacionDeDatos.Text = "Actualizar Datos";
-            this.botonActualizacionDeDatos.UseVisualStyleBackColor = true;
-            this.botonActualizacionDeDatos.Click += new System.EventHandler(this.botonActualizacionDeDatos_Click);
             // 
             // textBoxTelefono
             // 
@@ -197,18 +155,6 @@
             this.textBoxTelefono.ReadOnly = true;
             this.textBoxTelefono.Size = new System.Drawing.Size(115, 20);
             this.textBoxTelefono.TabIndex = 61;
-            // 
-            // botonNuevoCliente
-            // 
-            this.botonNuevoCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.botonNuevoCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonNuevoCliente.Location = new System.Drawing.Point(280, 12);
-            this.botonNuevoCliente.Name = "botonNuevoCliente";
-            this.botonNuevoCliente.Size = new System.Drawing.Size(62, 42);
-            this.botonNuevoCliente.TabIndex = 50;
-            this.botonNuevoCliente.Text = "Nuevo";
-            this.botonNuevoCliente.UseVisualStyleBackColor = true;
-            this.botonNuevoCliente.Click += new System.EventHandler(this.botonNuevoCliente_Click);
             // 
             // textBoxMail
             // 
@@ -345,6 +291,18 @@
             this.textBoxDni.Size = new System.Drawing.Size(117, 26);
             this.textBoxDni.TabIndex = 29;
             this.textBoxDni.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxDni_KeyPress);
+            // 
+            // textBoxIdCliente
+            // 
+            this.textBoxIdCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIdCliente.BackColor = System.Drawing.Color.White;
+            this.textBoxIdCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIdCliente.Location = new System.Drawing.Point(12, 419);
+            this.textBoxIdCliente.Name = "textBoxIdCliente";
+            this.textBoxIdCliente.ReadOnly = true;
+            this.textBoxIdCliente.Size = new System.Drawing.Size(41, 20);
+            this.textBoxIdCliente.TabIndex = 63;
+            this.textBoxIdCliente.Visible = false;
             // 
             // botonLimpiarTitular
             // 
@@ -590,6 +548,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(512, 461);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxIdCliente);
             this.Controls.Add(this.textBoxIDVuelo);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.botonVolver);
@@ -600,6 +559,7 @@
             this.Name = "registrarPagoTarjeta";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pago con Tarjeta";
+            this.Enter += new System.EventHandler(this.registrarPagoTarjeta_Enter);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -631,13 +591,9 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBoxNumero;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBoxDNITitular;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBoxIdTitular;
+        private System.Windows.Forms.TextBox textBoxIdCliente;
         private System.Windows.Forms.DateTimePicker timePickerNacimiento;
-        private System.Windows.Forms.Button botonActualizacionDeDatos;
         private System.Windows.Forms.TextBox textBoxTelefono;
-        private System.Windows.Forms.Button botonNuevoCliente;
         private System.Windows.Forms.TextBox textBoxMail;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
@@ -655,5 +611,6 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox textBoxIDVuelo;
+        private System.Windows.Forms.Button botonLimpiar;
     }
 }

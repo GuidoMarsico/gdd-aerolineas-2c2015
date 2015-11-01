@@ -386,5 +386,14 @@ namespace AerolineaFrba
             return Convert.ToInt32( tabla.Rows[0].ItemArray[0]);
         }
 
+        public static bool validarDni(string dni)
+        {
+            DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
+                NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
+                TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
+                from AERO.clientes where BAJA = 0 AND DNI = " + dni);
+            return tablaClientes.Rows.Count != 0;
+        }
+
     }
 }

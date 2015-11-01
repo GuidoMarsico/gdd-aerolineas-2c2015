@@ -99,12 +99,33 @@ namespace AerolineaFrba.Compra
             String dni = this.textBoxDniPas.Text;
             if (dni != ""){
                 if (dni.Length >= 6){
-                    if (validarDni(dni)){
-                        Form listadoClientes = new Registro_de_Usuario.bajaModificacionDeCliente();
-                        int valor = 1;
-                        ((TextBox)listadoClientes.Controls["textBoxTipoForm"]).Text = valor.ToString();
-                        ((TextBox)listadoClientes.Controls["textBoxDniCompra"]).Text = dni;
-                        funcionesComunes.deshabilitarVentanaYAbrirNueva(listadoClientes);
+                    if (funcionesComunes.validarDni(dni)){
+                        DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
+                         NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
+                         TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
+                         from AERO.clientes where BAJA = 0 AND DNI = " + dni);
+                        if (tablaClientes.Rows.Count > 1)
+                        {
+                            Form listadoClientes = new Registro_de_Usuario.bajaModificacionDeCliente();
+                            int valor = 1;
+                            ((TextBox)listadoClientes.Controls["textBoxTipoForm"]).Text = valor.ToString();
+                            ((TextBox)listadoClientes.Controls["textBoxDniCompra"]).Text = dni;
+                            funcionesComunes.deshabilitarVentanaYAbrirNueva(listadoClientes);
+                        }
+                        else
+                        {
+                            DataRow row = tablaClientes.Rows[0];
+                            this.textBoxIdCliente.Text = row["Id"].ToString();
+                            this.textBoxNombre.Text = row["Nombre"].ToString();
+                            this.textBoxApellido.Text = row["Apellido"].ToString();
+                            this.textBoxDireccion.Text = row["Dirección"].ToString();
+
+                            this.textBoxTelefono.Text = row["Teléfono"].ToString();
+                            this.textBoxMail.Text = row["Mail"].ToString();
+                            this.timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+                            this.textBoxDniPas.Enabled = false;
+                        }
+                        
                     }else{
                         DialogResult dialogResult = MessageBox.Show("Debe dar de alta el cliente con ese DNI, ¿esta seguro?", "Dni de Cliente Inexistente", MessageBoxButtons.YesNo);
                         if (dialogResult == DialogResult.Yes){
@@ -124,19 +145,13 @@ namespace AerolineaFrba.Compra
             }
         }
 
-        private bool validarDni(string dni)
-        {
-            DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
-                NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
-                TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                from AERO.clientes where BAJA = 0 AND DNI = "+ dni);
-            return tablaClientes.Rows.Count != 0; 
-        }
+        
 
         private void cargaDeDatos_Enter(object sender, EventArgs e)
         {   
             // Si no eligio ninguna cantidad de pasajes a comprar
             if (this.textBoxCantPasajes.Text == "0") {
+                groupBox1.Enabled = false;
                 groupBox3.Enabled = false;
                 this.botonLimpiarPas.Enabled = false;
                 this.botonEliminarPasaje.Enabled = false;
@@ -153,11 +168,32 @@ namespace AerolineaFrba.Compra
                 this.dataGridEnco.Enabled = false;
                 
             }
-            if (this.textBoxNombrePas.Text != "")
+            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
+                this.cargarDatosPasajero();
+            if (this.textBoxIdCliente.Text == "0")
                 this.textBoxDniPas.Enabled = false;
             this.cantidadPasajes = Int32.Parse(this.textBoxCantPasajes.Text);
             this.cantidadKg = Double.Parse(this.textBoxKgEncomiendas.Text);
             this.resetearComboBox();
+        }
+
+        private void cargarDatosPasajero()
+        {
+            DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
+                         NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
+                         TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
+                         from AERO.clientes where BAJA = 0 AND  ID = "+this.textBoxIdCliente.Text);
+            DataRow row = tablaClientes.Rows[0];
+
+            this.textBoxIdCliente.Text = row["Id"].ToString();
+            this.textBoxNombre.Text = row["Nombre"].ToString();
+            this.textBoxApellido.Text = row["Apellido"].ToString();
+            this.textBoxDireccion.Text = row["Dirección"].ToString();
+
+            this.textBoxTelefono.Text = row["Teléfono"].ToString();
+            this.textBoxMail.Text = row["Mail"].ToString();
+            this.timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+            this.textBoxDniPas.Enabled = false;
         }
 
         private void butonDesElegir_Click(object sender, EventArgs e)
@@ -170,12 +206,12 @@ namespace AerolineaFrba.Compra
         {
             this.textBoxDniPas.Clear();
             this.textBoxDniPas.Enabled = true;
-            this.textBoxApellidoPas.Clear();
-            this.textBoxDireccionPas.Clear();
-            this.textBoxMailPas.Clear();
-            this.textBoxNombrePas.Clear();
-            this.textBoxTelefonoPas.Clear();
-            this.timePickerFecha.ResetText();
+            this.textBoxApellido.Clear();
+            this.textBoxDireccion.Clear();
+            this.textBoxMail.Clear();
+            this.textBoxNombre.Clear();
+            this.textBoxTelefono.Clear();
+            this.timePickerNacimiento.ResetText();
         }
 
         private void settearUbicacion(object sender, EventArgs e)
@@ -203,16 +239,16 @@ namespace AerolineaFrba.Compra
                 int index = this.dataGridPasaje.Rows.Add(1);
                 this.dataGridPasaje.Rows[index].Selected = true;
                 this.dataGridPasaje.SelectedCells[0].Value = this.textBoxIdCliente.Text;
-                this.dataGridPasaje.SelectedCells[1].Value = this.textBoxNombrePas.Text;
-                this.dataGridPasaje.SelectedCells[2].Value = this.textBoxApellidoPas.Text;
+                this.dataGridPasaje.SelectedCells[1].Value = this.textBoxNombre.Text;
+                this.dataGridPasaje.SelectedCells[2].Value = this.textBoxApellido.Text;
                 this.dataGridPasaje.SelectedCells[3].Value = this.textBoxDniPas.Text;
                 this.dataGridPasaje.SelectedCells[4].Value = this.comboBoxNumeroButaca.SelectedValue;
                 this.dataGridPasaje.SelectedCells[5].Value = this.textBoxUbicacion.Text;
                 this.dataGridPasaje.SelectedCells[6].Value = this.precioBasePasaje;
-                this.dataGridPasaje.SelectedCells[7].Value = this.textBoxTelefonoPas.Text;
-                this.dataGridPasaje.SelectedCells[8].Value= this.textBoxDireccionPas.Text;
-                this.dataGridPasaje.SelectedCells[9].Value=this.textBoxMailPas.Text;
-                this.dataGridPasaje.SelectedCells[10].Value = this.timePickerFecha.Value.ToString();
+                this.dataGridPasaje.SelectedCells[7].Value = this.textBoxTelefono.Text;
+                this.dataGridPasaje.SelectedCells[8].Value= this.textBoxDireccion.Text;
+                this.dataGridPasaje.SelectedCells[9].Value=this.textBoxMail.Text;
+                this.dataGridPasaje.SelectedCells[10].Value = this.timePickerNacimiento.Value.ToString();
                 this.dataGridPasaje.SelectedCells[11].Value = this.comboBoxNumeroButaca.SelectedValue;
                 this.cantidadPasajes = this.cantidadPasajes - 1;
                 MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
@@ -251,7 +287,7 @@ namespace AerolineaFrba.Compra
 
         private bool seleccionButaca()
         {
-            return this.comboBoxNumeroButaca.SelectedValue != "";
+            return this.comboBoxNumeroButaca.SelectedValue.ToString() != "";
         }
 
         private bool ingresoPasajero()
