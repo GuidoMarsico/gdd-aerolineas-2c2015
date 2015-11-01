@@ -1492,7 +1492,7 @@ GO
 CREATE PROCEDURE AERO.altaBoletoDeCompra (@precio numeric(18,2), @tipo nvarchar(255), @idCliente int, @idVuelo int)
 AS BEGIN
 INSERT INTO AERO.boletos_de_compra (PRECIO_COMPRA, TIPO_COMPRA, CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
-VALUES (@precio, @tipo, @idCliente, @idVuelo, CURRENT_TIMESTAMP, NULL)
+VALUES (@precio, @tipo, @idCliente, @idVuelo, CURRENT_TIMESTAMP, 0)
 END
 GO
 
@@ -1612,18 +1612,9 @@ GROUP BY m.[FechaSalida], m.[Fecha_LLegada_Estimada], m.[FechaLLegada], a.ID, r.
 /*ejecucion de procedure que migra la tabla de butacas por vuelo*/
 EXEC AERO.migracionButacasPorVuelo
 
-/*CUANDO MIGREMOS LOS PASAJES, PAQUETES Y BOLETOS DE COMPRA HABRIA QUE HACER TODO JUNTO, LAS MILLAS DEL BOLETO DE COMPRA
-SE CALCULA COMO PRECIO TOTAL / 10 (PONEMOS SOLO LA PARTE ENTERA) Y EL PRECIO TOTAL COMO LA SUMATORIA DE LOS PRECIOS PARCIALES
-DE LOS PASAJES Y PAQUETES ADQUIRIDOS, LOS PRECIOS PARCIALES TENEMOS QUE CALCULARLOS ASI: TENEMOS EL VUELO_ID EN EL BOLETO DE COMPRA, 
-CON ESE ID LE PEGAMOS AL VUELO QUE TIENE UNA RUTA_ID, ESA RUTA TIENE UN PRECIO BASE PASAJE (QUE ES EL PRECIO QUE LE PONEMOS A CADA PASAJE)
-Y UN PRECIO BASE KG QUE LO MULTIPLICAMOS POR LOS KG DEL PAQUETE*/
-
--- MIGRACION DE BOLETO DE COMPRA, PASAJES y PAQUETES
-
---FALTARIA UPDATE DE MILLAS Y PRECIO DE COMPRA PARA EL BOLETO DE COMPRA Y UNIFICAR FILAS QUE TENGAN MISMO CLIENTE, MISMO VUELO Y MISMA FECHA
-
+/*migracion de boletos de compra, con precio y millas en 0 (despues se actualizan)*/
 insert into AERO.boletos_de_compra (CLIENTE_ID, FECHA_COMPRA, MILLAS, PRECIO_COMPRA, TIPO_COMPRA, VUELO_ID)
-SELECT distinct C.ID as cliente, CASE WHEN Paquete_Codigo != 0 THEN Paquete_FechaCompra ELSE Pasaje_FechaCompra END AS FechaCompra, NULL as Millas, 0 as Precio, 'EFECTIVO' as tipoCompra, v.ID as vuelo
+SELECT distinct C.ID as cliente, CASE WHEN Paquete_Codigo != 0 THEN Paquete_FechaCompra ELSE Pasaje_FechaCompra END AS FechaCompra, 0 as Millas, 0 as Precio, 'EFECTIVO' as tipoCompra, v.ID as vuelo
 FROM GD2C2015.gd_esquema.Maestra M
 join AERO.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
 and C.NOMBRE = SUBSTRING(UPPER (m.Cli_Nombre), 1, 1) + SUBSTRING (LOWER (m.Cli_Nombre), 2,LEN(m.Cli_Nombre))
@@ -1637,7 +1628,7 @@ join AERO.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID =
 	m.FechaLLegada = v.FECHA_LLEGADA) 
 and v.INVALIDO=0 
 
-
+/*migracion de pasajes*/
 INSERT INTO AERO.pasajes (CODIGO, CLIENTE_ID, BUTACA_ID, CANCELACION_ID, BOLETO_COMPRA_ID, PRECIO)
 SELECT M.Pasaje_Codigo, C.ID, B.ID, NULL, bc.ID, M.Pasaje_Precio FROM GD2C2015.gd_esquema.Maestra M
 join AERO.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
@@ -1654,6 +1645,7 @@ join AERO.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID =
 	m.FechaLLegada = v.FECHA_LLEGADA) and v.ID=bc.VUELO_ID 
 where M.Pasaje_Codigo != 0 and v.INVALIDO=0
 
+/*migracion de paquetes*/
 INSERT INTO AERO.paquetes (CODIGO, KG, BOLETO_COMPRA_ID, CANCELACION_ID, PRECIO)
 SELECT M.Paquete_Codigo, M.Paquete_KG, bc.ID, NULL, M.Paquete_Precio FROM GD2C2015.gd_esquema.Maestra M
 join AERO.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
@@ -1669,8 +1661,10 @@ join AERO.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID =
 	m.FechaLLegada = v.FECHA_LLEGADA) and v.ID=bc.VUELO_ID 
 where M.Paquete_Codigo != 0 and v.INVALIDO=0
 
+/*actualizamos los datos del boleto de compra (precio y millas) segun la cantidad de pasajes y paquetes que los referencien*/
 update AERO.boletos_de_compra 
-set PRECIO_COMPRA= AERO.precioTotal(id) 
+set PRECIO_COMPRA= AERO.precioTotal(id)
+
 update AERO.boletos_de_compra 
 set millas= FLOOR(PRECIO_COMPRA/10)
 -----------------------------------------------------------------------
@@ -1706,57 +1700,44 @@ EXEC AERO.addFuncionalidad @rol='cliente', @func ='Alta de Tarjeta de Crédito';
 /*
 --set de datos para prueba 1
 insert into AERO.clientes values(2,'pepe','asd','37013085','asd','123','asd@gmail.com',CONVERT(datetime,'20151215',109),0)
---select * from AERO.clientes
 
 insert into AERO.tipos_de_servicio values('asd')
---select * from AERO.tipos_de_servicio
 
 insert into AERO.fabricantes values('luisito')
---select * from AERO.fabricantes
 
 insert into AERO.aeronaves values('123','asd',123,1,1,NULL,CURRENT_TIMESTAMP,99,NULL)
 insert into AERO.aeronaves values('999','asd',999,1,1,NULL,CURRENT_TIMESTAMP,99,NULL)
---select * from AERO.aeronaves
 
 insert into AERO.ciudades values('ciudad1',0)
 insert into AERO.ciudades values('ciudad2',0)
---select * from AERO.ciudades
 
 insert into AERO.aeropuertos values('aerp1',1,0)
 insert into AERO.aeropuertos values('aerp2',2,0)
---select * from AERO.aeropuertos
 
 insert into AERO.rutas values(1,100,100,1,2,1,0)
 insert into AERO.rutas values(2,100,100,2,1,1,0)
---select * from AERO.rutas
 
 insert into AERO.vuelos values(CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1,1,0)
 insert into AERO.vuelos values(dateadd(MM,1,CURRENT_TIMESTAMP),dateadd(MM,1,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP,2,2,0)
---select * from AERO.vuelos
 
 insert into AERO.boletos_de_compra values(CURRENT_TIMESTAMP,300,'efectivo',1,22,1)
 insert into AERO.boletos_de_compra values(CURRENT_TIMESTAMP,30,'efectivo',1,22,1)
 insert into AERO.boletos_de_compra values(DATEADD(YYYY,-4,CURRENT_TIMESTAMP),40,'efectivo',1,22,2)
---select * from AERO.boletos_de_compra
 
 insert into AERO.butacas values(1,'PASILLO',1,1)
 insert into AERO.butacas values(2,'PASILLO',1,1)
 insert into AERO.butacas values(3,'PASILLO',1,1)
 insert into AERO.butacas values(1,'PASILLO',1,2)
---select * from AERO.butacas
 
 insert into AERO.butacas_por_vuelo values(1,1,'COMPRADO')
 insert into AERO.butacas_por_vuelo values(1,2,'COMPRADO')
 insert into AERO.butacas_por_vuelo values(1,3,'COMPRADO')
 insert into AERO.butacas_por_vuelo values(2,1,'COMPRADO')
---select * from AERO.butacas_por_vuelo
 
 insert into AERO.pasajes values(100,1,1,1,100000,NULL)
 insert into AERO.pasajes values(200,2,2,1,100000,NULL)
 insert into AERO.pasajes values(30,3,3,1,100001,NULL)
 insert into AERO.pasajes values(40,4,4,1,100002,NULL)
---select * from AERO.pasajes
-GO
 
 exec AERO.top5DestinosConPasajes @fechaFrom='20000201', @fechaTo='29990201'
 GO
@@ -1766,14 +1747,11 @@ insert into AERO.butacas values(4,'PASILLO',1,1)
 insert into AERO.butacas values(5,'PASILLO',1,1)
 insert into AERO.butacas values(6,'PASILLO',1,1)
 insert into AERO.butacas values(2,'PASILLO',1,2)
---select * from AERO.butacas
 
 insert into AERO.butacas_por_vuelo values(1,4,'LIBRE')
 insert into AERO.butacas_por_vuelo values(1,5,'LIBRE')
 insert into AERO.butacas_por_vuelo values(2,2,'LIBRE')
 insert into AERO.butacas_por_vuelo values(2,3,'LIBRE')
---SELECT * FROM AERO.butacas_por_vuelo
-GO
 
 exec AERO.top5DestinosAeronavesVacias @fechaFrom='20000201', @fechaTo='29990201'
 GO
@@ -1785,13 +1763,10 @@ GO
 --SET PARA PROBAR 4(AGREGADO A LOS ANTERIORES)
 insert into AERO.cancelaciones values(CURRENT_TIMESTAMP,100000,'asd')
 insert into AERO.cancelaciones values(CURRENT_TIMESTAMP,100002,'asd')
---select * from AERO.cancelaciones
 
 update AERO.pasajes set CANCELACION_ID=1 where ID=1
 update AERO.pasajes set CANCELACION_ID=1 where ID=2
 update AERO.pasajes set CANCELACION_ID=2 where ID=4
---select * from AERO.pasajes
-GO
 
 exec AERO.top5DestinosCancelados @fechaFrom='20000201', @fechaTo='29990201'
 GO
@@ -1800,21 +1775,13 @@ insert into AERO.periodos_de_inactividad values('20150101','20150530')
 insert into AERO.periodos_de_inactividad values('20150120','20151230')
 insert into AERO.periodos_de_inactividad values('20150101','20150110')
 insert into AERO.periodos_de_inactividad values('20150201','20150210')
---SELECT * FROM AERO.periodos_de_inactividad
 
 insert into AERO.aeronaves_por_periodos values(1,1)
 insert into AERO.aeronaves_por_periodos values(1,2)
 insert into AERO.aeronaves_por_periodos values(2,3)
 insert into AERO.aeronaves_por_periodos values(2,4)
---SELECT * FROM AERO.aeronaves_por_periodos
-GO
 
 EXEC AERO.top5AeronavesFueraDeServicio @fechaFrom='20150101', @fechaTo ='20150601';
 GO
-
-select top 10 * from gd_esquema.Maestra m 
-
-select * from AERO.boletos_de_compra
-order by precio_compra
 */
 

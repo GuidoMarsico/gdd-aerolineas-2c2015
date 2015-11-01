@@ -205,6 +205,7 @@ namespace AerolineaFrba.Compra
         private void limpiarDatosPasajero()
         {
             this.textBoxDniPas.Clear();
+            this.textBoxIdCliente.Clear();
             this.textBoxDniPas.Enabled = true;
             this.textBoxApellido.Clear();
             this.textBoxDireccion.Clear();
@@ -234,30 +235,68 @@ namespace AerolineaFrba.Compra
 
         private void cargarPasaje()
         {
-            if (dataGridPasaje.Rows.Count <= Convert.ToInt32(textBoxCantPasajes.Text))
+            /*le agrego 1 porque si es = no te deberia dejar agregar otro pasaje*/
+            if (dataGridPasaje.Rows.Count +1 <= Convert.ToInt32(textBoxCantPasajes.Text))
             {
-                int index = this.dataGridPasaje.Rows.Add(1);
-                this.dataGridPasaje.Rows[index].Selected = true;
-                this.dataGridPasaje.SelectedCells[0].Value = this.textBoxIdCliente.Text;
-                this.dataGridPasaje.SelectedCells[1].Value = this.textBoxNombre.Text;
-                this.dataGridPasaje.SelectedCells[2].Value = this.textBoxApellido.Text;
-                this.dataGridPasaje.SelectedCells[3].Value = this.textBoxDniPas.Text;
-                this.dataGridPasaje.SelectedCells[4].Value = this.comboBoxNumeroButaca.SelectedValue;
-                this.dataGridPasaje.SelectedCells[5].Value = this.textBoxUbicacion.Text;
-                this.dataGridPasaje.SelectedCells[6].Value = this.precioBasePasaje;
-                this.dataGridPasaje.SelectedCells[7].Value = this.textBoxTelefono.Text;
-                this.dataGridPasaje.SelectedCells[8].Value= this.textBoxDireccion.Text;
-                this.dataGridPasaje.SelectedCells[9].Value=this.textBoxMail.Text;
-                this.dataGridPasaje.SelectedCells[10].Value = this.timePickerNacimiento.Value.ToString();
-                this.dataGridPasaje.SelectedCells[11].Value = this.comboBoxNumeroButaca.SelectedValue;
-                this.cantidadPasajes = this.cantidadPasajes - 1;
-                MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
+                if (!existeButacaCargada())
+                {
+                    if (!existePasajeroCargado())
+                    {
+                        int index = this.dataGridPasaje.Rows.Add(1);
+                        this.dataGridPasaje.Rows[index].Selected = true;
+                        this.dataGridPasaje.SelectedCells[0].Value = this.textBoxIdCliente.Text;
+                        this.dataGridPasaje.SelectedCells[1].Value = this.textBoxNombre.Text;
+                        this.dataGridPasaje.SelectedCells[2].Value = this.textBoxApellido.Text;
+                        this.dataGridPasaje.SelectedCells[3].Value = this.textBoxDniPas.Text;
+                        this.dataGridPasaje.SelectedCells[4].Value = this.comboBoxNumeroButaca.Text;
+                        this.dataGridPasaje.SelectedCells[5].Value = this.textBoxUbicacion.Text;
+                        this.dataGridPasaje.SelectedCells[6].Value = this.precioBasePasaje;
+                        this.dataGridPasaje.SelectedCells[7].Value = this.textBoxTelefono.Text;
+                        this.dataGridPasaje.SelectedCells[8].Value = this.textBoxDireccion.Text;
+                        this.dataGridPasaje.SelectedCells[9].Value = this.textBoxMail.Text;
+                        this.dataGridPasaje.SelectedCells[10].Value = this.timePickerNacimiento.Value.ToString();
+                        this.dataGridPasaje.SelectedCells[11].Value = this.comboBoxNumeroButaca.SelectedValue;
+                        this.cantidadPasajes = this.cantidadPasajes - 1;
+                        MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
+                    }
+                    else
+                    {
+                        MessageBox.Show("El pasajero ya fue ingresado, no puede cargarse de nuevo");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("La butaca elegida ya fue cargada, elija otra");
+                }
             }
             else
             {
                 MessageBox.Show("No se pueden comprar mas pasajes de los seleccionados");
                 limpiarPasaje();
             }
+        }
+
+        private bool existeButacaCargada()
+        {
+            foreach(DataGridViewRow row in this.dataGridPasaje.Rows){
+                if (this.comboBoxNumeroButaca.Text.Equals(row.Cells[4].Value.ToString()))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool existePasajeroCargado()
+        {
+            foreach (DataGridViewRow row in this.dataGridPasaje.Rows)
+            {
+                if (this.textBoxIdCliente.Text.Equals(row.Cells[0].Value.ToString()))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void limpiarPasaje()
@@ -282,12 +321,15 @@ namespace AerolineaFrba.Compra
 
             if (!seleccionButaca())
                 return false;
+
             return true;
         }
 
         private bool seleccionButaca()
         {
-            return this.comboBoxNumeroButaca.SelectedValue.ToString() != "";
+            if (this.comboBoxNumeroButaca.SelectedValue != null)
+                return this.comboBoxNumeroButaca.SelectedValue.ToString() != "";
+            return false;
         }
 
         private bool ingresoPasajero()

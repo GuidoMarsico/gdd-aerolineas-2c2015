@@ -41,7 +41,7 @@ namespace AerolineaFrba.Consulta_Millas
                 if (tablaClientes.Rows.Count > 0)
                 {
                     DataTable resultado = SqlConnector.obtenerTablaSegunProcedure("AERO.consultarMillas",
-                        funcionesComunes.generarListaParaProcedure("@dni"), dni);
+                        funcionesComunes.generarListaParaProcedure("@dni"), Int32.Parse(dni));
                     dataGridConsultaMillas.DataSource = resultado;
                     Int32 millas = 0;
                     foreach (DataRow row in resultado.Rows)
