@@ -636,6 +636,7 @@ INSERT INTO AERO.funcionalidades VALUES
 ('Comprar Pasaje/Encomienda'),
 ('Generar Viaje'),
 ('Registrar Llegadas'),
+('Cancelar Compra'),
 ('Consultar Listado');
 
 INSERT INTO AERO.roles (nombre, activo) VALUES
@@ -1784,7 +1785,9 @@ EXEC AERO.addFuncionalidad @rol='Administrador', @func ='Comprar Pasaje/Encomien
 EXEC AERO.addFuncionalidad @rol='Administrador', @func ='Generar Viaje';
 EXEC AERO.addFuncionalidad @rol='Administrador', @func ='Registrar Llegadas';
 EXEC AERO.addFuncionalidad @rol='Administrador', @func ='Consultar Listado';
+EXEC AERO.addFuncionalidad @rol='Administrador', @func ='Cancelar Compra';
 EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Comprar Pasaje/Encomienda';
 EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Consultar Millas';
 EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Realizar Canje';
 EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Alta de Tarjeta de Crédito';
+EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Cancelar Compra';
