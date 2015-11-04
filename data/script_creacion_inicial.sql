@@ -127,9 +127,9 @@ BEGIN
     DROP TABLE AERO.fabricantes;
 END;
 
-IF OBJECT_ID('AERO.Clientes') IS NOT NULL
+IF OBJECT_ID('AERO.clientes') IS NOT NULL
 BEGIN
-    DROP TABLE AERO.Clientes;
+    DROP TABLE AERO.clientes;
 END;
 
 IF OBJECT_ID('AERO.roles') IS NOT NULL
@@ -187,13 +187,13 @@ CREATE TABLE AERO.pasajes (
     PRECIO        NUMERIC(18,2)		NOT NULL,
     CODIGO        NUMERIC(18,0)     UNIQUE NOT NULL,
     BUTACA_ID        INT            NOT NULL,
-    Cliente_ID        INT            NOT NULL,
+    CLIENTE_ID        INT            NOT NULL,
     BOLETO_COMPRA_ID INT             NOT NULL,
 	INVALIDO INT DEFAULT 0,
     CANCELACION_ID INT DEFAULT NULL
 )
 
-CREATE TABLE AERO.Clientes (
+CREATE TABLE AERO.clientes (
     ID   INT     IDENTITY(1,1)    PRIMARY KEY,
     ROL_ID        INT            NOT NULL,
     NOMBRE        NVARCHAR(255)    NOT NULL,
@@ -211,7 +211,7 @@ CREATE TABLE AERO.boletos_de_compra (
     FECHA_COMPRA    DATETIME          NOT NULL,
     PRECIO_COMPRA    NUMERIC(18,2)	NOT NULL,
     TIPO_COMPRA    NVARCHAR(255),
-    Cliente_ID        INT            NOT NULL,
+    CLIENTE_ID        INT            NOT NULL,
 	MILLAS 			  INT,
 	VUELO_ID         INT		NOT NULL,
 	INVALIDO INT DEFAULT 0,
@@ -313,7 +313,7 @@ CREATE TABLE AERO.paquetes(
 
 CREATE TABLE AERO.canjes (
     ID     INT    IDENTITY(1,1)     PRIMARY KEY,
-    Cliente_ID         INT             NOT NULL,
+    CLIENTE_ID         INT             NOT NULL,
     PRODUCTO_ID     INT             NOT NULL,
     CANTIDAD         INT			DEFAULT 1,
     FECHA_CANJE         DATETIME	NOT NULL
@@ -324,7 +324,7 @@ CREATE TABLE AERO.tarjetas_de_credito (
     TIPO_TARJETA_ID    INT NOT NULL,
     NUMERO         NUMERIC(18,0)    UNIQUE NOT NULL,
     FECHA_VTO         DATETIME        NOT NULL,
-    Cliente_ID         INT            NOT NULL
+    CLIENTE_ID         INT            NOT NULL
 )
 
 CREATE TABLE AERO.tipos_tarjeta (
@@ -355,11 +355,11 @@ IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'TARJ_TIPO_TARJ' AND object
 
 ALTER TABLE AERO.tarjetas_de_credito
 ADD CONSTRAINT TARJETAS_FK02 FOREIGN KEY
-(Cliente_ID) REFERENCES AERO.Clientes (ID)
+(CLIENTE_ID) REFERENCES AERO.clientes (ID)
 
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_TARJ_CLIE' AND object_id = OBJECT_ID('AERO.tarjetas_de_credito'))
     BEGIN
-       CREATE INDEX FKI_TARJ_CLIE ON AERO.tarjetas_de_credito (Cliente_ID);
+       CREATE INDEX FKI_TARJ_CLIE ON AERO.tarjetas_de_credito (CLIENTE_ID);
     END
 
 ALTER TABLE AERO.aeronaves
@@ -418,11 +418,11 @@ IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'PASAJ_BUTAC' AND object_id
 
 ALTER TABLE AERO.pasajes
 ADD CONSTRAINT PASAJES_FK02 FOREIGN KEY
-(Cliente_ID) REFERENCES AERO.Clientes (ID)
+(CLIENTE_ID) REFERENCES AERO.clientes (ID)
 
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'PASAJ_CLIENT' AND object_id = OBJECT_ID('AERO.pasajes'))
     BEGIN
-       CREATE INDEX PASAJ_CLIENT ON AERO.pasajes (Cliente_ID);
+       CREATE INDEX PASAJ_CLIENT ON AERO.pasajes (CLIENTE_ID);
     END
 
 ALTER TABLE AERO.pasajes
@@ -443,22 +443,22 @@ IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'PASAJ_CANC' AND object_id 
        CREATE INDEX PASAJ_CANC ON AERO.pasajes (CANCELACION_ID);
     END
 
-ALTER TABLE AERO.Clientes
-ADD CONSTRAINT ClienteS_FK01 FOREIGN KEY
+ALTER TABLE AERO.clientes
+ADD CONSTRAINT CLIENTES_FK01 FOREIGN KEY
 (ROL_ID) REFERENCES AERO.roles (ID)
 
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'CLIENT_ROLES' AND object_id = OBJECT_ID('AERO.Clientes'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'CLIENT_ROLES' AND object_id = OBJECT_ID('AERO.clientes'))
     BEGIN
-       CREATE INDEX CLIENT_ROLES ON AERO.Clientes (ROL_ID);
+       CREATE INDEX CLIENT_ROLES ON AERO.clientes (ROL_ID);
     END
 
 ALTER TABLE AERO.boletos_de_compra
 ADD CONSTRAINT BOLETOS_DE_COMPRA_FK01 FOREIGN KEY
-(Cliente_ID) REFERENCES AERO.Clientes (ID)
+(CLIENTE_ID) REFERENCES AERO.clientes (ID)
 
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_BOL_COMP_CLIENT' AND object_id = OBJECT_ID('AERO.boletos_de_compra'))
     BEGIN
-       CREATE INDEX FKI_BOL_COMP_CLIENT ON AERO.boletos_de_compra (Cliente_ID);
+       CREATE INDEX FKI_BOL_COMP_CLIENT ON AERO.boletos_de_compra (CLIENTE_ID);
     END
 
 ALTER TABLE AERO.boletos_de_compra
@@ -598,11 +598,11 @@ IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_CANJ_PROD' AND object_
 
 ALTER TABLE AERO.canjes
 ADD CONSTRAINT CANJES_FK02 FOREIGN KEY
-(Cliente_ID) REFERENCES AERO.Clientes (ID)
+(CLIENTE_ID) REFERENCES AERO.clientes (ID)
 
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_CANJ_CLIE' AND object_id = OBJECT_ID('AERO.canjes'))
     BEGIN
-       CREATE INDEX FKI_CANJ_CLIE ON AERO.canjes (Cliente_ID);
+       CREATE INDEX FKI_CANJ_CLIE ON AERO.canjes (CLIENTE_ID);
     END
 
 ALTER TABLE AERO.cancelaciones
@@ -1081,7 +1081,7 @@ AS BEGIN
 END
 GO
 
--- ClienteS
+-- CLIENTES
 CREATE PROCEDURE AERO.agregarCliente(@rol_id INT, @nombreCliente nvarchar(255), @apellidoCliente nvarchar(255), 
 	@documentoCliente numeric(18,0), @direccion nvarchar(255), 
 	@telefono numeric(18,0), @mail nvarchar(255), @fechaNac varchar(50))
@@ -1097,7 +1097,7 @@ GO
 
 CREATE PROCEDURE AERO.updateCliente(@id INT, @direccion nvarchar(255), @telefono numeric(18,0), @mail nvarchar(255))
 AS BEGIN
-UPDATE AERO.Clientes
+UPDATE AERO.clientes
 SET DIRECCION = @direccion, TELEFONO = @telefono, MAIL =  AERO.corrigeMail(@mail)
 WHERE ID = @id
 END
@@ -1105,7 +1105,7 @@ GO
 
 CREATE PROCEDURE AERO.bajaCliente(@id  INT)
 AS BEGIN
-UPDATE AERO.Clientes
+UPDATE AERO.clientes
 SET BAJA = 1
 WHERE ID=@id;
 END
@@ -1243,7 +1243,7 @@ order by 2 desc
 END
 GO
 
---TOP de los Clientes con mas puntos acumulados a la fecha (la fecha es hasta el dia de hoy)
+--TOP de los clientes con mas puntos acumulados a la fecha (la fecha es hasta el dia de hoy)
 CREATE PROCEDURE AERO.top5ClientesMillas(@fechaFrom varchar(50), @fechaTo varchar(50))
 AS BEGIN
 /*creo tabla temporal, para poder insertar de ambas queries*/
@@ -1255,8 +1255,8 @@ Millas int
 /*inserto en la tabla temporal los pasajes*/
 insert into #tablaMillas 
 select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
-from AERO.Clientes c
-join AERO.pasajes p on c.ID=p.Cliente_ID 
+from AERO.clientes c
+join AERO.pasajes p on c.ID=p.CLIENTE_ID
 join AERO.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
 where P.CANCELACION_ID IS NULL AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
@@ -1431,8 +1431,8 @@ Millas int
 /*inserto en la tabla temporal los pasajes*/
 insert into #tablaMillas 
 select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, bc.millas as Millas
-from AERO.Clientes c
-join AERO.pasajes p on c.ID=p.Cliente_ID 
+from AERO.clientes c
+join AERO.pasajes p on c.ID=p.CLIENTE_ID 
 join AERO.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
 where bc.ID NOT IN (select BOLETO_COMPRA_ID from AERO.cancelaciones) and
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
@@ -1441,8 +1441,8 @@ and c.DNI = @dni
 /*inserto en la tabla temporal los paquetes*/
 insert into #tablaMillas 
 select bc.FECHA_COMPRA as Fecha, 'Paquete' as Motivo, bc.millas as Millas
-from AERO.Clientes c  
-join AERO.boletos_de_compra bc on bc.Cliente_ID=c.ID
+from AERO.clientes c  
+join AERO.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join AERO.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
 where bc.ID NOT IN (select BOLETO_COMPRA_ID from AERO.cancelaciones) and
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
@@ -1452,8 +1452,8 @@ and c.DNI = @dni
 insert into #tablaMillas 
 select cj.FECHA_CANJE as Fecha, 'Canje por '+CONVERT(varchar(10), cj.CANTIDAD)+' unidades de '+LOWER(p.NOMBRE) as Motivo, 
 -p.MILLAS_REQUERIDAS*cj.CANTIDAD as Millas
-from AERO.Clientes c
-join AERO.canjes cj on cj.Cliente_ID=c.ID
+from AERO.clientes c
+join AERO.canjes cj on cj.CLIENTE_ID=c.ID
 join AERO.productos p on p.ID = cj.PRODUCTO_ID
 where cj.FECHA_CANJE between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
 and c.DNI = @dni
@@ -1477,7 +1477,7 @@ INSERT INTO #Result EXEC AERO.consultarMillas @dni
 
 SELECT c.ID, c.NOMBRE as Nombre, c.APELLIDO as Apellido, c.DNI as Dni, c.FECHA_NACIMIENTO as 'Fecha de Nacimiento', SUM(r.Millas) as Millas
 FROM #Result r
-join AERO.Clientes c on c.DNI = @dni
+join AERO.clientes c on c.DNI = @dni
 group by c.ID, c.NOMBRE, c.APELLIDO, c.DNI, c.FECHA_NACIMIENTO
 DROP TABLE #Result
 END
@@ -1486,7 +1486,7 @@ GO
 -- CANJES
 CREATE PROCEDURE AERO.altaCanje (@idCliente int, @idProducto int, @cantidad int)
 AS BEGIN
-INSERT INTO AERO.canjes (Cliente_ID, PRODUCTO_ID, CANTIDAD, FECHA_CANJE)
+INSERT INTO AERO.canjes (CLIENTE_ID, PRODUCTO_ID, CANTIDAD, FECHA_CANJE)
 VALUES (@idCliente, @idProducto, @cantidad, CURRENT_TIMESTAMP)
 UPDATE AERO.productos
 SET STOCK = STOCK - @cantidad
@@ -1534,7 +1534,7 @@ GO
 -- COMPRAS
 CREATE PROCEDURE AERO.altaBoletoDeCompra (@precio numeric(18,2), @tipo nvarchar(255), @idCliente int, @idVuelo int)
 AS BEGIN
-INSERT INTO AERO.boletos_de_compra (PRECIO_COMPRA, TIPO_COMPRA, Cliente_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
+INSERT INTO AERO.boletos_de_compra (PRECIO_COMPRA, TIPO_COMPRA, CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
 VALUES (@precio, UPPER(@tipo), @idCliente, @idVuelo, CURRENT_TIMESTAMP, 0)
 END
 GO
@@ -1544,7 +1544,7 @@ AS BEGIN
 DECLARE @codigo numeric(18,0)
 select top 1 @codigo = CODIGO from AERO.pasajes
 order by CODIGO desc
-INSERT INTO AERO.pasajes (Cliente_ID, BUTACA_ID, BOLETO_COMPRA_ID, PRECIO, CODIGO, CANCELACION_ID)
+INSERT INTO AERO.pasajes (CLIENTE_ID, BUTACA_ID, BOLETO_COMPRA_ID, PRECIO, CODIGO, CANCELACION_ID)
 VALUES (@idCliente, @idButaca, @idBoletoCompra, @precio, @codigo+1, NULL)
 UPDATE AERO.butacas_por_vuelo
 SET ESTADO = 'COMPRADO'
@@ -1654,7 +1654,7 @@ INSERT INTO AERO.aeropuertos (CIUDAD_ID, NOMBRE)
 (SELECT ID, NOMBRE
 FROM AERO.ciudades)
 
-INSERT INTO AERO.Clientes (DNI, NOMBRE, APELLIDO, FECHA_NACIMIENTO, MAIL, TELEFONO, DIRECCION, ROL_ID)
+INSERT INTO AERO.clientes (DNI, NOMBRE, APELLIDO, FECHA_NACIMIENTO, MAIL, TELEFONO, DIRECCION, ROL_ID)
 select m.Cli_Dni, SUBSTRING(UPPER (m.Cli_Nombre), 1, 1) + SUBSTRING (LOWER (m.Cli_Nombre), 2,LEN(m.Cli_Nombre)), 
 SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido)), m.Cli_Fecha_Nac, 
 AERO.corrigeMail(m.Cli_Mail), m.Cli_Telefono, m.Cli_Dir, r.ID
@@ -1707,10 +1707,10 @@ GROUP BY m.[FechaSalida], m.[Fecha_LLegada_Estimada], m.[FechaLLegada], a.ID, r.
 EXEC AERO.migracionButacasPorVuelo
 
 /*migracion de boletos de compra, con precio y millas en 0 (despues se actualizan)*/
-insert into AERO.boletos_de_compra (Cliente_ID, FECHA_COMPRA, MILLAS, PRECIO_COMPRA, TIPO_COMPRA, VUELO_ID)
-SELECT distinct C.ID as Cliente, CASE WHEN Paquete_Codigo != 0 THEN Paquete_FechaCompra ELSE Pasaje_FechaCompra END AS FechaCompra, 0 as Millas, 0 as Precio, 'EFECTIVO' as tipoCompra, v.ID as vuelo
+insert into AERO.boletos_de_compra (CLIENTE_ID, FECHA_COMPRA, MILLAS, PRECIO_COMPRA, TIPO_COMPRA, VUELO_ID)
+SELECT distinct C.ID as cliente, CASE WHEN Paquete_Codigo != 0 THEN Paquete_FechaCompra ELSE Pasaje_FechaCompra END AS FechaCompra, 0 as Millas, 0 as Precio, 'EFECTIVO' as tipoCompra, v.ID as vuelo
 FROM GD2C2015.gd_esquema.Maestra M
-join AERO.Clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
+join AERO.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
 and C.NOMBRE = SUBSTRING(UPPER (m.Cli_Nombre), 1, 1) + SUBSTRING (LOWER (m.Cli_Nombre), 2,LEN(m.Cli_Nombre))
 and C.DNI = M.Cli_Dni
 join AERO.aeronaves a on m.Aeronave_Matricula = a.MATRICULA
@@ -1722,14 +1722,14 @@ join AERO.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID =
 	m.FechaLLegada = v.FECHA_LLEGADA)
 
 /*migracion de pasajes*/
-INSERT INTO AERO.pasajes (CODIGO, Cliente_ID, BUTACA_ID, CANCELACION_ID, BOLETO_COMPRA_ID, PRECIO)
+INSERT INTO AERO.pasajes (CODIGO, CLIENTE_ID, BUTACA_ID, CANCELACION_ID, BOLETO_COMPRA_ID, PRECIO)
 SELECT M.Pasaje_Codigo, C.ID, B.ID, NULL, bc.ID, M.Pasaje_Precio FROM GD2C2015.gd_esquema.Maestra M
-join AERO.Clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
+join AERO.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
 and C.NOMBRE = SUBSTRING(UPPER (m.Cli_Nombre), 1, 1) + SUBSTRING (LOWER (m.Cli_Nombre), 2,LEN(m.Cli_Nombre))
 and C.DNI = M.Cli_Dni
 join AERO.aeronaves A on M.Aeronave_Matricula = A.MATRICULA
 join AERO.butacas B on B.NUMERO = M.Butaca_Nro and A.ID = B.AERONAVE_ID
-join AERO.boletos_de_compra bc on m.Pasaje_FechaCompra = bc.FECHA_COMPRA and bc.Cliente_ID = c.ID
+join AERO.boletos_de_compra bc on m.Pasaje_FechaCompra = bc.FECHA_COMPRA and bc.CLIENTE_ID = c.ID
 join AERO.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID = 
 	(SELECT r.id from AERO.rutas r 
 	join AERO.aeropuertos p1 on m.[Ruta_Ciudad_Origen] = p1.NOMBRE AND p1.ID = r.ORIGEN_ID
@@ -1741,10 +1741,10 @@ where M.Pasaje_Codigo != 0
 /*migracion de paquetes*/
 INSERT INTO AERO.paquetes (CODIGO, KG, BOLETO_COMPRA_ID, CANCELACION_ID, PRECIO)
 SELECT M.Paquete_Codigo, M.Paquete_KG, bc.ID, NULL, M.Paquete_Precio FROM GD2C2015.gd_esquema.Maestra M
-join AERO.Clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
+join AERO.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
 and C.NOMBRE = SUBSTRING(UPPER (m.Cli_Nombre), 1, 1) + SUBSTRING (LOWER (m.Cli_Nombre), 2,LEN(m.Cli_Nombre))
 and C.DNI = M.Cli_Dni
-join AERO.boletos_de_compra bc on m.Paquete_FechaCompra = bc.FECHA_COMPRA and bc.Cliente_ID = c.ID
+join AERO.boletos_de_compra bc on m.Paquete_FechaCompra = bc.FECHA_COMPRA and bc.CLIENTE_ID = c.ID
 join AERO.aeronaves A on M.Aeronave_Matricula = A.MATRICULA
 join AERO.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID = 
 	(SELECT r.id from AERO.rutas r 
