@@ -107,6 +107,9 @@ namespace AerolineaFrba.Ingreso
                 case "Consultar Listado":
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(new Listado_Estadistico.listadoEstadistico());
                     break;
+                case "Cancelar Compra":
+                    funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.cancelacionCompra());
+                    break;
             }
             this.comboBoxFuncionalidad.SelectedIndex = -1;
         }

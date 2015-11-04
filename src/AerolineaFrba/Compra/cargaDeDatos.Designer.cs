@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonModificar = new System.Windows.Forms.Button();
             this.butonDesElegir = new System.Windows.Forms.Button();
             this.botonBuscar = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -91,7 +92,6 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
             this.textBoxIdCliente = new System.Windows.Forms.TextBox();
-            this.buttonModificar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -116,6 +116,18 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Pasajero";
+            // 
+            // buttonModificar
+            // 
+            this.buttonModificar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.buttonModificar.Location = new System.Drawing.Point(414, 128);
+            this.buttonModificar.Name = "buttonModificar";
+            this.buttonModificar.Size = new System.Drawing.Size(127, 26);
+            this.buttonModificar.TabIndex = 41;
+            this.buttonModificar.Text = "Modificar Datos";
+            this.buttonModificar.UseVisualStyleBackColor = true;
+            this.buttonModificar.Click += new System.EventHandler(this.buttonModificar_Click);
             // 
             // butonDesElegir
             // 
@@ -765,18 +777,6 @@
             this.textBoxIdCliente.Size = new System.Drawing.Size(33, 26);
             this.textBoxIdCliente.TabIndex = 81;
             this.textBoxIdCliente.Visible = false;
-            // 
-            // buttonModificar
-            // 
-            this.buttonModificar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonModificar.Location = new System.Drawing.Point(414, 128);
-            this.buttonModificar.Name = "buttonModificar";
-            this.buttonModificar.Size = new System.Drawing.Size(127, 26);
-            this.buttonModificar.TabIndex = 41;
-            this.buttonModificar.Text = "Modificar Datos";
-            this.buttonModificar.UseVisualStyleBackColor = true;
-            this.buttonModificar.Click += new System.EventHandler(this.buttonModificar_Click);
             // 
             // cargaDeDatos
             // 
