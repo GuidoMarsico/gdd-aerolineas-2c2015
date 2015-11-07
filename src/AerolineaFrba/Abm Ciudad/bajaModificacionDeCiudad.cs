@@ -31,10 +31,9 @@ namespace AerolineaFrba.Abm_Ciudad
         private void mostrarListadoCiudades()
         {
             DataTable listado;
-            listado = SqlConnector.obtenerTablaSegunConsultaString("select ID as Id, NOMBRE as Ciudad from AERO.CIUDADES");
+            listado = SqlConnector.obtenerTablaSegunConsultaString("select ID as Id, NOMBRE as Ciudad from AERO.CIUDADES where BAJA = 0");
             dataGridListadoCiudades.DataSource = listado;
             dataGridListadoCiudades.Columns[0].Visible = false;
-
         }
 
         private void botonLimpiar_Click(object sender, EventArgs e)
@@ -46,11 +45,11 @@ namespace AerolineaFrba.Abm_Ciudad
 
         private void botonBaja_Click(object sender, EventArgs e)
         {
-            if (dataGridListadoCiudades.SelectedRows.Count > 0)
+            if (dataGridListadoCiudades.SelectedCells.Count > 0)
             {
                 bool resultado = SqlConnector.executeProcedure("AERO.bajaCiudad",
-                    funcionesComunes.generarListaParaProcedure("@id"), 
-                    dataGridListadoCiudades.SelectedCells[0].Value.ToString());
+                    funcionesComunes.generarListaParaProcedure("@idCiudad"),
+                   Int32.Parse(dataGridListadoCiudades.Rows[dataGridListadoCiudades.SelectedCells[0].RowIndex].Cells[0].Value.ToString()));
                 if (resultado)
                 {
                     MessageBox.Show("La ciudad se dio de baja exitosamente");

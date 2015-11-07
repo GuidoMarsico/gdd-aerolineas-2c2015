@@ -353,6 +353,7 @@
             this.botonCancelarPasaje.TabIndex = 25;
             this.botonCancelarPasaje.Text = "Cancelar Pasaje Seleccionado";
             this.botonCancelarPasaje.UseVisualStyleBackColor = true;
+            this.botonCancelarPasaje.Click += new System.EventHandler(this.botonCancelarPasaje_Click);
             // 
             // botonCancelarPaquetes
             // 
@@ -364,6 +365,7 @@
             this.botonCancelarPaquetes.TabIndex = 25;
             this.botonCancelarPaquetes.Text = "Cancelar Paquetes";
             this.botonCancelarPaquetes.UseVisualStyleBackColor = true;
+            this.botonCancelarPaquetes.Click += new System.EventHandler(this.botonCancelarPaquetes_Click);
             // 
             // botonVolver
             // 
@@ -406,6 +408,7 @@
             this.Name = "cancelacionCompra";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cancelacion de Compra";
+            this.Enter += new System.EventHandler(this.cargarDatosComprador);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridPasaje)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridEnco)).EndInit();
             this.groupBox1.ResumeLayout(false);
