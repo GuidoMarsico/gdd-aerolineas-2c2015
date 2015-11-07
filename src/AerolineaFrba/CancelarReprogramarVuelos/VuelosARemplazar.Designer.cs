@@ -70,7 +70,7 @@
             // 
             this.botonRemplazar.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.botonRemplazar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonRemplazar.Location = new System.Drawing.Point(592, 393);
+            this.botonRemplazar.Location = new System.Drawing.Point(542, 393);
             this.botonRemplazar.Name = "botonRemplazar";
             this.botonRemplazar.Size = new System.Drawing.Size(117, 46);
             this.botonRemplazar.TabIndex = 29;
@@ -82,7 +82,7 @@
             // 
             this.buttonTerminar.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.buttonTerminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonTerminar.Location = new System.Drawing.Point(226, 393);
+            this.buttonTerminar.Location = new System.Drawing.Point(176, 393);
             this.buttonTerminar.Name = "buttonTerminar";
             this.buttonTerminar.Size = new System.Drawing.Size(117, 46);
             this.buttonTerminar.TabIndex = 30;
@@ -96,7 +96,7 @@
             this.textBoxTipoIdAero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxTipoIdAero.Location = new System.Drawing.Point(447, 413);
             this.textBoxTipoIdAero.Name = "textBoxTipoIdAero";
-            this.textBoxTipoIdAero.Size = new System.Drawing.Size(33, 26);
+            this.textBoxTipoIdAero.Size = new System.Drawing.Size(0, 26);
             this.textBoxTipoIdAero.TabIndex = 79;
             this.textBoxTipoIdAero.Visible = false;
             // 
@@ -106,7 +106,7 @@
             this.textBoxTipo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxTipo.Location = new System.Drawing.Point(521, 413);
             this.textBoxTipo.Name = "textBoxTipo";
-            this.textBoxTipo.Size = new System.Drawing.Size(33, 26);
+            this.textBoxTipo.Size = new System.Drawing.Size(0, 26);
             this.textBoxTipo.TabIndex = 80;
             this.textBoxTipo.Visible = false;
             // 
@@ -114,7 +114,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(897, 451);
+            this.ClientSize = new System.Drawing.Size(796, 451);
             this.ControlBox = false;
             this.Controls.Add(this.textBoxTipo);
             this.Controls.Add(this.textBoxTipoIdAero);

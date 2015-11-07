@@ -12,15 +12,32 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 {
     public partial class VuelosARemplazar : Form
     {
-        
-        public VuelosARemplazar()
+        DataTable vuelosFiltrados;
+        public VuelosARemplazar(string idA, string tipo)
         {
             InitializeComponent();
+            textBoxTipo.Text = tipo;
+            textBoxTipoIdAero.Text = idA;
+        }
+
+        public VuelosARemplazar(DataTable tabla, string idA, string tipo)
+        {
+           InitializeComponent();
+           vuelosFiltrados = tabla;
+           textBoxTipoIdAero.Text = idA;
+           textBoxTipo.Text = tipo;
         }
 
         private void cargaVentana_load(object sender, EventArgs e)
         {
-            this.dataGridListadoVuelos.DataSource = this.vuelosVinculados();
+            if (textBoxTipo.Text == "0")
+            {
+                this.dataGridListadoVuelos.DataSource = vuelosFiltrados;
+            }
+            else
+            {
+                this.dataGridListadoVuelos.DataSource = this.vuelosVinculados();
+            }
             this.dataGridListadoVuelos.Columns[0].Visible = false;
             this.dataGridListadoVuelos.Columns[6].Visible = false;
             this.dataGridListadoVuelos.Columns[7].Visible = false;
@@ -100,7 +117,7 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 
         private void recarga_enter(object sender, EventArgs e)
         {
-            this.dataGridListadoVuelos.DataSource = this.vuelosVinculados();
+            //this.dataGridListadoVuelos.DataSource = this.vuelosVinculados();
         }
         
     }

@@ -12,11 +12,35 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 {
     public partial class CancelarVuelos : Form
     {
+        public string inicio = "";
+        public string fin = "";
         public DataTable vuelos;
         public CancelarVuelos(DataTable tabla)
         {
             InitializeComponent();
             this.vuelos = tabla;
+        }
+
+        public CancelarVuelos(string tipo, string idVuelo, DataTable tabla,string i,string f)
+        {
+            InitializeComponent();
+            textBoxTipo.Text = tipo;
+            textBoxTipoIdAero.Text = idVuelo;
+            this.vuelos = tabla;
+            inicio = i;
+            fin = f;
+        }
+
+        public void actualizarAeronave()
+        {
+            bool resultado = SqlConnector.executeProcedure("AERO.updateAeronave",
+        funcionesComunes.generarListaParaProcedure("@id", "@fechaInicio", "@fechaFin"),
+        this.textBoxTipoIdAero.Text, inicio, fin);
+            if (resultado)
+            {
+                MessageBox.Show("La aeronave se actualizo exitosamente");
+                funcionesComunes.volverAMenuPrincipal();
+            }
         }
 
         private void botonBajaTodos_Click(object sender, EventArgs e)
@@ -28,7 +52,9 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
                 foreach(DataRow vuelo in vuelos.Rows)
                 {
                     funcionesComunes.darDebajaVuelo(Int32.Parse(vuelo[0].ToString()));
-                }                
+                }
+                actualizarAeronave();
+           
             }
             else 
             {
@@ -43,10 +69,17 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 
         private void buttonReprogramar_Click(object sender, EventArgs e)
         {
-            Form vuelosARemplazar = new CancelarReprogramarVuelos.VuelosARemplazar();
-            ((TextBox)vuelosARemplazar.Controls["textBoxTipoIdAero"]).Text = this.textBoxTipoIdAero.Text;
-            ((TextBox)vuelosARemplazar.Controls["textBoxTipo"]).Text = this.textBoxTipo.Text;
-            funcionesComunes.deshabilitarVentanaYAbrirNueva(vuelosARemplazar);
+            if (textBoxTipo.Text == "0") {
+                Form vuelosARemplazar = new CancelarReprogramarVuelos.VuelosARemplazar(this.vuelos, this.textBoxTipoIdAero.Text, "0");
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(vuelosARemplazar);
+            }
+            else
+            {
+                Form vuelosARemplazar = new CancelarReprogramarVuelos.VuelosARemplazar(this.textBoxTipoIdAero.Text,"1");
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(vuelosARemplazar);
+            }
+             
+            
         }
     }
 }

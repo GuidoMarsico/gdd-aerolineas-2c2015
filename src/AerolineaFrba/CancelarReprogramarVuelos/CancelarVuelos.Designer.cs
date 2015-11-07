@@ -62,7 +62,7 @@
             // 
             this.textBoxTipoIdAero.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxTipoIdAero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTipoIdAero.Location = new System.Drawing.Point(219, 12);
+            this.textBoxTipoIdAero.Location = new System.Drawing.Point(155, 8);
             this.textBoxTipoIdAero.Name = "textBoxTipoIdAero";
             this.textBoxTipoIdAero.Size = new System.Drawing.Size(33, 26);
             this.textBoxTipoIdAero.TabIndex = 78;
@@ -72,7 +72,7 @@
             // 
             this.textBoxTipo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxTipo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTipo.Location = new System.Drawing.Point(276, 12);
+            this.textBoxTipo.Location = new System.Drawing.Point(254, 8);
             this.textBoxTipo.Name = "textBoxTipo";
             this.textBoxTipo.Size = new System.Drawing.Size(33, 26);
             this.textBoxTipo.TabIndex = 79;
