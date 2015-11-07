@@ -975,7 +975,7 @@ AS BEGIN
 	DECLARE @KgTot INT
 	SET @kgOcupados=(SELECT SUM(p.KG) from AERO.boletos_de_compra b 
 	join AERO.paquetes p on p.BOLETO_COMPRA_ID = b.ID
-	where b.VUELO_ID = @vuelo)
+	where b.VUELO_ID = @vuelo and b.ID not in (SELECT BOLETO_COMPRA_ID FROM AERO.cancelaciones))
 	SET @KgTot=(SELECT a.KG_DISPONIBLES from AERO.vuelos v join
 	AERO.aeronaves a on a.ID = v.AERONAVE_ID
 	where v.ID = @vuelo )
@@ -1311,7 +1311,7 @@ SET FECHA_LLEGADA = convert(datetime, @fechaLlegada,109)
 WHERE ID = @idVuelo
 UPDATE AERO.boletos_de_compra
 SET MILLAS = FLOOR(PRECIO_COMPRA/10)
-WHERE VUELO_ID = @idVuelo
+WHERE VUELO_ID = @idVuelo and ID not in (SELECT BOLETO_COMPRA_ID FROM AERO.cancelaciones)
 END
 GO
 
@@ -1361,6 +1361,9 @@ SELECT BOLETO_COMPRA_ID, CURRENT_TIMESTAMP, 'CANCELACION PASAJE' FROM AERO.pasaj
 UPDATE AERO.pasajes
 SET CANCELACION_ID = SCOPE_IDENTITY()
 WHERE ID = @idPasaje
+UPDATE AERO.butacas_por_vuelo
+SET ESTADO = 'LIBRE'
+WHERE BUTACA_ID = (SELECT BUTACA_ID FROM AERO.pasajes WHERE ID = @idPasaje)
 END
 GO
 
