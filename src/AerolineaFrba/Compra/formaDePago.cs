@@ -14,11 +14,17 @@ namespace AerolineaFrba.Compra
     {
         public DataGridView pasajes;
         public DataGridView encomiendas;
-        public formaDePago(DataGridView tablaPasajes,DataGridView tablaEncomiendas)
+        string fechaSalida;
+        string origen;
+        string destino;
+        public formaDePago(DataGridView tablaPasajes,DataGridView tablaEncomiendas,string fecha,string origen,string destino)
         {
             InitializeComponent();
             this.pasajes = tablaPasajes;
             this.encomiendas = tablaEncomiendas;
+            this.fechaSalida = fecha;
+            this.origen = origen;
+            this.destino = destino;
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -28,14 +34,14 @@ namespace AerolineaFrba.Compra
 
         private void buttonTarjeta_Click(object sender, EventArgs e)
         {
-            Form porTarjeta = new Compra.registrarPagoTarjeta(this.pasajes, this.encomiendas);
+            Form porTarjeta = new Compra.registrarPagoTarjeta(this.pasajes, this.encomiendas,this.fechaSalida,this.origen,this.destino);
             ((TextBox)porTarjeta.Controls["textBoxIDVuelo"]).Text = this.textBoxIDVuelo.Text;
             funcionesComunes.deshabilitarVentanaYAbrirNueva(porTarjeta);
         }
 
         private void botonEfectivo_Click(object sender, EventArgs e)
         {
-            Form porEfectivo = new Compra.registrarPagoEfectivo(this.pasajes, this.encomiendas);
+            Form porEfectivo = new Compra.registrarPagoEfectivo(this.pasajes, this.encomiendas,this.fechaSalida,this.origen,this.destino);
             ((TextBox)porEfectivo.Controls["textBoxIDVuelo"]).Text = this.textBoxIDVuelo.Text;
             funcionesComunes.deshabilitarVentanaYAbrirNueva(porEfectivo);
         }

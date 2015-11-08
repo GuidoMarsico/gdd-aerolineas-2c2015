@@ -119,6 +119,12 @@ namespace AerolineaFrba.Ingreso
             //Cuando no este harcodeado la podemos sacar la linea de abajo
             this.textRol.Text = funcionesComunes.getRol();
             //Carga las funcionalidades dependiendo del rol en el comboBox
+            if (this.textRol.Text != "Administrador") {
+                this.groupBox1.Text = " ";
+                this.label2.Visible = false;
+                this.textRol.Visible = false; 
+            }
+
             DataTable dt = new DataTable();
             dt = SqlConnector.obtenerTablaSegunConsultaString(@"select funcionalidades.DETALLES from 
                 aero.roles inner join aero.funcionalidades_por_rol on 

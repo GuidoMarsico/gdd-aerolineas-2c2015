@@ -695,6 +695,12 @@ BEGIN
 END;
 GO
 
+IF OBJECT_ID('AERO.cambiarNombreRol') IS NOT NULL
+BEGIN
+	DROP PROCEDURE AERO.cambiarNombreRol;
+END;
+GO
+
 IF OBJECT_ID('AERO.quitarFuncionalidad') IS NOT NULL
 BEGIN
 	DROP PROCEDURE AERO.quitarFuncionalidad;
@@ -898,6 +904,12 @@ BEGIN
 	DROP PROCEDURE AERO.altaPaquete;
 END;
 GO
+
+IF OBJECT_ID('AERO.cancelarPasajesDeBc') IS NOT NULL
+BEGIN
+	DROP PROCEDURE AERO.cancelarPasajesDeBc;
+END;
+GO
 ​
 IF OBJECT_ID('AERO.altaBoletoDeCompra') IS NOT NULL
 BEGIN
@@ -1056,6 +1068,15 @@ CREATE PROCEDURE AERO.quitarFuncionalidad(@idRol int, @idFunc int)
 AS BEGIN
 DELETE FROM AERO.funcionalidades_por_rol
 WHERE ROL_ID = @idRol and FUNCIONALIDAD_ID = @idFunc
+END
+GO
+
+
+CREATE PROCEDURE AERO.cambiarNombreRol(@idRol int, @nombre nvarchar(255))
+AS BEGIN
+UPDATE AERO.roles
+SET NOMBRE=@nombre
+WHERE ID=@idRol
 END
 GO
 
@@ -1318,14 +1339,16 @@ GO
 CREATE PROCEDURE AERO.vuelosDisponibles(@fecha varchar(50))
 AS BEGIN
 	Select v.ID as ID ,v.FECHA_SALIDA as 'Salida', v.FECHA_LLEGADA_ESTIMADA as 'Llegada Estimada', o.NOMBRE as Origen, d.NOMBRE as Destino,
-	 AERO.cantButacasLibres(v.ID) as 'Butacas Libres', AERO.kgLibres(v.ID) as 'Kg Disponibles'
+	 AERO.cantButacasLibres(v.ID) as 'Butacas Libres', AERO.kgLibres(v.ID) as 'Kg Disponibles', t.NOMBRE as 'Tipo de Servicio'
 	from AERO.vuelos v
 	join AERO.rutas r on r.ID = v.RUTA_ID
 	join AERO.aeropuertos o on r.ORIGEN_ID = o.ID
 	join AERO.aeropuertos d on r.DESTINO_ID = d.ID
 	join AERO.aeronaves a on v.AERONAVE_ID = a.ID
+	join AERO.tipos_de_servicio t on t.ID = a.TIPO_SERVICIO_ID and t.ID = r.TIPO_SERVICIO_ID
 	where (v.INVALIDO = 0) AND (v.FECHA_SALIDA > convert(datetime, @fecha,109)) 
 	AND( (AERO.cantButacasLibres(v.ID)  != 0 ) OR (AERO.kgLibres(v.ID) !=0 ))
+	order by 2
 END
 GO
 
@@ -1338,18 +1361,16 @@ or v.FECHA_LLEGADA_ESTIMADA between convert(datetime, @fechaSalida,109) and conv
 END
 GO
 
-CREATE PROCEDURE AERO.bajaVuelo(@id int)
+CREATE PROCEDURE AERO.cancelarPasajesDeBc(@idBc int)
 AS BEGIN
-DELETE AERO.butacas_por_vuelo WHERE VUELO_ID = @id
-UPDATE AERO.vuelos
-SET INVALIDO = 1
-WHERE ID = @id
 INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-SELECT BC.ID, CURRENT_TIMESTAMP, 'BAJA VUELO' FROM AERO.boletos_de_compra BC WHERE BC.VUELO_ID = @id
+VALUES(@idBc,CURRENT_TIMESTAMP,'CANCELACION PASAJE')
 UPDATE AERO.pasajes
-SET CANCELACION_ID = (SELECT ID FROM AERO.cancelaciones C WHERE C.BOLETO_COMPRA_ID = BOLETO_COMPRA_ID)
-UPDATE AERO.paquetes
-SET CANCELACION_ID = (SELECT ID FROM AERO.cancelaciones C WHERE C.BOLETO_COMPRA_ID = BOLETO_COMPRA_ID)
+SET CANCELACION_ID = SCOPE_IDENTITY()
+WHERE BOLETO_COMPRA_ID = @idBc
+UPDATE AERO.butacas_por_vuelo
+SET ESTADO = 'LIBRE'
+WHERE BUTACA_ID IN (SELECT p.BUTACA_ID FROM AERO.pasajes p , AERO.boletos_de_compra b WHERE b.ID = @idBc AND p.BOLETO_COMPRA_ID = b.ID)
 END
 GO
 
@@ -1375,6 +1396,26 @@ VALUES(@idBoletoCompra, CURRENT_TIMESTAMP, 'CANCELACION PAQUETE')
 UPDATE AERO.paquetes
 SET CANCELACION_ID = SCOPE_IDENTITY()
 WHERE BOLETO_COMPRA_ID = @idBoletoCompra
+END
+GO
+
+CREATE PROCEDURE AERO.bajaVuelo(@id int)
+AS BEGIN
+DELETE AERO.butacas_por_vuelo WHERE VUELO_ID = @id
+UPDATE AERO.vuelos
+SET INVALIDO = 1
+WHERE ID = @id
+INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
+SELECT BC.ID, CURRENT_TIMESTAMP, 'BAJA VUELO' FROM AERO.boletos_de_compra BC WHERE BC.VUELO_ID = @id
+SELECT BC.ID Into  #Temp FROM AERO.boletos_de_compra BC WHERE BC.VUELO_ID = @id
+Declare @idBoleto int
+	While (Select Count(*) From #Temp) > 0
+	Begin
+		Select Top 1 @idBoleto = Id From #Temp
+		EXEC AERO.cancelarPasajesDeBc @idBc = @idBoleto
+		EXEC AERO.cancelarPaquete @idBoletoCompra = @idBoleto
+		Delete #Temp Where Id = @idBoleto
+	End
 END
 GO
 

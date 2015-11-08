@@ -206,7 +206,7 @@ namespace AerolineaFrba
                 as Destino,v.FECHA_SALIDA as 'Fecha De Salida' from AERO.vuelos v join 
                 AERO.aeronaves a on v.AERONAVE_ID = a.ID join AERO.rutas r on v.RUTA_ID = r.ID join 
                 AERO.aeropuertos o on r.ORIGEN_ID = o.ID join AERO.aeropuertos d on 
-                r.DESTINO_ID = d.ID where v.FECHA_LLEGADA IS NULL");
+                r.DESTINO_ID = d.ID where v.FECHA_LLEGADA IS NULL AND v.INVALIDO = 0");
             return listado;
         }
 

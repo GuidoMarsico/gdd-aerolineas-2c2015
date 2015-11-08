@@ -30,7 +30,10 @@ namespace AerolineaFrba.Compra
         {
             if (compraValida())
             {
-                Form frmCargaDeDatos = new Compra.cargaDeDatos();
+                string fechaSalida = this.dataGridViajes.SelectedCells[1].Value.ToString();
+                string origen = this.dataGridViajes.SelectedCells[3].Value.ToString();
+                string destino = this.dataGridViajes.SelectedCells[4].Value.ToString();
+                Form frmCargaDeDatos = new Compra.cargaDeDatos(fechaSalida,origen,destino);
                 ((TextBox)frmCargaDeDatos.Controls["textBoxCantPasajes"]).Text = this.numericUpDownPasajes.Value.ToString();
                 ((TextBox)frmCargaDeDatos.Controls["textBoxIDVuelo"]).Text = this.dataGridViajes.SelectedCells[0].Value.ToString();
                 ((TextBox)frmCargaDeDatos.Controls["textBoxKgEncomiendas"]).Text = this.textBoxKgEncomienda.Text;

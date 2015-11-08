@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxDestino = new System.Windows.Forms.TextBox();
+            this.textBoxOrigen = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.dataGridListadoVuelos = new System.Windows.Forms.DataGridView();
             this.botonBuscar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -44,6 +48,10 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textBoxDestino);
+            this.groupBox1.Controls.Add(this.textBoxOrigen);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.dataGridListadoVuelos);
             this.groupBox1.Controls.Add(this.botonBuscar);
             this.groupBox1.Controls.Add(this.label3);
@@ -56,26 +64,68 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Vuelos";
             // 
+            // textBoxDestino
+            // 
+            this.textBoxDestino.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDestino.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDestino.Location = new System.Drawing.Point(390, 12);
+            this.textBoxDestino.Name = "textBoxDestino";
+            this.textBoxDestino.Size = new System.Drawing.Size(136, 26);
+            this.textBoxDestino.TabIndex = 68;
+            this.textBoxDestino.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.validar);
+            // 
+            // textBoxOrigen
+            // 
+            this.textBoxOrigen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxOrigen.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxOrigen.Location = new System.Drawing.Point(166, 52);
+            this.textBoxOrigen.Name = "textBoxOrigen";
+            this.textBoxOrigen.Size = new System.Drawing.Size(136, 26);
+            this.textBoxOrigen.TabIndex = 67;
+            this.textBoxOrigen.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.validar);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(87, 55);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(56, 20);
+            this.label4.TabIndex = 66;
+            this.label4.Text = "Origen";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(320, 15);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(64, 20);
+            this.label2.TabIndex = 65;
+            this.label2.Text = "Destino";
+            // 
             // dataGridListadoVuelos
             // 
             this.dataGridListadoVuelos.AllowUserToAddRows = false;
             this.dataGridListadoVuelos.AllowUserToDeleteRows = false;
             this.dataGridListadoVuelos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridListadoVuelos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridListadoVuelos.Location = new System.Drawing.Point(6, 49);
+            this.dataGridListadoVuelos.Location = new System.Drawing.Point(6, 88);
             this.dataGridListadoVuelos.MultiSelect = false;
             this.dataGridListadoVuelos.Name = "dataGridListadoVuelos";
             this.dataGridListadoVuelos.ReadOnly = true;
             this.dataGridListadoVuelos.RowHeadersVisible = false;
             this.dataGridListadoVuelos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridListadoVuelos.Size = new System.Drawing.Size(786, 265);
+            this.dataGridListadoVuelos.Size = new System.Drawing.Size(786, 226);
             this.dataGridListadoVuelos.TabIndex = 64;
             // 
             // botonBuscar
             // 
             this.botonBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.botonBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonBuscar.Location = new System.Drawing.Point(541, 17);
+            this.botonBuscar.Location = new System.Drawing.Point(586, 31);
             this.botonBuscar.Name = "botonBuscar";
             this.botonBuscar.Size = new System.Drawing.Size(107, 26);
             this.botonBuscar.TabIndex = 63;
@@ -88,7 +138,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(186, 17);
+            this.label3.Location = new System.Drawing.Point(87, 18);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 20);
             this.label3.TabIndex = 62;
@@ -98,7 +148,7 @@
             // 
             this.textBoxMatricula.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxMatricula.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMatricula.Location = new System.Drawing.Point(318, 17);
+            this.textBoxMatricula.Location = new System.Drawing.Point(166, 15);
             this.textBoxMatricula.Name = "textBoxMatricula";
             this.textBoxMatricula.Size = new System.Drawing.Size(136, 26);
             this.textBoxMatricula.TabIndex = 61;
@@ -153,7 +203,7 @@
             // 
             // timePickerLlegada
             // 
-            this.timePickerLlegada.CustomFormat = "MM/dd/yyyy HH:mm:ss";
+            this.timePickerLlegada.CustomFormat = "dd/MM/yyyy HH:mm:ss";
             this.timePickerLlegada.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timePickerLlegada.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.timePickerLlegada.Location = new System.Drawing.Point(301, 324);
@@ -196,5 +246,9 @@
         private System.Windows.Forms.DataGridView dataGridListadoVuelos;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker timePickerLlegada;
+        private System.Windows.Forms.TextBox textBoxDestino;
+        private System.Windows.Forms.TextBox textBoxOrigen;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label2;
     }
 }

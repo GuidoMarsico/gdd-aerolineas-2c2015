@@ -49,19 +49,29 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
             //y eligio dar de baja todos los vuelos de ese periodo de esa aeronave
             if (this.textBoxTipo.Text == "0")
             {
+                this.botonBajaTodos.Enabled = false;
+                this.buttonReprogramar.Enabled = false;
+                MessageBox.Show("Realizando la operacion, aguarde un momento ... ");
                 foreach(DataRow vuelo in vuelos.Rows)
                 {
                     funcionesComunes.darDebajaVuelo(Int32.Parse(vuelo[0].ToString()));
                 }
                 actualizarAeronave();
+                this.botonBajaTodos.Enabled = true;
+                this.buttonReprogramar.Enabled = true;
            
             }
             else 
             {
+                this.botonBajaTodos.Enabled = false;
+                this.buttonReprogramar.Enabled = false;
+                MessageBox.Show("Realizando la operacion, aguarde un momento ... ");
                 foreach (DataRow vuelo in vuelos.Rows)
                 {
                     funcionesComunes.darDebajaVuelo(Int32.Parse(vuelo[0].ToString()));
                 }
+                this.botonBajaTodos.Enabled = true;
+                this.buttonReprogramar.Enabled = true;
                 funcionesComunes.darDeBajaAeronave(this.textBoxTipoIdAero.Text);
             }
             funcionesComunes.volverAMenuPrincipal();   

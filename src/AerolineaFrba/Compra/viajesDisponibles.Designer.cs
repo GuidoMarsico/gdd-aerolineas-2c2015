@@ -147,7 +147,7 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(36, 197);
+            this.label5.Location = new System.Drawing.Point(18, 197);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(139, 16);
             this.label5.TabIndex = 56;
@@ -161,7 +161,7 @@
             this.dataGridViajes.AllowUserToResizeRows = false;
             this.dataGridViajes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViajes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViajes.Location = new System.Drawing.Point(39, 216);
+            this.dataGridViajes.Location = new System.Drawing.Point(21, 216);
             this.dataGridViajes.MultiSelect = false;
             this.dataGridViajes.Name = "dataGridViajes";
             this.dataGridViajes.ReadOnly = true;
@@ -169,7 +169,7 @@
             this.dataGridViajes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViajes.ShowCellToolTips = false;
             this.dataGridViajes.ShowEditingIcon = false;
-            this.dataGridViajes.Size = new System.Drawing.Size(689, 270);
+            this.dataGridViajes.Size = new System.Drawing.Size(716, 270);
             this.dataGridViajes.TabIndex = 55;
             // 
             // groupBox2

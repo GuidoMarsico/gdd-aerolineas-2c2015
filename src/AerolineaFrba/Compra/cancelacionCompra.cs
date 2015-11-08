@@ -142,6 +142,14 @@ namespace AerolineaFrba.Compra
                 {
                     SqlConnector.executeProcedure("AERO.cancelarPasaje", funcionesComunes.generarListaParaProcedure("@idPasaje"),
                         Int32.Parse(this.dataGridPasaje.SelectedCells[0].Value.ToString()));
+                    DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"select p.ID as Id, p.CODIGO as Codigo, 
+                p.PRECIO as Precio, b.NUMERO as Butaca, bc.FECHA_COMPRA as 'Fecha de Compra', a1.NOMBRE as Origen, a2.NOMBRE as Destino
+                from AERO.pasajes p, AERO.butacas b, AERO.boletos_de_compra bc, AERO.vuelos v, AERO.rutas r, AERO.aeropuertos a1, 
+                AERO.aeropuertos a2 where p.BOLETO_COMPRA_ID = " + this.textBoxCodigoCompra.Text + @" and bc.ID = p.BOLETO_COMPRA_ID 
+                and b.ID = p.BUTACA_ID and p.INVALIDO = 0 and v.ID = bc.VUELO_ID and v.RUTA_ID = r.ID and r.ORIGEN_ID = a1.ID and 
+                r.DESTINO_ID = a2.ID and bc.INVALIDO = 0 and v.FECHA_SALIDA > CURRENT_TIMESTAMP and v.FECHA_LLEGADA IS NULL and p.CANCELACION_ID IS NULL");
+                    this.dataGridPasaje.DataSource = tabla;
+                    this.dataGridPasaje.Columns[0].Visible = false;
                 }
                 else
                 {
@@ -159,6 +167,13 @@ namespace AerolineaFrba.Compra
                 {
                     SqlConnector.executeProcedure("AERO.cancelarPaquete", funcionesComunes.generarListaParaProcedure("@idBoletoCompra"),
                         Int32.Parse(this.textBoxCodigoCompra.Text));
+                    DataTable tablaPaq = SqlConnector.obtenerTablaSegunConsultaString(@"select p.ID as Id, p.CODIGO as Codigo, 
+                     p.PRECIO as Precio, p.KG as Peso, bc.FECHA_COMPRA as 'Fecha de Compra' from AERO.paquetes p, AERO.boletos_de_compra bc, 
+                    AERO.vuelos v where p.BOLETO_COMPRA_ID = " + this.textBoxCodigoCompra.Text + @" and bc.ID = p.BOLETO_COMPRA_ID 
+                    and p.INVALIDO = 0 and bc.INVALIDO = 0 and v.ID = bc.VUELO_ID and v.FECHA_SALIDA > CURRENT_TIMESTAMP and v.FECHA_LLEGADA IS NULL
+                     and p.CANCELACION_ID IS NULL");
+                    this.dataGridEnco.DataSource = tablaPaq;
+                    this.dataGridEnco.Columns[0].Visible = false;
                 }
                 else
                 {

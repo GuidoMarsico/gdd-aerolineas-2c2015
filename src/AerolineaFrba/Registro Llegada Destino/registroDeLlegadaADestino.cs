@@ -30,12 +30,12 @@ namespace AerolineaFrba.Registro_Llegada_Destino
 
         private void botonBuscar_Click(object sender, EventArgs e)
         {
-            DataTable filtradoVuelos = filtradoDeVuelos(this.textBoxMatricula.Text);
+            DataTable filtradoVuelos = filtradoDeVuelos(this.textBoxMatricula.Text,this.textBoxOrigen.Text,this.textBoxDestino.Text);
             dataGridListadoVuelos.DataSource = filtradoVuelos;
             dataGridListadoVuelos.Columns[0].Visible = false;
         }
 
-        private DataTable filtradoDeVuelos(string matricula)
+        private DataTable filtradoDeVuelos(string matricula,string origen,string destino)
         {
             DataTable tablaVuelos = funcionesComunes.consultarVuelos();
             var final_rol = "";
@@ -43,6 +43,8 @@ namespace AerolineaFrba.Registro_Llegada_Destino
             var filtrosBusqueda = new List<string>();
 
             if (matricula != "") filtrosBusqueda.Add("Matricula LIKE '%" + matricula + "%'");
+            if (origen != "") filtrosBusqueda.Add("Origen LIKE '%" + origen + "%'");
+            if (destino != "") filtrosBusqueda.Add("Destino LIKE '%" + destino + "%'");
 
             foreach (var filtro in filtrosBusqueda)
             {
@@ -100,6 +102,11 @@ namespace AerolineaFrba.Registro_Llegada_Destino
                      return false;
                 }
             return true;
+        }
+
+        private void validar(object sender, KeyPressEventArgs e)
+        {
+            funcionesComunes.soloLetras(e);
         }
     }
 }

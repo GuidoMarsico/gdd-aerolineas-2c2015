@@ -68,50 +68,56 @@ namespace AerolineaFrba.Registro_de_Usuario
         private void botonGuardar_Click(object sender, EventArgs e)
         {
             this.setearCamposIngresados();
-            //TODO: Acordarse de validar que la fecha sea anteior a hoy y que la edad sea > 18
             if (apellido != "" && nombre != "" && direccion != "" && dni > 0 && telefono > 0)
             {
-                if (TimePickerNacimiento.Value < DateTime.Today)
+                if (mail.Contains("@") || mail == "")
                 {
-                    bool resultado=true;
-                    if (this.textBoxTipoForm.Text == "1")
+
+                    if (TimePickerNacimiento.Value < DateTime.Today)
                     {
-                        this.setearParaCompras();
-                        return ;
-                    }
-                    else
-                       resultado=  this.persistirCliente();
-                    if (textBoxTipoForm.Text == "2")
-                    {
-                        DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
+                        bool resultado = true;
+                        if (this.textBoxTipoForm.Text == "1")
+                        {
+                            this.setearParaCompras();
+                            return;
+                        }
+                        else
+                            resultado = this.persistirCliente();
+                        if (textBoxTipoForm.Text == "2")
+                        {
+                            DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
                                                                     FROM AERO.clientes c
                                                                     order by 1 desc");
-                        Form anterior = funcionesComunes.getVentanaAnterior();
-                        ((TextBox)anterior.Controls["textBoxIdCliente"]).Text = Convert.ToString(tabla.Rows[0].ItemArray[0]);
-                        funcionesComunes.habilitarAnterior();
-                        return;
-                    }
-                    if (resultado)
-                    {
-                        MessageBox.Show("Se guardo exitosamente");
-                        botonLimpiar.PerformClick();
-                        if (textBoxVolver.Text == "1")
-                        {
+                            Form anterior = funcionesComunes.getVentanaAnterior();
+                            ((TextBox)anterior.Controls["textBoxIdCliente"]).Text = Convert.ToString(tabla.Rows[0].ItemArray[0]);
                             funcionesComunes.habilitarAnterior();
+                            return;
                         }
+                        if (resultado)
+                        {
+                            MessageBox.Show("Se guardo exitosamente");
+                            botonLimpiar.PerformClick();
+                            if (textBoxVolver.Text == "1")
+                            {
+                                funcionesComunes.habilitarAnterior();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("La fecha de nacimiento debe ser anterior a la fecha actual",
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("La fecha de nacimiento debe ser anterior a la fecha actual", 
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Mail invalido", "Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
             }
             else
-            {
-                MessageBox.Show("Complete los campos requeridos", "Error", MessageBoxButtons.OK, 
-                    MessageBoxIcon.Error);
-            }
+                MessageBox.Show("Complete los campos requeridos", "Error", MessageBoxButtons.OK,
+                       MessageBoxIcon.Error);
         }
 
         private void setearParaCompras()

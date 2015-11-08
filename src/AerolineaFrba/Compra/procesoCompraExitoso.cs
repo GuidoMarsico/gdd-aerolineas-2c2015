@@ -13,7 +13,7 @@ namespace AerolineaFrba.Compra
 {
     public partial class procesoCompraExitoso : Form
     {
-        public procesoCompraExitoso(string codigoBoleto,DataGridView pasajes,DataGridView encomiendas)
+        public procesoCompraExitoso(string codigoBoleto,DataGridView pasajes,DataGridView encomiendas,string fechaSalida,string origen,string destino )
         {
             InitializeComponent();
             this.labelCodigo.Text = codigoBoleto;
@@ -29,6 +29,9 @@ namespace AerolineaFrba.Compra
                 this.label7.Visible = true;
                 this.label7.Text = encomiendas.RowCount.ToString();
             }
+            this.labelFecha.Text = fechaSalida;
+            this.labelOrigen.Text = origen;
+            this.labelDestino.Text = destino;
         }
 
         private void botonAceptar_Click(object sender, EventArgs e)

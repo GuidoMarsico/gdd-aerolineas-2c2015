@@ -30,8 +30,8 @@ namespace AerolineaFrba.Abm_Rol
             }else{
                 funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text), 
                     dataGridFuncionalidades);
-                botonCrearRol.Visible = false;
-                textRol.Enabled = false;
+                botonCrearRol.Text ="Modificar";
+                textRol.Enabled = true;
             }
         }
 
@@ -50,31 +50,64 @@ namespace AerolineaFrba.Abm_Rol
         {
             //Aca haria todo el procedure de creacion de Rol en la tabla roles, me devuelve el Id y lo guardo en textId
             //Si guarda bien hace lo siguiente:
-            int id = SqlConnector.executeProcedureWithReturnValue("AERO.agregarRol",
-                funcionesComunes.generarListaParaProcedure("@nombreRol"), textRol.Text);
-            if (id != -1){
-                MessageBox.Show("El rol fue creado exitosamente");
-                botonCrearRol.Visible = false;
-                botonAgregar.Enabled = true;
-                botonQuitar.Enabled = true;
-                idRol = id;
-                textId.Text = Convert.ToString(idRol);
-            }else{
-                MessageBox.Show("Ocurrio un error al intentar crear el rol");
+            if (this.textTipoForm.Text == "0")
+            {
+                if (textRol.Text.Trim() != "")
+                {
+                    int id = SqlConnector.executeProcedureWithReturnValue("AERO.agregarRol",
+                        funcionesComunes.generarListaParaProcedure("@nombreRol"), textRol.Text);
+                    if (id != -1)
+                    {
+                        MessageBox.Show("El rol fue creado exitosamente");
+                        botonCrearRol.Enabled = false;
+                        botonAgregar.Enabled = true;
+                        botonQuitar.Enabled = true;
+                        this.textRol.Enabled = false;
+                        idRol = id;
+                        textId.Text = Convert.ToString(idRol);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ocurrio un error al intentar crear el rol");
+                    }
+                }
+                else
+                    MessageBox.Show("Debe poner un nombre al rol");
+            }
+            else 
+            {
+                if (textRol.Text.Trim() != "")
+                {
+                    bool resultado = SqlConnector.executeProcedure("AERO.cambiarNombreRol",
+                    funcionesComunes.generarListaParaProcedure("@idRol","@nombre"),
+                    this.textId.Text,this.textRol.Text);
+                    if (resultado)
+                        MessageBox.Show("Se cambio el nombre del rol correctamente");
+                }
+                else
+                {
+                    MessageBox.Show("Debe poner un nombre al rol");
+                }
             }
         }
 
         private void botonAgregar_Click(object sender, EventArgs e)
         {
-            idFuncionalidad = Convert.ToInt32(comboBoxFuncionalidades.SelectedValue);
-            idRol = Convert.ToInt32(textId.Text);
-            if (!(existeFuncionalidad(idFuncionalidad))){
-                SqlConnector.executeProcedure("AERO.agregarFuncionalidad",
-                    funcionesComunes.generarListaParaProcedure("@idRol", "@idFunc"), idRol, idFuncionalidad);
-                funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text),
-                    dataGridFuncionalidades);
-            }else{
-                MessageBox.Show("La funcionalidad seleccionada ya existe");
+            if (comboBoxFuncionalidades.SelectedIndex != -1)
+            {
+                idFuncionalidad = Convert.ToInt32(comboBoxFuncionalidades.SelectedValue);
+                idRol = Convert.ToInt32(textId.Text);
+                if (!(existeFuncionalidad(idFuncionalidad)))
+                {
+                    SqlConnector.executeProcedure("AERO.agregarFuncionalidad",
+                        funcionesComunes.generarListaParaProcedure("@idRol", "@idFunc"), idRol, idFuncionalidad);
+                    funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text),
+                        dataGridFuncionalidades);
+                }
+                else
+                {
+                    MessageBox.Show("La funcionalidad seleccionada ya existe");
+                }
             }
         }
 
@@ -91,12 +124,15 @@ namespace AerolineaFrba.Abm_Rol
 
         private void botonQuitar_Click(object sender, EventArgs e)
         {
-            idFuncionalidad = Convert.ToInt32(dataGridFuncionalidades.SelectedCells[0].Value);
-            idRol = Convert.ToInt32(textId.Text);
-            SqlConnector.executeProcedure("AERO.quitarFuncionalidad",
-                funcionesComunes.generarListaParaProcedure("@idRol", "@idFunc"), idRol, idFuncionalidad);
-            funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text),
-                    dataGridFuncionalidades);
+            if (dataGridFuncionalidades.Rows.Count > 0)
+            {
+                idFuncionalidad = Convert.ToInt32(dataGridFuncionalidades.SelectedCells[0].Value);
+                idRol = Convert.ToInt32(textId.Text);
+                SqlConnector.executeProcedure("AERO.quitarFuncionalidad",
+                    funcionesComunes.generarListaParaProcedure("@idRol", "@idFunc"), idRol, idFuncionalidad);
+                funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text),
+                        dataGridFuncionalidades);
+            }
         }
     }
 }

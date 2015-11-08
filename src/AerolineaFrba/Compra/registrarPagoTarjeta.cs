@@ -17,12 +17,18 @@ namespace AerolineaFrba.Compra
         public DataGridView encomiendas;
         double importeApagar = 0;
         public Boolean modificarDatos = false;
-        public registrarPagoTarjeta(DataGridView tablaPasajes,DataGridView tablaEncomiendas)
+        string fechaSalida;
+        string origen;
+        string destino;
+        public registrarPagoTarjeta(DataGridView tablaPasajes,DataGridView tablaEncomiendas,string fecha,string origen,string destino)
         {
             InitializeComponent();
             this.pasajes = tablaPasajes;
             this.encomiendas = tablaEncomiendas;
             this.calcularImporte();
+            this.fechaSalida = fecha;
+            this.origen = origen;
+            this.destino = destino;
         }
 
         private void calcularImporte()
@@ -67,12 +73,10 @@ namespace AerolineaFrba.Compra
             {
                 /* Si guarda bien en boleto de compra el pago entonces muestra el procesocompraexitoso */
                 Int32 idCliente = Int32.Parse(this.textBoxIdCliente.Text);
-                if (idCliente == 0) ;
-                //Dar de alta el cliente y buscar devuelta el id
                 Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
                 String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas, this.importeApagar, "TARJETA", idCliente,idVuelo);
                 // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
-                funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso(idBoleto,pasajes,encomiendas));
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso(idBoleto,pasajes,encomiendas,this.fechaSalida,this.origen,this.destino));
             }
             else
             {

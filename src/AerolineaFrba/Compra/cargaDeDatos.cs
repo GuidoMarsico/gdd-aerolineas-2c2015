@@ -13,16 +13,21 @@ namespace AerolineaFrba.Compra
 {
     public partial class cargaDeDatos : Form
     {
-        Int32 cantidadPasajes = 0;
         Double cantidadKg = 0;
         Double kgAcumulados=0;
         Double precioBasePasaje;
         Double precioBaseKg;
         Boolean modificarDatos = false;
+        string fechaSalida;
+        string origen;
+        string destino;
 
-        public cargaDeDatos()
+        public cargaDeDatos(string fecha,string origen,string destino)
         {
             InitializeComponent();
+            this.origen = origen;
+            this.fechaSalida = fecha;
+            this.destino = destino;
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -64,13 +69,13 @@ namespace AerolineaFrba.Compra
                 string idVuelo = this.textBoxIDVuelo.Text;
                 if (funcionesComunes.getRol() == "Administrador")
                 {
-                    Form tipoPago = new Compra.formaDePago(this.dataGridPasaje,this.dataGridEnco);
+                    Form tipoPago = new Compra.formaDePago(this.dataGridPasaje,this.dataGridEnco,this.fechaSalida,this.origen,this.destino);
                     ((TextBox)tipoPago.Controls["textBoxIDVuelo"]).Text = idVuelo;
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(tipoPago);
                 }
                 else
                 {
-                    Form porTarjeta = new Compra.registrarPagoTarjeta(this.dataGridPasaje,this.dataGridEnco);
+                    Form porTarjeta = new Compra.registrarPagoTarjeta(this.dataGridPasaje,this.dataGridEnco,this.fechaSalida,this.origen,this.destino);
                     ((TextBox)porTarjeta.Controls["textBoxIDVuelo"]).Text = idVuelo;
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(porTarjeta);
                 }
@@ -178,7 +183,7 @@ namespace AerolineaFrba.Compra
                 this.setCliente();
                 this.modificarDatos = false;
             }
-            this.cantidadPasajes = Int32.Parse(this.textBoxCantPasajes.Text);
+             
             this.cantidadKg = Double.Parse(this.textBoxKgEncomiendas.Text);
             this.resetearComboBox();
         }
@@ -248,7 +253,7 @@ namespace AerolineaFrba.Compra
         {
             if (validarCargaPasaje()){
                 this.cargarPasaje();
-                this.limpiarPasaje();
+               
             }else{
                 MessageBox.Show("Debe completar los campos requeridos");
             }
@@ -277,17 +282,19 @@ namespace AerolineaFrba.Compra
                         this.dataGridPasaje.SelectedCells[9].Value = this.textBoxMail.Text;
                         this.dataGridPasaje.SelectedCells[10].Value = this.timePickerNacimiento.Value.ToString();
                         this.dataGridPasaje.SelectedCells[11].Value = this.comboBoxNumeroButaca.SelectedValue;
-                        this.cantidadPasajes = this.cantidadPasajes - 1;
-                        MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
+                        MessageBox.Show("Cantidad de pasajes restantes " + (Int32.Parse(this.textBoxCantPasajes.Text) - this.dataGridPasaje.Rows.Count));
+                        this.limpiarPasaje();
                     }
                     else
                     {
                         MessageBox.Show("El pasajero ya fue ingresado, no puede cargarse de nuevo");
+                        this.limpiarPasaje();
                     }
                 }
                 else
                 {
                     MessageBox.Show("La butaca elegida ya fue cargada, elija otra");
+                    this.resetearComboBox();
                 }
             }
             else
@@ -331,7 +338,8 @@ namespace AerolineaFrba.Compra
             this.comboBoxNumeroButaca.DataSource = null;
             funcionesComunes.llenarCombobox(this.comboBoxNumeroButaca, "NUMERO", @"SELECT b.ID,
                 b.NUMERO FROM AERO.butacas_por_vuelo bxv join AERO.butacas b on b.ID = bxv.BUTACA_ID 
-                where bxv.VUELO_ID = " + this.textBoxIDVuelo.Text + "AND bxv.ESTADO = 'LIBRE'");
+                where bxv.VUELO_ID = " + this.textBoxIDVuelo.Text + @"AND bxv.ESTADO = 'LIBRE' 
+                order by 2");
             this.textBoxUbicacion.Clear();
         }
 
@@ -434,9 +442,8 @@ namespace AerolineaFrba.Compra
         private void botonEliminarPasaje_Click(object sender, EventArgs e)
         {
             if (this.dataGridPasaje.Rows.Count > 0){
-                this.cantidadPasajes = this.cantidadPasajes + 1;
-                MessageBox.Show("Cantidad de pasajes restantes " + this.cantidadPasajes);
                 this.dataGridPasaje.Rows.Remove(this.dataGridPasaje.SelectedRows[0]);
+                MessageBox.Show("Cantidad de pasajes restantes " + (Int32.Parse(this.textBoxCantPasajes.Text) - this.dataGridPasaje.Rows.Count));
             }else{
                 MessageBox.Show("Tabla vacia, no hay nada que eliminar");
             }

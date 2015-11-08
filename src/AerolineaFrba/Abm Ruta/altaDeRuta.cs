@@ -61,27 +61,47 @@ namespace AerolineaFrba.Abm_Ruta
 
         private void botonGuardar_Click(object sender, EventArgs e)
         {
-            Int32 codigo = Int32.Parse(textBoxCodigo.Text);
-            Double precioKg = Math.Round(Double.Parse(textBoxPrecioKg.Text), 2);
-            Double precioPasaje = Math.Round(Double.Parse(textBoxPrecioPasaje.Text), 2);
-            Int32 origen = (Int32)comboBoxOrigen.SelectedValue;
-            Int32 destino = (Int32)comboBoxDestino.SelectedValue;
-            Int32 servicio = (Int32)comboBoxServicios.SelectedValue;
-            if(this.validarCampos(origen,destino,precioKg,precioPasaje,codigo))
+            if (this.validarInputs())
             {
-                bool resultado = SqlConnector.executeProcedure("AERO.agregarRuta",
-                    funcionesComunes.generarListaParaProcedure("@codigo","@precioKg","@precioPasaje",
-                    "@origen","@destino","@servicio"), codigo, precioKg, precioPasaje, 
-                    origen, destino, servicio);
-                if (resultado)
+                Int32 codigo = Int32.Parse(textBoxCodigo.Text);
+                Double precioKg = Math.Round(Double.Parse(textBoxPrecioKg.Text), 2);
+                Double precioPasaje = Math.Round(Double.Parse(textBoxPrecioPasaje.Text), 2);
+                Int32 origen = (Int32)comboBoxOrigen.SelectedValue;
+                Int32 destino = (Int32)comboBoxDestino.SelectedValue;
+                Int32 servicio = (Int32)comboBoxServicios.SelectedValue;
+                if (this.validarCampos(origen, destino, precioKg, precioPasaje, codigo))
                 {
-                    MessageBox.Show("Se guardo exitosamente");
-                    limpiar();
-                    this.comboBoxDestino.SelectedIndex = -1;
-                    this.comboBoxOrigen.SelectedIndex = -1;
-                    this.comboBoxServicios.SelectedIndex = -1;
+                    bool resultado = SqlConnector.executeProcedure("AERO.agregarRuta",
+                        funcionesComunes.generarListaParaProcedure("@codigo", "@precioKg", "@precioPasaje",
+                        "@origen", "@destino", "@servicio"), codigo, precioKg, precioPasaje,
+                        origen, destino, servicio);
+                    if (resultado)
+                    {
+                        MessageBox.Show("Se guardo exitosamente");
+                        limpiar();
+                        this.comboBoxDestino.SelectedIndex = -1;
+                        this.comboBoxOrigen.SelectedIndex = -1;
+                        this.comboBoxServicios.SelectedIndex = -1;
+                    }
                 }
             }
+        }
+
+        private bool validarInputs()
+        {
+            if (this.textBoxCodigo.Text.Trim() == "")
+                return false;
+            if (this.textBoxPrecioKg.Text.Trim() == "")
+                return false;
+            if (this.textBoxPrecioPasaje.Text.Trim() == "")
+                return false;
+            if (this.comboBoxDestino.SelectedIndex == -1)
+                return false;
+            if (this.comboBoxOrigen.SelectedIndex == -1)
+                return false;
+            if (this.comboBoxServicios.SelectedIndex == -1)
+                return false;
+            return true;
         }
 
         private bool validarCampos(int origen, int destino, double precioKg, double precioPasaje,int codigo)
@@ -106,5 +126,7 @@ namespace AerolineaFrba.Abm_Ruta
             }
             return true;
         }
+
+        
     }
 }

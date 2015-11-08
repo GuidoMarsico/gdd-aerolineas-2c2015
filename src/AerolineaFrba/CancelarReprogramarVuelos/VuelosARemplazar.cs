@@ -58,8 +58,13 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
             DialogResult dialogResult = MessageBox.Show("Se cancelaran todos los vuelos que no se remplazaron ¿Esta Seguro?", "Terminar", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
+                this.botonRemplazar.Enabled = false;
+                this.buttonTerminar.Enabled = false;
+                MessageBox.Show("Realizando la operacion, aguarde un momento ... ");
                 DataTable tabla = (DataTable)this.dataGridListadoVuelos.DataSource;
                 this.darDeBajaLosVuelosDe(tabla);
+                this.botonRemplazar.Enabled = false;
+                this.buttonTerminar.Enabled = false;
                 if (this.textBoxTipo.Text != "0")
                     funcionesComunes.darDeBajaAeronave(this.textBoxTipoIdAero.Text);
                 funcionesComunes.volverAMenuPrincipal();

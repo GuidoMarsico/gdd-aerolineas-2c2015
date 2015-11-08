@@ -86,11 +86,13 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private void botonBaja_Click(object sender, EventArgs e)
         {
-            
-           bool resultado = this.cancelarVuelosVinculados();
-           if (resultado)
-               funcionesComunes.darDeBajaAeronave(dataGridListadoAeronaves.SelectedCells[0].Value.ToString()); 
-            funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
+            if (this.dataGridListadoAeronaves.Rows.Count > 0)
+            {
+                bool resultado = this.cancelarVuelosVinculados();
+                if (resultado)
+                    funcionesComunes.darDeBajaAeronave(dataGridListadoAeronaves.SelectedCells[0].Value.ToString());
+                funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
+            }
             
         }
 

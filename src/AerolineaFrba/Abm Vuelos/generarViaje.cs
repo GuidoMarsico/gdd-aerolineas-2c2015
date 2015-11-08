@@ -93,7 +93,7 @@ namespace AerolineaFrba.Abm_Vuelos
 
         private void botonLimpiar_Click(object sender, EventArgs e)
         {
-            this.dataGridListadoRutas.DataSource = null;
+            funcionesComunes.consultarRutas(dataGridListadoRutas);
             funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
             this.textBoxCodigo.Clear();
             this.textBoxMatricula.Clear();
