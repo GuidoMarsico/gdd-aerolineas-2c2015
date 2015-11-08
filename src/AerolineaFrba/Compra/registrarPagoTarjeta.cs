@@ -165,7 +165,7 @@ namespace AerolineaFrba.Compra
                             }
                             else
                             {
-                                MessageBox.Show("No se puede encontrar una tarjeta de crédito para el cliente seleccionado, haga un alta de tarjeta para ese cliente");
+                                MessageBox.Show("No se puede encontrar una tarjeta de crédito valida para el cliente seleccionado, haga un alta de tarjeta para ese cliente");
                             }
                         }
 
@@ -243,7 +243,7 @@ namespace AerolineaFrba.Compra
             }
             else
             {
-                MessageBox.Show("No se puede encontrar una tarjeta de crédito para el cliente seleccionado, haga un alta de tarjeta para ese cliente");
+                MessageBox.Show("No se puede encontrar una tarjeta de crédito valida para el cliente seleccionado, haga un alta de tarjeta para ese cliente");
             }
            
 
