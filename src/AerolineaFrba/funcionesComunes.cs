@@ -77,15 +77,27 @@ namespace AerolineaFrba
 
         #region rol
 
-        private static string rol;
+        private static List<String> roles;
         private static Int32 idRol;
-        public static void setRol(String r)
+        public static void setRol(List<String> r)
         {
-            rol = r;
+            roles = r;
         }
         public static String getRol()
         {
-            return rol;
+            String roles_parsed = "";
+            String separador = "";
+            foreach (String rol in roles)
+            {
+                roles_parsed += separador + rol;
+                separador = "-";
+            }
+            return roles_parsed;
+        }
+
+        public static bool containsAdmin()
+        {
+            return roles.Contains("Administrador");            
         }
 
         public static Int32 getIdRolCliente()

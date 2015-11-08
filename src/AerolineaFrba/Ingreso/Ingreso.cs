@@ -32,11 +32,11 @@ namespace AerolineaFrba.Ingreso
                 int intentos = -1;
                 String nombreRol = " ";
                 Int32 idRol;
-                DataTable usuario = SqlConnector.obtenerTablaSegunConsultaString(@"select u.PASSWORD, u.ACTIVO, 
-                    u.INTENTOS_LOGIN, r.NOMBRE, r.ID from AERO.usuarios u,AERO.roles r  where 
-                    u.USERNAME = '" + this.textUsuario.Text + "' AND r.ID = u.ROL_ID");
+                DataTable usuario = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT u.PASSWORD, u.ACTIVO, u.INTENTOS_LOGIN, r.NOMBRE, r.ID from AERO.usuarios u, 
+                AERO.roles_por_usuario ru, AERO.roles r where u.USERNAME = '" + this.textUsuario.Text + 
+                @"' AND r.ID = ru.ROL_ID and ru.USUARIO_ID = u.ID");
                
-                if (usuario.Rows.Count > 0) {
+                if (usuario.Rows.Count > 0 && existeAdministrador(usuario)) {
                         contr = (String)usuario.Rows[0].ItemArray[0];
                         activo = (int)usuario.Rows[0].ItemArray[1];
                         intentos = (int)usuario.Rows[0].ItemArray[2];
@@ -47,8 +47,8 @@ namespace AerolineaFrba.Ingreso
                             SqlConnector.executeProcedure("AERO.updateIntento",
                                 funcionesComunes.generarListaParaProcedure("@nombre", "@exitoso"), 
                                 this.textUsuario.Text, 1);
-                            menuPrincipal menu = new menuPrincipal();
-                            funcionesComunes.setRol(nombreRol);
+                            menuPrincipal menu = new menuPrincipal(this.textUsuario.Text);
+                            funcionesComunes.setRol(crearListaRoles(usuario));
                             funcionesComunes.deshabilitarVentanaYAbrirNueva(menu);
                         }else{
                             SqlConnector.executeProcedure("AERO.updateIntento",
@@ -69,7 +69,9 @@ namespace AerolineaFrba.Ingreso
         {
             //Apertura formulario menu para invitado
             this.botonLimpiar.PerformClick();
-            funcionesComunes.setRol("cliente");
+            List<String> cliente_rol = new List<String>();
+            cliente_rol.Add("Cliente");
+            funcionesComunes.setRol(cliente_rol);
             funcionesComunes.deshabilitarVentanaYAbrirNueva(new menuPrincipal());
         } 
 
@@ -90,7 +92,28 @@ namespace AerolineaFrba.Ingreso
                 MessageBox.Show("El rol de cliente no puede ser seteado");
             }
         }
+        private bool existeAdministrador(DataTable usuario)
+        {
+            foreach (DataRow row in usuario.Rows)
+            {
+                if (row[3].ToString().Equals( "Administrador"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
+        private List<String> crearListaRoles(DataTable tabla)
+        {
+            List<String> roles = new List<String>();
+            foreach (DataRow row in tabla.Rows)
+            {
+                roles.Add(row[3].ToString());
+            }
+            return roles;
+
+        }
         
     }
 }

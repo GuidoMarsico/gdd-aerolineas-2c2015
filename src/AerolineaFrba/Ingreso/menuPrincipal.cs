@@ -14,9 +14,17 @@ namespace AerolineaFrba.Ingreso
 {
     public partial class menuPrincipal : Form
     {
+        String nombre_de_usuario;
+
         public menuPrincipal()
         {
             InitializeComponent();
+        }
+
+        public menuPrincipal(String nombre)
+        {
+            InitializeComponent();
+            nombre_de_usuario = nombre;
         }
 
         private void botonSalir_Click(object sender, EventArgs e)
@@ -119,18 +127,28 @@ namespace AerolineaFrba.Ingreso
             //Cuando no este harcodeado la podemos sacar la linea de abajo
             this.textRol.Text = funcionesComunes.getRol();
             //Carga las funcionalidades dependiendo del rol en el comboBox
-            if (this.textRol.Text != "Administrador") {
+            if (!funcionesComunes.containsAdmin()) {
                 this.groupBox1.Text = " ";
                 this.label2.Visible = false;
                 this.textRol.Visible = false; 
             }
 
             DataTable dt = new DataTable();
-            dt = SqlConnector.obtenerTablaSegunConsultaString(@"select funcionalidades.DETALLES from 
+            if (nombre_de_usuario == null)
+            {
+                dt = SqlConnector.obtenerTablaSegunConsultaString(@"select funcionalidades.DETALLES from 
                 aero.roles inner join aero.funcionalidades_por_rol on 
                 roles.ID = funcionalidades_por_rol.ROL_ID inner join AERO.funcionalidades on 
                 funcionalidades_por_rol.FUNCIONALIDAD_ID = funcionalidades.ID where 
-                roles.NOMBRE = '" + funcionesComunes.getRol() + "'");
+                roles.NOMBRE = 'Cliente'");
+            }
+            else
+            {
+                dt = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT DISTINCT f.DETALLES FROM AERO.funcionalidades f, AERO.funcionalidades_por_rol fr,
+            AERO.roles r WHERE f.ID = fr.FUNCIONALIDAD_ID AND r.ID = fr.ROL_ID AND r.NOMBRE in (SELECT r.NOMBRE from AERO.usuarios u,
+            AERO.roles_por_usuario ru, AERO.roles r2 where u.USERNAME = '" + nombre_de_usuario + @"' AND r2.ID = ru.ROL_ID and ru.USUARIO_ID = u.ID) AND r.ACTIVO = 1");
+            }
+            
             foreach (DataRow row in dt.Rows)
             comboBoxFuncionalidad.Items.Add(row.ItemArray[0].ToString());
             comboBoxFuncionalidad.DisplayMember = "DETALLES";

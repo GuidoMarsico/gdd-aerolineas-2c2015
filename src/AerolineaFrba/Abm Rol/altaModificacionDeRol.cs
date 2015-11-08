@@ -54,22 +54,30 @@ namespace AerolineaFrba.Abm_Rol
             {
                 if (textRol.Text.Trim() != "")
                 {
-                    int id = SqlConnector.executeProcedureWithReturnValue("AERO.agregarRol",
-                        funcionesComunes.generarListaParaProcedure("@nombreRol"), textRol.Text);
-                    if (id != -1)
-                    {
-                        MessageBox.Show("El rol fue creado exitosamente");
-                        botonCrearRol.Enabled = false;
-                        botonAgregar.Enabled = true;
-                        botonQuitar.Enabled = true;
-                        this.textRol.Enabled = false;
-                        idRol = id;
-                        textId.Text = Convert.ToString(idRol);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Ocurrio un error al intentar crear el rol");
-                    }
+                     DataTable tabla_rol = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT NOMBRE FROM AERO.ROLES WHERE NOMBRE ='" + this.textRol.Text + "'");
+                     if (tabla_rol.Rows.Count == 0)
+                     {
+                         int id = SqlConnector.executeProcedureWithReturnValue("AERO.agregarRol",
+                          funcionesComunes.generarListaParaProcedure("@nombreRol"), textRol.Text);
+                         if (id != -1)
+                         {
+                             MessageBox.Show("El rol fue creado exitosamente");
+                             botonCrearRol.Enabled = false;
+                             botonAgregar.Enabled = true;
+                             botonQuitar.Enabled = true;
+                             this.textRol.Enabled = false;
+                             idRol = id;
+                             textId.Text = Convert.ToString(idRol);
+                         }
+                         else
+                         {
+                             MessageBox.Show("Ocurrio un error al intentar crear el rol");
+                         }
+                     }
+                     else
+                     {
+                         MessageBox.Show("Ese rol ya existe");
+                     }
                 }
                 else
                     MessageBox.Show("Debe poner un nombre al rol");

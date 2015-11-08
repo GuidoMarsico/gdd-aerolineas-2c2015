@@ -67,7 +67,7 @@ namespace AerolineaFrba.Compra
                 
                    
                 string idVuelo = this.textBoxIDVuelo.Text;
-                if (funcionesComunes.getRol() == "Administrador")
+                if (funcionesComunes.containsAdmin())
                 {
                     Form tipoPago = new Compra.formaDePago(this.dataGridPasaje,this.dataGridEnco,this.fechaSalida,this.origen,this.destino);
                     ((TextBox)tipoPago.Controls["textBoxIDVuelo"]).Text = idVuelo;
