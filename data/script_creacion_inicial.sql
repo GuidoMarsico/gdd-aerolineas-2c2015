@@ -1234,11 +1234,77 @@ WHERE ID = @id
 END
 GO
 
+CREATE PROCEDURE AERO.cancelarPasajesDeBc(@idBc int)
+AS BEGIN
+INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
+VALUES(@idBc,CURRENT_TIMESTAMP,'CANCELACION PASAJE')
+UPDATE AERO.pasajes
+SET CANCELACION_ID = SCOPE_IDENTITY()
+WHERE BOLETO_COMPRA_ID = @idBc
+UPDATE AERO.butacas_por_vuelo
+SET ESTADO = 'LIBRE'
+WHERE BUTACA_ID IN (SELECT p.BUTACA_ID FROM AERO.pasajes p , AERO.boletos_de_compra b WHERE b.ID = @idBc AND p.BOLETO_COMPRA_ID = b.ID)
+END
+GO
+
+/*SE PUEDE CANCELAR UNO O VARIOS PASAJES DEL MISMO BOLETO DE COMPRA*/
+CREATE PROCEDURE AERO.cancelarPasaje(@idPasaje int)
+AS BEGIN
+INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
+SELECT BOLETO_COMPRA_ID, CURRENT_TIMESTAMP, 'CANCELACION PASAJE' FROM AERO.pasajes WHERE ID = @idPasaje
+UPDATE AERO.pasajes
+SET CANCELACION_ID = SCOPE_IDENTITY()
+WHERE ID = @idPasaje
+UPDATE AERO.butacas_por_vuelo
+SET ESTADO = 'LIBRE'
+WHERE BUTACA_ID = (SELECT BUTACA_ID FROM AERO.pasajes WHERE ID = @idPasaje)
+END
+GO
+
+/*NO SE PUEDE CANCELAR UN SOLO PAQUETE, SE CANCELAN TODOS LOS DEL BOLETO DE COMPRA*/
+CREATE PROCEDURE AERO.cancelarPaquete(@idBoletoCompra int)
+AS BEGIN
+INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
+VALUES(@idBoletoCompra, CURRENT_TIMESTAMP, 'CANCELACION PAQUETE')
+UPDATE AERO.paquetes
+SET CANCELACION_ID = SCOPE_IDENTITY()
+WHERE BOLETO_COMPRA_ID = @idBoletoCompra
+END
+GO
+
+CREATE PROCEDURE AERO.bajaVuelo(@id int)
+AS BEGIN
+DELETE AERO.butacas_por_vuelo WHERE VUELO_ID = @id
+UPDATE AERO.vuelos
+SET INVALIDO = 1
+WHERE ID = @id
+INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
+SELECT BC.ID, CURRENT_TIMESTAMP, 'BAJA VUELO' FROM AERO.boletos_de_compra BC WHERE BC.VUELO_ID = @id
+SELECT BC.ID Into  #Temp FROM AERO.boletos_de_compra BC WHERE BC.VUELO_ID = @id
+Declare @idBoleto int
+	While (Select Count(*) From #Temp) > 0
+	Begin
+		Select Top 1 @idBoleto = Id From #Temp
+		EXEC AERO.cancelarPasajesDeBc @idBc = @idBoleto
+		EXEC AERO.cancelarPaquete @idBoletoCompra = @idBoleto
+		Delete #Temp Where Id = @idBoleto
+	End
+END
+GO
+
 CREATE PROCEDURE AERO.bajaRuta(@id INT)
 AS BEGIN
 UPDATE AERO.rutas
 SET BAJA = 1
 WHERE ID=@id;
+SELECT v.ID Into #Temp FROM AERO.vuelos v WHERE v.RUTA_ID = @id
+Declare @idVuelo int
+	While (Select Count(*) From #Temp) > 0
+	Begin
+		Select Top 1 @idVuelo = Id From #Temp
+		EXEC AERO.bajaVuelo @id = @idVuelo
+		Delete #Temp Where Id = @idVuelo
+	End
 END
 GO
 
@@ -1387,64 +1453,6 @@ or v.FECHA_LLEGADA_ESTIMADA between convert(datetime, @fechaSalida,109) and conv
 END
 GO
 
-CREATE PROCEDURE AERO.cancelarPasajesDeBc(@idBc int)
-AS BEGIN
-INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-VALUES(@idBc,CURRENT_TIMESTAMP,'CANCELACION PASAJE')
-UPDATE AERO.pasajes
-SET CANCELACION_ID = SCOPE_IDENTITY()
-WHERE BOLETO_COMPRA_ID = @idBc
-UPDATE AERO.butacas_por_vuelo
-SET ESTADO = 'LIBRE'
-WHERE BUTACA_ID IN (SELECT p.BUTACA_ID FROM AERO.pasajes p , AERO.boletos_de_compra b WHERE b.ID = @idBc AND p.BOLETO_COMPRA_ID = b.ID)
-END
-GO
-
-/*SE PUEDE CANCELAR UNO O VARIOS PASAJES DEL MISMO BOLETO DE COMPRA*/
-CREATE PROCEDURE AERO.cancelarPasaje(@idPasaje int)
-AS BEGIN
-INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-SELECT BOLETO_COMPRA_ID, CURRENT_TIMESTAMP, 'CANCELACION PASAJE' FROM AERO.pasajes WHERE ID = @idPasaje
-UPDATE AERO.pasajes
-SET CANCELACION_ID = SCOPE_IDENTITY()
-WHERE ID = @idPasaje
-UPDATE AERO.butacas_por_vuelo
-SET ESTADO = 'LIBRE'
-WHERE BUTACA_ID = (SELECT BUTACA_ID FROM AERO.pasajes WHERE ID = @idPasaje)
-END
-GO
-
-/*NO SE PUEDE CANCELAR UN SOLO PAQUETE, SE CANCELAN TODOS LOS DEL BOLETO DE COMPRA*/
-CREATE PROCEDURE AERO.cancelarPaquete(@idBoletoCompra int)
-AS BEGIN
-INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-VALUES(@idBoletoCompra, CURRENT_TIMESTAMP, 'CANCELACION PAQUETE')
-UPDATE AERO.paquetes
-SET CANCELACION_ID = SCOPE_IDENTITY()
-WHERE BOLETO_COMPRA_ID = @idBoletoCompra
-END
-GO
-
-CREATE PROCEDURE AERO.bajaVuelo(@id int)
-AS BEGIN
-DELETE AERO.butacas_por_vuelo WHERE VUELO_ID = @id
-UPDATE AERO.vuelos
-SET INVALIDO = 1
-WHERE ID = @id
-INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-SELECT BC.ID, CURRENT_TIMESTAMP, 'BAJA VUELO' FROM AERO.boletos_de_compra BC WHERE BC.VUELO_ID = @id
-SELECT BC.ID Into  #Temp FROM AERO.boletos_de_compra BC WHERE BC.VUELO_ID = @id
-Declare @idBoleto int
-	While (Select Count(*) From #Temp) > 0
-	Begin
-		Select Top 1 @idBoleto = Id From #Temp
-		EXEC AERO.cancelarPasajesDeBc @idBc = @idBoleto
-		EXEC AERO.cancelarPaquete @idBoletoCompra = @idBoleto
-		Delete #Temp Where Id = @idBoleto
-	End
-END
-GO
-
 CREATE PROCEDURE AERO.cambiarAeronaveDeVuelo (@idVuelo int, @idAeronaveNueva int)
 AS BEGIN
 UPDATE AERO.vuelos
@@ -1577,21 +1585,6 @@ GO
 /*Hago baja logica de todo porque sino rompe*/
 CREATE PROCEDURE AERO.bajaCiudad (@idCiudad int)
 AS BEGIN
-
-UPDATE AERO.vuelos
-SET INVALIDO = 1
-WHERE RUTA_ID IN (SELECT ID FROM AERO.rutas WHERE ORIGEN_ID IN(SELECT ID FROM AERO.aeropuertos WHERE CIUDAD_ID = @idCiudad) 
-OR DESTINO_ID IN(SELECT ID FROM AERO.aeropuertos WHERE CIUDAD_ID = @idCiudad))
-
-/*Aca le hago delete porque ya los vuelos dados de baja no deberian figurar en la tabla asociativa*/
-DELETE AERO.butacas_por_vuelo
-WHERE VUELO_ID IN (SELECT ID FROM AERO.vuelos WHERE INVALIDO = 1)
-
-UPDATE AERO.rutas
-SET BAJA = 1
-WHERE ORIGEN_ID IN(SELECT ID FROM AERO.aeropuertos WHERE CIUDAD_ID = @idCiudad) 
-OR DESTINO_ID IN(SELECT ID FROM AERO.aeropuertos WHERE CIUDAD_ID = @idCiudad)
-
 UPDATE AERO.aeropuertos
 SET BAJA = 1
 WHERE CIUDAD_ID = @idCiudad
@@ -1599,6 +1592,16 @@ WHERE CIUDAD_ID = @idCiudad
 UPDATE AERO.ciudades
 SET BAJA = 1
 WHERE ID = @idCiudad
+
+SELECT r.ID Into #Temp FROM AERO.rutas r, AERO.aeropuertos a WHERE (r.ORIGEN_ID = a.ID and a.CIUDAD_ID = @idCiudad) or 
+(r.DESTINO_ID = a.ID and a.CIUDAD_ID = @idCiudad)
+Declare @idRuta int
+	While (Select Count(*) From #Temp) > 0
+	Begin
+		Select Top 1 @idRuta = Id From #Temp
+		EXEC AERO.bajaRuta @id = @idRuta
+		Delete #Temp Where Id = @idRuta
+	End
 END
 GO
 

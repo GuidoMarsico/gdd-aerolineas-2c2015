@@ -47,9 +47,18 @@ namespace AerolineaFrba.Abm_Ciudad
         {
             if (dataGridListadoCiudades.SelectedCells.Count > 0)
             {
+                this.botonBaja.Enabled = false;
+                this.botonBuscar.Enabled = false;
+                this.botonLimpiar.Enabled = false;
+                this.botonVolver.Enabled = false;
+                MessageBox.Show("Realizando la operacion, aguarde un momento ... ");
                 bool resultado = SqlConnector.executeProcedure("AERO.bajaCiudad",
                     funcionesComunes.generarListaParaProcedure("@idCiudad"),
                    Int32.Parse(dataGridListadoCiudades.Rows[dataGridListadoCiudades.SelectedCells[0].RowIndex].Cells[0].Value.ToString()));
+                this.botonBaja.Enabled = true;
+                this.botonBuscar.Enabled = true;
+                this.botonLimpiar.Enabled = true;
+                this.botonVolver.Enabled = true;
                 if (resultado)
                 {
                     MessageBox.Show("La ciudad se dio de baja exitosamente");
