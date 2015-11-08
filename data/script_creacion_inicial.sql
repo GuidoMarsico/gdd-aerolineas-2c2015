@@ -956,6 +956,12 @@ BEGIN
 END;
 GO
 
+IF OBJECT_ID('AERO.asignarRol') IS NOT NULL
+BEGIN
+	DROP PROCEDURE AERO.asignarRol;
+END;
+GO
+
 --CREATE
 CREATE FUNCTION AERO.corrigeMail (@s NVARCHAR (255)) 
 RETURNS NVARCHAR(255)
@@ -1060,11 +1066,19 @@ AS BEGIN
 END
 GO
 
+CREATE PROCEDURE AERO.asignarRol(@idRol int, @idUser int)
+AS BEGIN
+	INSERT INTO AERO.roles_por_usuario(USUARIO_ID, ROL_ID)
+	VALUES (@idUser, @idRol)
+END
+GO
+
 CREATE PROCEDURE AERO.inhabilitarRol(@idRol int)
 AS BEGIN
 UPDATE AERO.roles
 SET ACTIVO = 0
 WHERE ID = @idRol
+DELETE AERO.roles_por_usuario WHERE ROL_ID = @idRol
 END
 GO
 
@@ -1278,10 +1292,12 @@ AS BEGIN
 DELETE AERO.butacas_por_vuelo WHERE VUELO_ID = @id 
 UPDATE AERO.vuelos 
 SET INVALIDO = 1
-WHERE ID = @id AND FECHA_LLEGADA  IS  NULL  AND FECHA_SALIDA > CURRENT_TIMESTAMP
+WHERE ID = @id AND FECHA_LLEGADA IS NULL AND FECHA_SALIDA > CURRENT_TIMESTAMP
 INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-SELECT BC.ID, CURRENT_TIMESTAMP, 'BAJA VUELO' FROM AERO.boletos_de_compra BC WHERE BC.VUELO_ID = @id
-SELECT BC.ID Into  #Temp FROM AERO.boletos_de_compra BC WHERE BC.VUELO_ID = @id
+SELECT BC.ID, CURRENT_TIMESTAMP, 'BAJA VUELO' FROM AERO.boletos_de_compra BC, AERO.vuelos v WHERE BC.VUELO_ID = @id and
+v.ID = bc.VUELO_ID and v.INVALIDO = 1 and bc.INVALIDO = 0
+SELECT BC.ID Into  #Temp FROM AERO.boletos_de_compra BC, AERO.vuelos v WHERE BC.VUELO_ID = @id and
+v.ID = bc.VUELO_ID and v.INVALIDO = 1 and bc.INVALIDO = 0
 Declare @idBoleto int
 	While (Select Count(*) From #Temp) > 0
 	Begin
@@ -1717,13 +1733,13 @@ FROM gd_esquema.Maestra
 WHERE Tipo_Servicio IS NOT NULL
 update AERO.tipos_de_servicio
 set porcentaje= 0.05
-where id=1
+where id=3
 update AERO.tipos_de_servicio
 set porcentaje= 0.1
 where id=2
 update AERO.tipos_de_servicio
 set porcentaje= 0.15
-where id=3
+where id=1
 
 INSERT INTO AERO.ciudades (NOMBRE)
 (SELECT DISTINCT Ruta_Ciudad_Origen

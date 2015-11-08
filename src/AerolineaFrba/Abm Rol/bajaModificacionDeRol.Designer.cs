@@ -168,7 +168,7 @@
             this.botonBaja.Name = "botonBaja";
             this.botonBaja.Size = new System.Drawing.Size(117, 46);
             this.botonBaja.TabIndex = 31;
-            this.botonBaja.Text = "Baja";
+            this.botonBaja.Text = "Desactivar";
             this.botonBaja.UseVisualStyleBackColor = true;
             this.botonBaja.Click += new System.EventHandler(this.botonBaja_Click);
             // 
@@ -180,7 +180,7 @@
             this.botonAlta.Name = "botonAlta";
             this.botonAlta.Size = new System.Drawing.Size(117, 46);
             this.botonAlta.TabIndex = 35;
-            this.botonAlta.Text = "Alta";
+            this.botonAlta.Text = "Activar";
             this.botonAlta.UseVisualStyleBackColor = true;
             this.botonAlta.Click += new System.EventHandler(this.botonAlta_Click);
             // 

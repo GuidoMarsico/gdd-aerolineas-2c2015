@@ -27,11 +27,15 @@ namespace AerolineaFrba.Abm_Rol
             {
                 botonAgregar.Enabled = false;
                 botonQuitar.Enabled = false;
+                botonAsignar.Enabled = false;
+                comboBoxUsers.Enabled = false;
+                comboBoxFuncionalidades.Enabled = false;
             }else{
                 funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text), 
                     dataGridFuncionalidades);
                 botonCrearRol.Text ="Modificar";
                 textRol.Enabled = true;
+                cargarComboBoxUsuarios();
             }
         }
 
@@ -44,6 +48,14 @@ namespace AerolineaFrba.Abm_Rol
         {
             funcionesComunes.llenarCombobox(comboBoxFuncionalidades, "DETALLES", @"select f.ID, 
                 f.DETALLES from aero.funcionalidades f order by f.DETALLES");           
+        }
+
+        private void cargarComboBoxUsuarios()
+        {
+            funcionesComunes.llenarCombobox(comboBoxUsers, "USERNAME", @"select DISTINCT u.ID, u.USERNAME from aero.usuarios u, 
+                aero.roles_por_usuario ru, AERO.roles r where ru.USUARIO_ID = u.ID and ru.ROL_ID = r.ID and '" + textRol.Text + 
+                @"' not in (select r2.NOMBRE from aero.roles_por_usuario ru2, AERO.roles r2 where ru2.ROL_ID = r2.ID and 
+                ru2.USUARIO_ID = u.ID)");
         }
 
         private void botonCrearRol_Click(object sender, EventArgs e)
@@ -68,6 +80,10 @@ namespace AerolineaFrba.Abm_Rol
                              this.textRol.Enabled = false;
                              idRol = id;
                              textId.Text = Convert.ToString(idRol);
+                             botonAsignar.Enabled = true;
+                             comboBoxUsers.Enabled = true;
+                             comboBoxFuncionalidades.Enabled = true;
+                             cargarComboBoxUsuarios();
                          }
                          else
                          {
@@ -140,6 +156,22 @@ namespace AerolineaFrba.Abm_Rol
                     funcionesComunes.generarListaParaProcedure("@idRol", "@idFunc"), idRol, idFuncionalidad);
                 funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text),
                         dataGridFuncionalidades);
+            }
+        }
+
+        private void botonAsignar_Click(object sender, EventArgs e)
+        {
+            if (comboBoxUsers.SelectedIndex != -1)
+            {
+                SqlConnector.executeProcedure("AERO.asignarRol", funcionesComunes.generarListaParaProcedure("@idRol", "@idUser"),
+                    textId.Text, comboBoxUsers.SelectedValue.ToString());
+                MessageBox.Show("El usuario fue asignado correctamente");
+                comboBoxUsers.DataSource = null;
+                cargarComboBoxUsuarios();
+            }
+            else
+            {
+                MessageBox.Show("Debe seleccionar un usuario al cual asignar el rol");
             }
         }
     }
