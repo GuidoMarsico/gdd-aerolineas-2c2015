@@ -166,7 +166,8 @@ CREATE TABLE AERO.fabricantes (
 
 CREATE TABLE AERO.tipos_de_servicio (
     ID INT   IDENTITY(1,1)    PRIMARY KEY,
-    NOMBRE        NVARCHAR(255)    NOT NULL
+    NOMBRE        NVARCHAR(255)    NOT NULL,
+	PORCENTAJE NUMERIC(3,2) 
 )
 
 CREATE TABLE AERO.butacas (
@@ -1714,6 +1715,15 @@ INSERT INTO AERO.tipos_de_servicio (NOMBRE)
 SELECT DISTINCT Tipo_Servicio
 FROM gd_esquema.Maestra
 WHERE Tipo_Servicio IS NOT NULL
+update AERO.tipos_de_servicio
+set porcentaje= 0.05
+where id=1
+update AERO.tipos_de_servicio
+set porcentaje= 0.1
+where id=2
+update AERO.tipos_de_servicio
+set porcentaje= 0.15
+where id=3
 
 INSERT INTO AERO.ciudades (NOMBRE)
 (SELECT DISTINCT Ruta_Ciudad_Origen
