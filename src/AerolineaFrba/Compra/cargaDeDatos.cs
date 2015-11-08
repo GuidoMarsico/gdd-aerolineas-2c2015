@@ -378,10 +378,13 @@ namespace AerolineaFrba.Compra
         {
             DataTable tabla = new DataTable();
             tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT r.PRECIO_BASE_KG, 
-                r.PRECIO_BASE_PASAJE FROM AERO.vuelos v join AERO.rutas r on r.ID = v.RUTA_ID WHERE 
-                v.ID = " + this.textBoxIDVuelo.Text);
+                r.PRECIO_BASE_PASAJE,t.PORCENTAJE FROM AERO.vuelos v join AERO.rutas r on r.ID = v.RUTA_ID
+                 join AERO.tipos_de_servicio t on t.ID= r.TIPO_SERVICIO_ID   WHERE v.ID = " + this.textBoxIDVuelo.Text);
+            Double porcentaje = Double.Parse(tabla.Rows[0].ItemArray[2].ToString());
             precioBaseKg = Double.Parse(tabla.Rows[0].ItemArray[0].ToString());
+            precioBaseKg = precioBaseKg + (precioBaseKg * porcentaje);
             precioBasePasaje = Double.Parse(tabla.Rows[0].ItemArray[1].ToString());
+            precioBasePasaje = precioBasePasaje + (precioBasePasaje * porcentaje);
         }
 
         private void cargarEncomienda()
