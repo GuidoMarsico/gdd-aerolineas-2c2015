@@ -19,14 +19,16 @@ namespace AerolineaFrba.Compra
         Double precioBaseKg;
         Boolean modificarDatos = false;
         string fechaSalida;
+        string fechaLlegada;
         string origen;
         string destino;
 
-        public cargaDeDatos(string fecha,string origen,string destino)
+        public cargaDeDatos(string fechaS,string fechaL,string origen,string destino)
         {
             InitializeComponent();
             this.origen = origen;
-            this.fechaSalida = fecha;
+            this.fechaSalida = fechaS;
+            this.fechaLlegada = fechaL;
             this.destino = destino;
         }
 
@@ -130,6 +132,12 @@ namespace AerolineaFrba.Compra
                             this.textBoxMail.Text = row["Mail"].ToString();
                             this.timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
                             this.textBoxDniPas.Enabled = false;
+
+                            if (viajaEnOtroVuelo())
+                            {
+                                limpiarDatosPasajero();
+                            }
+               
                         }
                         
                     }else{
@@ -352,6 +360,25 @@ namespace AerolineaFrba.Compra
                 return false;
 
             return true;
+        }
+
+        private bool viajaEnOtroVuelo()
+        {
+            DataTable otrosVuelosEnMismoHorario = new DataTable();
+            otrosVuelosEnMismoHorario = SqlConnector.obtenerTablaSegunConsultaString(@"select * from AERO.pasajes p inner join AERO.boletos_de_compra bc on p.BOLETO_COMPRA_ID = bc.ID inner join AERO.vuelos v on bc.VUELO_ID = v.ID where 
+            p.INVALIDO = 0 and (p.CANCELACION_ID IS NULL) and bc.CLIENTE_ID =" + Int32.Parse(this.textBoxIdCliente.Text) + @" and 
+            (v.FECHA_SALIDA  > convert(datetime, '" + fechaSalida + @"',109) and (v.FECHA_SALIDA <
+                convert(datetime, '" + fechaLlegada + @"',109)) or v.FECHA_LLEGADA < 
+                convert(datetime, '" + fechaSalida + @"',109) and v.FECHA_LLEGADA < convert(datetime, '" +
+               fechaLlegada + @"',109) or v.FECHA_LLEGADA_ESTIMADA > 
+                convert(datetime, '" + fechaSalida + @"',109) and v.FECHA_LLEGADA_ESTIMADA < convert(datetime, '" +
+               fechaLlegada + @"',109))");
+            if (otrosVuelosEnMismoHorario.Rows.Count > 0)
+            {
+                MessageBox.Show("El pasajero ya tiene asignado otro vuelo en el mismo horario");
+                return true;
+            }
+            return false;
         }
 
         private bool seleccionButaca()

@@ -138,7 +138,7 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
                         join AERO.tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
                         where v.AERONAVE_ID = " + textBoxTipoIdAero.Text + @" AND (v.FECHA_SALIDA 
                 > convert(datetime, '" + inicioInactividad + @"',109) and (v.FECHA_SALIDA <
-                convert(datetime, '" + finInactividad + @"',109)) or v.FECHA_LLEGADA < 
+                convert(datetime, '" + finInactividad + @"',109)) or v.FECHA_LLEGADA > 
                 convert(datetime, '" + inicioInactividad + @"',109) and v.FECHA_LLEGADA < convert(datetime, '" +
                finInactividad + @"',109) or v.FECHA_LLEGADA_ESTIMADA > 
                 convert(datetime, '" + inicioInactividad + @"',109) and v.FECHA_LLEGADA_ESTIMADA < convert(datetime, '" +
