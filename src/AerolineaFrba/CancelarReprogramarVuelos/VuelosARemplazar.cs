@@ -12,7 +12,8 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 {
     public partial class VuelosARemplazar : Form
     {
-        DataTable vuelosFiltrados;
+        String inicioInactividad;
+        String finInactividad;
         public VuelosARemplazar(string idA, string tipo)
         {
             InitializeComponent();
@@ -20,19 +21,25 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
             textBoxTipoIdAero.Text = idA;
         }
 
-        public VuelosARemplazar(DataTable tabla, string idA, string tipo)
+        public VuelosARemplazar(string idA, string inicio, string fin, string tipo)
         {
            InitializeComponent();
-           vuelosFiltrados = tabla;
            textBoxTipoIdAero.Text = idA;
+           inicioInactividad = inicio;
+           finInactividad = fin;
            textBoxTipo.Text = tipo;
         }
 
         private void cargaVentana_load(object sender, EventArgs e)
         {
+            cargarListados();
+        }
+
+        private void cargarListados()
+        {
             if (textBoxTipo.Text == "0")
             {
-                this.dataGridListadoVuelos.DataSource = vuelosFiltrados;
+                this.dataGridListadoVuelos.DataSource = obtenerVuelosEnElPeriodo();
             }
             else
             {
@@ -98,11 +105,11 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
                 AERO.aeronaves a where v.AERONAVE_ID = a.ID and a.ID != " + 
                 Int32.Parse(this.textBoxTipoIdAero.Text) + @" and a.ID not in (select naves.ID 
                 from AERO.aeronaves naves, AERO.vuelos vu where vu.AERONAVE_ID = naves.ID and 
-                (vu.FECHA_SALIDA between convert(datetime, '" + fechaSalida + @"',109) and 
-                convert(datetime, '" + fechaLlegadaEstimada + @"',109) and vu.FECHA_LLEGADA between 
-                convert(datetime, '" + fechaSalida + @"',109) and convert(datetime, '" + 
-                fechaLlegadaEstimada + @"',109) and vu.FECHA_LLEGADA_ESTIMADA between 
-                convert(datetime, '" + fechaSalida + @"',109) and convert(datetime, '" + 
+                (vu.FECHA_SALIDA > convert(datetime, '" + fechaSalida + @"',109) and 
+                vu.FECHA_SALIDA < convert(datetime, '" + fechaLlegadaEstimada + @"',109) and vu.FECHA_LLEGADA > 
+                convert(datetime, '" + fechaSalida + @"',109) and vu.FECHA_LLEGADA < convert(datetime, '" + 
+                fechaLlegadaEstimada + @"',109) and vu.FECHA_LLEGADA_ESTIMADA >
+                convert(datetime, '" + fechaSalida + @"',109) and vu.FECHA_LLEGADA_ESTIMADA  <convert(datetime, '" + 
                 fechaLlegadaEstimada + @"',109)) or v.INVALIDO = 1 or naves.BAJA IS NOT NULL or 
                 naves.TIPO_SERVICIO_ID != " + 
                 Int32.Parse(this.dataGridListadoVuelos.SelectedCells[8].Value.ToString()) +
@@ -120,9 +127,28 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
                         where v.AERONAVE_ID =" + id + " AND v.INVALIDO = 0 AND v.FECHA_SALIDA > CURRENT_TIMESTAMP order by 2");
         }
 
+        private DataTable obtenerVuelosEnElPeriodo() 
+        {
+
+           DataTable vuelosEnElPeriodo = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT v.ID as Id,v.FECHA_SALIDA as 'Fecha Salida',v.FECHA_LLEGADA as 'Fecha Llegada'
+                        ,v.FECHA_LLEGADA_ESTIMADA as 'Fecha Estimada',r.CODIGO as 'Codigo Ruta',t.NOMBRE as Servicio, v.AERONAVE_ID as Aeronave,v.RUTA_ID as RutaID,
+                        r.TIPO_SERVICIO_ID as IdServicio
+                        FROM AERO.vuelos v
+                        join AERO.rutas r on r.ID = v.Ruta_ID
+                        join AERO.tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
+                        where v.AERONAVE_ID = " + textBoxTipoIdAero.Text + @" AND (v.FECHA_SALIDA 
+                > convert(datetime, '" + inicioInactividad + @"',109) and (v.FECHA_SALIDA <
+                convert(datetime, '" + finInactividad + @"',109)) or v.FECHA_LLEGADA < 
+                convert(datetime, '" + inicioInactividad + @"',109) and v.FECHA_LLEGADA < convert(datetime, '" +
+               finInactividad + @"',109) or v.FECHA_LLEGADA_ESTIMADA > 
+                convert(datetime, '" + inicioInactividad + @"',109) and v.FECHA_LLEGADA_ESTIMADA < convert(datetime, '" +
+               finInactividad + @"',109)) ");
+           return vuelosEnElPeriodo;
+       }
+
         private void recarga_enter(object sender, EventArgs e)
         {
-            //this.dataGridListadoVuelos.DataSource = this.vuelosVinculados();
+            cargarListados();
         }
         
     }

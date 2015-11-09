@@ -21,12 +21,11 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
             this.vuelos = tabla;
         }
 
-        public CancelarVuelos(string tipo, string idVuelo, DataTable tabla,string i,string f)
+        public CancelarVuelos(string tipo, string idVuelo,string i,string f)
         {
             InitializeComponent();
             textBoxTipo.Text = tipo;
             textBoxTipoIdAero.Text = idVuelo;
-            this.vuelos = tabla;
             inicio = i;
             fin = f;
         }
@@ -80,7 +79,7 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
         private void buttonReprogramar_Click(object sender, EventArgs e)
         {
             if (textBoxTipo.Text == "0") {
-                Form vuelosARemplazar = new CancelarReprogramarVuelos.VuelosARemplazar(this.vuelos, this.textBoxTipoIdAero.Text, "0");
+                Form vuelosARemplazar = new CancelarReprogramarVuelos.VuelosARemplazar(this.textBoxTipoIdAero.Text,inicio,fin, "0");
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(vuelosARemplazar);
             }
             else
@@ -91,5 +90,7 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
              
             
         }
+
+
     }
 }

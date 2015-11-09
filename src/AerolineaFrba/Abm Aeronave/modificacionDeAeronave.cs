@@ -40,15 +40,15 @@ namespace AerolineaFrba.Abm_Aeronave
                         join AERO.rutas r on r.ID = v.Ruta_ID
                         join AERO.tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
                         where v.AERONAVE_ID = " + textBoxId.Text + @" AND (v.FECHA_SALIDA 
-                between convert(datetime, '" + inicioInactividad + @"',109) and 
-                convert(datetime, '" + finInactividad + @"',109) or v.FECHA_LLEGADA between 
-                convert(datetime, '" + inicioInactividad + @"',109) and convert(datetime, '" +
-                finInactividad + @"',109) or v.FECHA_LLEGADA_ESTIMADA between 
-                convert(datetime, '" + inicioInactividad + @"',109) and convert(datetime, '" +
+                > convert(datetime, '" + inicioInactividad + @"',109) and (v.FECHA_SALIDA <
+                convert(datetime, '" + finInactividad + @"',109)) or v.FECHA_LLEGADA < 
+                convert(datetime, '" + inicioInactividad + @"',109) and v.FECHA_LLEGADA < convert(datetime, '" +
+                finInactividad + @"',109) or v.FECHA_LLEGADA_ESTIMADA > 
+                convert(datetime, '" + inicioInactividad + @"',109) and v.FECHA_LLEGADA_ESTIMADA < convert(datetime, '" +
                 finInactividad + @"',109)) ");
                 if (vuelosEnElPeriodo.Rows.Count > 0){
                     MessageBox.Show("La aeronave tiene vuelos asignados en ese período");
-                    Form vuelosARemplazar = new CancelarReprogramarVuelos.CancelarVuelos("0",textBoxId.Text,vuelosEnElPeriodo, String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value),String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaFinInactividad.Value) );
+                    Form vuelosARemplazar = new CancelarReprogramarVuelos.CancelarVuelos("0",textBoxId.Text, String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value),String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaFinInactividad.Value) );
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(vuelosARemplazar);
                 } else {
                     actualizarAeronave();
