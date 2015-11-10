@@ -13,11 +13,19 @@ namespace AerolineaFrba.Abm_Aeronave
 {
     public partial class modificacionDeAeronave : Form
     {
-        public modificacionDeAeronave()
+        public modificacionDeAeronave(string id,string matricula,string modelo,string kg,string fabricante,string servicio,DateTime alta,string butacas)
         {
             InitializeComponent();
             funcionesComunes.llenarCombobox(comboBoxFabricante, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".fabricantes");
             funcionesComunes.llenarCombobox(comboBoxServicio, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_de_servicio");
+            this.textBoxId.Text = id;
+            this.textBoxMatricula.Text = matricula;
+            this.textBoxModelo.Text = modelo;
+            this.textBoxKgDisponibles.Text = kg;
+            this.comboBoxFabricante.Text = fabricante;
+            this.comboBoxServicio.Text = servicio;
+            this.timePickerAlta.Value = alta;
+            this.textBoxCantButacas.Text = butacas;
         }
 
         private void botonVolver_Click(object sender, EventArgs e)

@@ -26,15 +26,16 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private void botonModificacion_Click(object sender, EventArgs e)
         {
-            Form modificacionAeronave = new Abm_Aeronave.modificacionDeAeronave();
-            ((TextBox)modificacionAeronave.Controls["textBoxId"]).Text = dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
-            ((TextBox)modificacionAeronave.Controls["textBoxMatricula"]).Text = dataGridListadoAeronaves.SelectedCells[1].Value.ToString();
-            ((TextBox)modificacionAeronave.Controls["textBoxModelo"]).Text = dataGridListadoAeronaves.SelectedCells[2].Value.ToString();
-            ((TextBox)modificacionAeronave.Controls["textBoxKgDisponibles"]).Text = dataGridListadoAeronaves.SelectedCells[3].Value.ToString();
-            ((ComboBox)modificacionAeronave.Controls["comboBoxFabricante"]).Text = dataGridListadoAeronaves.SelectedCells[4].Value.ToString();
-            ((ComboBox)modificacionAeronave.Controls["comboBoxServicio"]).Text = dataGridListadoAeronaves.SelectedCells[5].Value.ToString();
-            ((DateTimePicker)modificacionAeronave.Controls["timePickerAlta"]).Value = Convert.ToDateTime(dataGridListadoAeronaves.SelectedCells[6].Value.ToString());
-            ((TextBox)modificacionAeronave.Controls["textBoxCantButacas"]).Text = dataGridListadoAeronaves.SelectedCells[7].Value.ToString();
+            
+            string id = dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
+            string matricula = dataGridListadoAeronaves.SelectedCells[1].Value.ToString();
+            string modelo = dataGridListadoAeronaves.SelectedCells[2].Value.ToString();
+            string kg = dataGridListadoAeronaves.SelectedCells[3].Value.ToString();
+            string fabricante = dataGridListadoAeronaves.SelectedCells[4].Value.ToString();
+            string servicio = dataGridListadoAeronaves.SelectedCells[5].Value.ToString();
+            DateTime alta = Convert.ToDateTime(dataGridListadoAeronaves.SelectedCells[6].Value.ToString());
+            string butacas = dataGridListadoAeronaves.SelectedCells[7].Value.ToString();
+            Form modificacionAeronave = new Abm_Aeronave.modificacionDeAeronave(id,matricula,modelo,kg,fabricante,servicio,alta,butacas);
             funcionesComunes.deshabilitarVentanaYAbrirNueva(modificacionAeronave);
         }
 

@@ -38,10 +38,10 @@
             // botonSalir
             // 
             this.botonSalir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.botonSalir.BackColor = System.Drawing.Color.Gold;
+            this.botonSalir.BackColor = System.Drawing.Color.White;
             this.botonSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.botonSalir.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonSalir.ForeColor = System.Drawing.Color.White;
+            this.botonSalir.ForeColor = System.Drawing.Color.Gold;
             this.botonSalir.Location = new System.Drawing.Point(212, 173);
             this.botonSalir.Name = "botonSalir";
             this.botonSalir.Size = new System.Drawing.Size(118, 62);

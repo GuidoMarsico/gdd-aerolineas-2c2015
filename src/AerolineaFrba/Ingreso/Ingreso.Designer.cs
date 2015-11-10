@@ -64,6 +64,8 @@
             // 
             this.botonIngresar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.botonIngresar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.botonIngresar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.botonIngresar.ForeColor = System.Drawing.Color.DarkRed;
             this.botonIngresar.Location = new System.Drawing.Point(258, 117);
             this.botonIngresar.Name = "botonIngresar";
             this.botonIngresar.Size = new System.Drawing.Size(80, 28);
@@ -107,6 +109,8 @@
             // 
             this.botonLimpiar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.botonLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.botonLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.botonLimpiar.ForeColor = System.Drawing.Color.DarkRed;
             this.botonLimpiar.Location = new System.Drawing.Point(142, 117);
             this.botonLimpiar.Name = "botonLimpiar";
             this.botonLimpiar.Size = new System.Drawing.Size(80, 28);
