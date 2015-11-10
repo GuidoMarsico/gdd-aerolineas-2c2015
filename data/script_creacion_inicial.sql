@@ -1335,8 +1335,10 @@ join AERO.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID
 join AERO.vuelos v on bc.VUELO_ID=v.ID 
 join AERO.rutas r on v.RUTA_ID=r.ID
 join AERO.aeropuertos a on r.DESTINO_ID=a.ID
-where bc.id NOT IN (select BOLETO_COMPRA_ID from AERO.cancelaciones)
-and bc.FECHA_COMPRA between convert(datetime, @fechaFrom,109) and convert(datetime, @fechaTo,109)
+where bc.id NOT IN (select BOLETO_COMPRA_ID from AERO.cancelaciones) and
+p.INVALIDO=0 AND
+bc.INVALIDO=0 AND
+bc.FECHA_COMPRA between convert(datetime, @fechaFrom,109) and convert(datetime, @fechaTo,109)
 group by a.nombre 
 order by 2 desc
 END
@@ -1360,7 +1362,7 @@ GO
 --TOP 5 de los destino con aeronaves mas vacias
 CREATE PROCEDURE AERO.top5DestinosAeronavesVacias(@fechaFrom varchar(50), @fechaTo varchar(50))
 AS BEGIN
-select a.NOMBRE as Destino, count(buV.VUELO_ID) as 'Butacas Vacias' 
+select top 5 a.NOMBRE as Destino, count(buV.VUELO_ID) as 'Butacas Vacias' 
 from AERO.butacas_por_vuelo buV 
 --join AERO.butacas b on naves.ID = b.Aeronave_id 
 join AERO.vuelos v on buV.VUELO_ID=v.ID 
@@ -1390,6 +1392,8 @@ from AERO.clientes c
 join AERO.pasajes p on c.ID=p.CLIENTE_ID
 join AERO.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
 where P.CANCELACION_ID IS NULL AND
+p.INVALIDO=0 AND
+bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
 group by c.nombre, c.APELLIDO
 
@@ -1400,10 +1404,12 @@ from AERO.Clientes c
 join AERO.boletos_de_compra bc on bc.Cliente_ID=c.ID
 join AERO.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
 where P.CANCELACION_ID IS NULL AND
+p.INVALIDO=0 AND
+bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
 group by c.nombre, c.APELLIDO
 
-select * from #tablaMillas
+select top 5 * from #tablaMillas
 order by 2 desc
 
 drop table #tablaMillas
@@ -1531,6 +1537,8 @@ from AERO.clientes c
 join AERO.pasajes p on c.ID=p.CLIENTE_ID 
 join AERO.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
 where bc.ID NOT IN (select BOLETO_COMPRA_ID from AERO.cancelaciones) and
+p.INVALIDO=0 AND
+bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
 and c.DNI = @dni
 
@@ -1541,6 +1549,8 @@ from AERO.clientes c
 join AERO.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join AERO.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
 where bc.ID NOT IN (select BOLETO_COMPRA_ID from AERO.cancelaciones) and
+p.INVALIDO=0 AND
+bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
 and c.DNI = @dni
 
