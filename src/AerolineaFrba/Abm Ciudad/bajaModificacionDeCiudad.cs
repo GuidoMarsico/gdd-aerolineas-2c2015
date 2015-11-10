@@ -31,7 +31,7 @@ namespace AerolineaFrba.Abm_Ciudad
         private void mostrarListadoCiudades()
         {
             DataTable listado;
-            listado = SqlConnector.obtenerTablaSegunConsultaString("select ID as Id, NOMBRE as Ciudad from AERO.CIUDADES where BAJA = 0");
+            listado = SqlConnector.obtenerTablaSegunConsultaString("select ID as Id, NOMBRE as Ciudad from " + SqlConnector.getSchema() + ".CIUDADES where BAJA = 0");
             dataGridListadoCiudades.DataSource = listado;
             dataGridListadoCiudades.Columns[0].Visible = false;
         }
@@ -52,7 +52,7 @@ namespace AerolineaFrba.Abm_Ciudad
                 this.botonLimpiar.Enabled = false;
                 this.botonVolver.Enabled = false;
                 MessageBox.Show("Realizando la operacion, aguarde un momento ... ");
-                bool resultado = SqlConnector.executeProcedure("AERO.bajaCiudad",
+                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".bajaCiudad",
                     funcionesComunes.generarListaParaProcedure("@idCiudad"),
                    Int32.Parse(dataGridListadoCiudades.Rows[dataGridListadoCiudades.SelectedCells[0].RowIndex].Cells[0].Value.ToString()));
                 this.botonBaja.Enabled = true;

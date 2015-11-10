@@ -86,7 +86,7 @@ namespace AerolineaFrba.Registro_de_Usuario
                         if (textBoxTipoForm.Text == "2")
                         {
                             DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
-                                                                    FROM AERO.clientes c
+                                                                    FROM " + SqlConnector.getSchema() + @".clientes c
                                                                     order by 1 desc");
                             Form anterior = funcionesComunes.getVentanaAnterior();
                             ((TextBox)anterior.Controls["textBoxIdCliente"]).Text = Convert.ToString(tabla.Rows[0].ItemArray[0]);
@@ -150,7 +150,7 @@ namespace AerolineaFrba.Registro_de_Usuario
 
         private bool persistirCliente()
         {
-            bool resultado = SqlConnector.executeProcedure("AERO.agregarCliente",
+            bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".agregarCliente",
                 funcionesComunes.generarListaParaProcedure("@rol_id", "@nombreCliente","@apellidoCliente",
                 "@documentoCliente","@direccion","@telefono","@mail","@fechaNac"),
                 funcionesComunes.getIdRolCliente(), nombre, apellido, dni, direccion,
@@ -163,7 +163,7 @@ namespace AerolineaFrba.Registro_de_Usuario
             this.setearCamposIngresados();
             if (direccion != "" && telefono > 0)
             {
-                bool resultado = SqlConnector.executeProcedure("AERO.updateCliente",
+                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".updateCliente",
                     funcionesComunes.generarListaParaProcedure("@id", "@direccion","@telefono","@mail"),
                     id, direccion, telefono, mail);
                 if (resultado)

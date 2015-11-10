@@ -16,9 +16,9 @@ namespace AerolineaFrba.Abm_Ruta
         public altaDeRuta()
         {
             InitializeComponent();
-            funcionesComunes.llenarCombobox(this.comboBoxOrigen, "NOMBRE","select ID,NOMBRE from AERO.aeropuertos");
-            funcionesComunes.llenarCombobox(this.comboBoxDestino, "NOMBRE", "select ID,NOMBRE from AERO.aeropuertos");
-            funcionesComunes.llenarCombobox(this.comboBoxServicios, "NOMBRE", "select ID, NOMBRE from AERO.tipos_de_servicio");
+            funcionesComunes.llenarCombobox(this.comboBoxOrigen, "NOMBRE", "select ID,NOMBRE from " + SqlConnector.getSchema() + ".aeropuertos");
+            funcionesComunes.llenarCombobox(this.comboBoxDestino, "NOMBRE", "select ID,NOMBRE from " + SqlConnector.getSchema() + ".aeropuertos");
+            funcionesComunes.llenarCombobox(this.comboBoxServicios, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_de_servicio");
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -71,7 +71,7 @@ namespace AerolineaFrba.Abm_Ruta
                 Int32 servicio = (Int32)comboBoxServicios.SelectedValue;
                 if (this.validarCampos(origen, destino, precioKg, precioPasaje, codigo))
                 {
-                    bool resultado = SqlConnector.executeProcedure("AERO.agregarRuta",
+                    bool resultado = SqlConnector.executeProcedure( SqlConnector.getSchema() + ".agregarRuta",
                         funcionesComunes.generarListaParaProcedure("@codigo", "@precioKg", "@precioPasaje",
                         "@origen", "@destino", "@servicio"), codigo, precioKg, precioPasaje,
                         origen, destino, servicio);

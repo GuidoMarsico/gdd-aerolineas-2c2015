@@ -32,8 +32,8 @@ namespace AerolineaFrba.Ingreso
                 int intentos = -1;
                 String nombreRol = " ";
                 Int32 idRol;
-                DataTable usuario = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT u.PASSWORD, u.ACTIVO, u.INTENTOS_LOGIN, r.NOMBRE, r.ID from AERO.usuarios u, 
-                AERO.roles_por_usuario ru, AERO.roles r where u.USERNAME = '" + this.textUsuario.Text + 
+                DataTable usuario = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT u.PASSWORD, u.ACTIVO, u.INTENTOS_LOGIN, r.NOMBRE, r.ID from " + SqlConnector.getSchema() + @".usuarios u, 
+                " + SqlConnector.getSchema() + @".roles_por_usuario ru, " + SqlConnector.getSchema() + @".roles r where u.USERNAME = '" + this.textUsuario.Text + 
                 @"' AND r.ID = ru.ROL_ID and ru.USUARIO_ID = u.ID");
                
                 if (usuario.Rows.Count > 0 && existeAdministrador(usuario)) {
@@ -44,14 +44,14 @@ namespace AerolineaFrba.Ingreso
                         idRol = (Int32)usuario.Rows[0].ItemArray[4];
                     if (activo == 1) {
                         if (contr == Base.pasarASha256(this.textPassword.Text)) {
-                            SqlConnector.executeProcedure("AERO.updateIntento",
+                            SqlConnector.executeProcedure(SqlConnector.getSchema() + @".updateIntento",
                                 funcionesComunes.generarListaParaProcedure("@nombre", "@exitoso"), 
                                 this.textUsuario.Text, 1);
                             menuPrincipal menu = new menuPrincipal(this.textUsuario.Text);
                             funcionesComunes.setRol(crearListaRoles(usuario));
                             funcionesComunes.deshabilitarVentanaYAbrirNueva(menu);
                         }else{
-                            SqlConnector.executeProcedure("AERO.updateIntento",
+                            SqlConnector.executeProcedure(SqlConnector.getSchema() + @"updateIntento",
                                 funcionesComunes.generarListaParaProcedure("@nombre", "@exitoso"), this.textUsuario.Text, 2);
                             MessageBox.Show("Contraseña inválida, le quedan " + (2 - intentos) + " intentos"); 
                         }
@@ -84,8 +84,7 @@ namespace AerolineaFrba.Ingreso
 
         private void setearIdRolCliente()
         {
-            DataTable cliente = SqlConnector.obtenerTablaSegunConsultaString(@"select ID from 
-                AERO.roles where NOMBRE = 'cliente'");
+            DataTable cliente = SqlConnector.obtenerTablaSegunConsultaString(@"select ID from " + SqlConnector.getSchema() + @".roles where NOMBRE = 'cliente'");
             if (cliente.Rows.Count > 0){
                 funcionesComunes.setIdRolCliente((Int32)cliente.Rows[0].ItemArray[0]);
             }else{

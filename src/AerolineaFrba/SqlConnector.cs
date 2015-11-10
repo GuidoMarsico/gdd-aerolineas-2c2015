@@ -13,6 +13,7 @@ namespace AerolineaFrba
     {
         public static string cadena_nula = "";
         public static int entero_nulo = -1;
+        public static string schema = "AERO";
         /// <summary>
         /// Realiza la conexion a la base de datos.
         /// </summary>
@@ -39,6 +40,11 @@ namespace AerolineaFrba
         public static SqlConnection getCn()
         {
             return cn;
+        }
+
+        public static string getSchema()
+        {
+            return schema;
         }
 
         /// <summary>

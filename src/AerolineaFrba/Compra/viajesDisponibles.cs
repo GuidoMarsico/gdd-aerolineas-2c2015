@@ -126,11 +126,11 @@ namespace AerolineaFrba.Compra
         {
             DataTable dt1 = new DataTable();
             DataTable dt2 = new DataTable();
-            dt1 = SqlConnector.obtenerTablaSegunConsultaString("select c.ID, c.NOMBRE from aero.ciudades c order by c.NOMBRE");
+            dt1 = SqlConnector.obtenerTablaSegunConsultaString("select c.ID, c.NOMBRE from " + SqlConnector.getSchema() + @".ciudades c order by c.NOMBRE");
             comboBoxOrigen.DataSource = dt1;
             comboBoxOrigen.DisplayMember = "NOMBRE";
             comboBoxOrigen.ValueMember = "ID";
-            dt2 = SqlConnector.obtenerTablaSegunConsultaString("select c.ID, c.NOMBRE from aero.ciudades c order by c.NOMBRE");
+            dt2 = SqlConnector.obtenerTablaSegunConsultaString("select c.ID, c.NOMBRE from " + SqlConnector.getSchema() + @".ciudades c order by c.NOMBRE");
             comboBoxDestino.DataSource = dt2;
             comboBoxDestino.DisplayMember = "NOMBRE";
             comboBoxDestino.ValueMember = "ID";

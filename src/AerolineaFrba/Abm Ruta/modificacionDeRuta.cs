@@ -17,7 +17,7 @@ namespace AerolineaFrba.Abm_Ruta
         {
             InitializeComponent();
             funcionesComunes.llenarCombobox(this.comboBoxServicios, "NOMBRE", @"select ID, NOMBRE 
-                from AERO.tipos_de_servicio");
+                from " + SqlConnector.getSchema() + ".tipos_de_servicio");
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -52,7 +52,7 @@ namespace AerolineaFrba.Abm_Ruta
             Double precioPasaje = Math.Round(Double.Parse(textBoxPrecioPasaje.Text), 2);
             Int32 servicio = (Int32)comboBoxServicios.SelectedValue;
             if (this.validarPrecios(precioKg,precioPasaje)) {
-                bool resultado=SqlConnector.executeProcedure("AERO.updateRuta",
+                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".updateRuta",
                     funcionesComunes.generarListaParaProcedure("@id","@precioKg","@precioPasaje",
                     "@servicio"), this.textBoxId.Text, precioKg, precioPasaje, servicio);
                 if (resultado)

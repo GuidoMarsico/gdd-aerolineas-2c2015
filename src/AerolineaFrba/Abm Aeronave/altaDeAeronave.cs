@@ -17,8 +17,8 @@ namespace AerolineaFrba.Abm_Aeronave
         public altaDeAeronave()
         {
             InitializeComponent();
-            funcionesComunes.llenarCombobox(comboBoxFabricante,"NOMBRE","select ID, NOMBRE from AERO.fabricantes");
-            funcionesComunes.llenarCombobox(comboBoxServicio, "NOMBRE", "select ID, NOMBRE from AERO.tipos_de_servicio");
+            funcionesComunes.llenarCombobox(comboBoxFabricante,"NOMBRE","select ID, NOMBRE from " + SqlConnector.getSchema() + ".fabricantes");
+            funcionesComunes.llenarCombobox(comboBoxServicio, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_de_servicio");
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace AerolineaFrba.Abm_Aeronave
                 servicio = (Int32)this.comboBoxServicio.SelectedValue;
             if (cantButacas > 0 && kg > 0 && matricula != "" && modelo != "" && fabricante > 0 && servicio > 0)
                 if(validarMatricula(matricula)){
-                    bool resultado = SqlConnector.executeProcedure("AERO.agregarAeronave",
+                    bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".agregarAeronave",
                         funcionesComunes.generarListaParaProcedure("@matricula","@modelo","@kg_disponibles",
                         "@fabricante","@tipo_servicio","@alta","@cantButacas"),
                         matricula, modelo, kg, fabricante, servicio,
@@ -78,7 +78,7 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private bool validarMatricula(String matricula){
             DataTable dt = new DataTable();
-            dt = SqlConnector.obtenerTablaSegunConsultaString(@"select MATRICULA from AERO.aeronaves where 
+            dt = SqlConnector.obtenerTablaSegunConsultaString(@"select MATRICULA from " + SqlConnector.getSchema() + @".aeronaves where 
                 MATRICULA = UPPER('"+ matricula +"')");
             if (dt.Rows.Count != 0){
                 return false;

@@ -32,7 +32,7 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 
         public void actualizarAeronave()
         {
-            bool resultado = SqlConnector.executeProcedure("AERO.updateAeronave",
+            bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".updateAeronave",
         funcionesComunes.generarListaParaProcedure("@id", "@fechaInicio", "@fechaFin"),
         this.textBoxTipoIdAero.Text, inicio, fin);
             if (resultado)

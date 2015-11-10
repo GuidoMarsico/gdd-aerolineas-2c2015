@@ -191,8 +191,8 @@ namespace AerolineaFrba
         {
             DataTable listadoRutas = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT r.ID as ID, r.CODIGO as Codigo, 
                 r.PRECIO_BASE_KG as 'Precio Base Kg', r.PRECIO_BASE_PASAJE as 'Precio Base Pasaje', 
-                c1.NOMBRE as Origen, c2.NOMBRE as Destino, t.NOMBRE as Servicio from AERO.rutas r, 
-                AERO.aeropuertos c1, AERO.aeropuertos c2, AERO.tipos_de_servicio t WHERE r.ORIGEN_ID = c1.ID AND 
+                c1.NOMBRE as Origen, c2.NOMBRE as Destino, t.NOMBRE as Servicio from " + SqlConnector.getSchema() + @".rutas r, 
+                " + SqlConnector.getSchema() + @".aeropuertos c1, " + SqlConnector.getSchema() + @".aeropuertos c2, " + SqlConnector.getSchema() + @".tipos_de_servicio t WHERE r.ORIGEN_ID = c1.ID AND 
                 r.DESTINO_ID=c2.ID AND r.TIPO_SERVICIO_ID = t.ID AND r.BAJA = 0 ");
             datagridview.DataSource = listadoRutas;
             datagridview.Columns[0].Visible = false;
@@ -203,8 +203,8 @@ namespace AerolineaFrba
         {
             DataTable listadoAeronaves = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT a.ID as Id, a.MATRICULA as Matricula, 
                 a.MODELO as Modelo, a.KG_DISPONIBLES as 'KG Disponibles', f.NOMBRE as Fabricante, ts.NOMBRE as 
-                Servicio, a.FECHA_ALTA as 'Fecha de Alta', a.CANT_BUTACAS as Butacas FROM AERO.aeronaves a, 
-                AERO.fabricantes f, AERO.tipos_de_servicio ts WHERE a.FABRICANTE_ID = f.ID AND 
+                Servicio, a.FECHA_ALTA as 'Fecha de Alta', a.CANT_BUTACAS as Butacas FROM " + SqlConnector.getSchema() + @".aeronaves a, 
+                " + SqlConnector.getSchema() + @".fabricantes f, " + SqlConnector.getSchema() + @".tipos_de_servicio ts WHERE a.FABRICANTE_ID = f.ID AND 
                 a.TIPO_SERVICIO_ID = ts.ID AND a.BAJA IS NULL;");
             datagridview.DataSource = listadoAeronaves;
             datagridview.Columns[0].Visible = false;
@@ -215,9 +215,9 @@ namespace AerolineaFrba
         {
             DataTable listado = SqlConnector.obtenerTablaSegunConsultaString(@"select v.ID as ID,
                 a.MATRICULA as Matricula,r.CODIGO as 'Codigo de Ruta', o.NOMBRE as Origen, d.NOMBRE 
-                as Destino,v.FECHA_SALIDA as 'Fecha De Salida' from AERO.vuelos v join 
-                AERO.aeronaves a on v.AERONAVE_ID = a.ID join AERO.rutas r on v.RUTA_ID = r.ID join 
-                AERO.aeropuertos o on r.ORIGEN_ID = o.ID join AERO.aeropuertos d on 
+                as Destino,v.FECHA_SALIDA as 'Fecha De Salida' from " + SqlConnector.getSchema() + @".vuelos v join 
+                " + SqlConnector.getSchema() + @".aeronaves a on v.AERONAVE_ID = a.ID join " + SqlConnector.getSchema() + @".rutas r on v.RUTA_ID = r.ID join 
+                " + SqlConnector.getSchema() + @".aeropuertos o on r.ORIGEN_ID = o.ID join " + SqlConnector.getSchema() + @".aeropuertos d on 
                 r.DESTINO_ID = d.ID where v.FECHA_LLEGADA IS NULL AND v.INVALIDO = 0");
             return listado;
         }
@@ -225,8 +225,7 @@ namespace AerolineaFrba
         public static void consultarMillas(Int32 valor, DataGridView datagridview)
         {
             DataTable productos = SqlConnector.obtenerTablaSegunConsultaString(@"select p.ID as 
-                    ID, p.NOMBRE as Producto, p.MILLAS_REQUERIDAS as Millas, p.STOCK as Stock from 
-                    AERO.productos p where p.MILLAS_REQUERIDAS <= '" +
+                    ID, p.NOMBRE as Producto, p.MILLAS_REQUERIDAS as Millas, p.STOCK as Stock from " + SqlConnector.getSchema() + @".productos p where p.MILLAS_REQUERIDAS <= '" +
                     valor + "'");
             datagridview.DataSource = productos;
             datagridview.Columns[0].Visible = false;
@@ -235,8 +234,8 @@ namespace AerolineaFrba
         public static void consultarFuncionalidadesDelRol(Int32 valor, DataGridView datagridview)
         {
             DataTable listado = SqlConnector.obtenerTablaSegunConsultaString(@"select f.ID as Id, 
-                f.DETALLES as Funcionalidad from AERO.funcionalidades_por_rol fr inner 
-                join AERO.funcionalidades f on fr.FUNCIONALIDAD_ID = f.ID where fr.ROL_ID = '" + 
+                f.DETALLES as Funcionalidad from " + SqlConnector.getSchema() + @".funcionalidades_por_rol fr inner 
+                join " + SqlConnector.getSchema() + @".funcionalidades f on fr.FUNCIONALIDAD_ID = f.ID where fr.ROL_ID = '" + 
                 valor + "'");
             datagridview.DataSource = listado;
             datagridview.Columns[0].Visible = false;
@@ -244,7 +243,7 @@ namespace AerolineaFrba
 
         public static DataTable consultarRoles(DataGridView datagridview){
             DataTable listado = SqlConnector.obtenerTablaSegunConsultaString(@"select r.ID as IdRol, 
-                r.NOMBRE as Rol, r.ACTIVO as Activo from AERO.roles r");
+                r.NOMBRE as Rol, r.ACTIVO as Activo from " + SqlConnector.getSchema() + ".roles r");
             listado.Columns.Add("Estado", typeof(String));
             foreach (DataRow row in listado.Rows){
                 if (Convert.ToInt32(row[2]) == 0){
@@ -264,7 +263,7 @@ namespace AerolineaFrba
             DataTable listado = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
                 NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
                 TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                from AERO.clientes where BAJA = 0");
+                from " + SqlConnector.getSchema() + ".clientes where BAJA = 0");
             datagridview.DataSource = listado;
             datagridview.Columns[0].Visible = false;
             return listado;
@@ -273,7 +272,7 @@ namespace AerolineaFrba
        public static DataTable consultarViajesDisponibles(DataGridView datagridview,string fecha)
         {
             DataTable listado;
-            listado = SqlConnector.obtenerTablaSegunProcedure("AERO.vuelosDisponibles",
+            listado = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + ".vuelosDisponibles",
                 generarListaParaProcedure("@fecha"), fecha);
             datagridview.DataSource = listado;
             datagridview.Columns[0].Visible = false;
@@ -282,7 +281,7 @@ namespace AerolineaFrba
 
          public  static void darDeBajaAeronave(String id)
         {
-            bool resultado = SqlConnector.executeProcedure("AERO.bajaAeronave", 
+            bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".bajaAeronave", 
                 generarListaParaProcedure("@id"), id);
             if (resultado)
             {
@@ -291,7 +290,7 @@ namespace AerolineaFrba
         }
         public static void darDebajaVuelo(int id)
        {
-           SqlConnector.executeProcedure("AERO.bajaVuelo", generarListaParaProcedure("@id"), id);
+           SqlConnector.executeProcedure(SqlConnector.getSchema() + ".bajaVuelo", generarListaParaProcedure("@id"), id);
        }
 
         public static List<string> generarListaParaProcedure(params Object[] parametros)
@@ -322,7 +321,7 @@ namespace AerolineaFrba
         {
 
 
-            SqlConnector.executeProcedure("AERO.altaBoletoDeCompra",
+            SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaBoletoDeCompra",
                 funcionesComunes.generarListaParaProcedure("@precio", "@tipo", "@idCliente", "@idVuelo"),
                 precioCompra, tipoCompra, idCliente, idVuelo);
 
@@ -338,7 +337,7 @@ namespace AerolineaFrba
         private static int obtenerBoleto()
         {
             DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 bc.ID as id
-                                                                    FROM AERO.boletos_de_compra bc
+                                                                    FROM " + SqlConnector.getSchema() + @".boletos_de_compra bc
                                                                     order by 1 desc");
             return Convert.ToInt32(tabla.Rows[0].ItemArray[0]);
         }
@@ -352,7 +351,7 @@ namespace AerolineaFrba
                  */ 
                 double kg = Convert.ToDouble(encomienda.Cells[4].Value);
                 double precio = Convert.ToDouble(encomienda.Cells[5].Value);
-                SqlConnector.executeProcedure("AERO.altaPaquete",
+                SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaPaquete",
                     funcionesComunes.generarListaParaProcedure("@idBoletoCompra", "@kg", "@precio"),
                     idBoleto,kg,precio);
                 //Ahora le mando un 1 al codigo pero hay que ver como generar
@@ -370,7 +369,7 @@ namespace AerolineaFrba
                 if ( idPasajero == 0) {
                     idPasajero = funcionesComunes.darAltaCliente(pasaje);
                 }
-                SqlConnector.executeProcedure("AERO.altaPasaje",
+                SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaPasaje",
                 funcionesComunes.generarListaParaProcedure("@idCliente","@idButaca","@idBoletoCompra","@precio"),
                 idPasajero,idButaca,idBoleto,precio);
                 //Aca hacemos el insert del pasaje usando el idBoleto , el idPasajero, el precio , el id de la butaca y el codigo que hay que ver como generar
@@ -385,14 +384,14 @@ namespace AerolineaFrba
             long telefono= long.Parse(pasaje.Cells[7].Value.ToString());
             string direccion= pasaje.Cells[8].Value.ToString();
             string mail= pasaje.Cells[9].Value.ToString();
-            SqlConnector.executeProcedure("AERO.agregarCliente",
+            SqlConnector.executeProcedure(SqlConnector.getSchema() + ".agregarCliente",
                 funcionesComunes.generarListaParaProcedure("@rol_id", "@nombreCliente", "@apellidoCliente",
                 "@documentoCliente", "@direccion", "@telefono", "@mail", "@fechaNac"),
                 funcionesComunes.getIdRolCliente(), nombre, apellido, dni, direccion,
                 telefono, mail, String.Format("{0:yyyyMMdd HH:mm:ss}", Convert.ToDateTime(pasaje.Cells[10].Value.ToString())));
             // Tenemos que hacer que me devuelva el id del cliente dado de alta para despues usarlo en el alta del pasaje
             DataTable tabla= SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
-                                                                    FROM AERO.clientes c
+                                                                    FROM " + SqlConnector.getSchema() + @".clientes c
                                                                     order by 1 desc");
 
             return Convert.ToInt32( tabla.Rows[0].ItemArray[0]);
@@ -403,7 +402,7 @@ namespace AerolineaFrba
             DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
                 NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
                 TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                from AERO.clientes where BAJA = 0 AND DNI = " + dni);
+                from " + SqlConnector.getSchema() + ".clientes where BAJA = 0 AND DNI = " + dni);
             return tablaClientes.Rows.Count != 0;
         }
 
@@ -413,7 +412,7 @@ namespace AerolineaFrba
             DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
                          NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
                          TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                         from AERO.clientes where BAJA = 0 AND ID = " + id);
+                         from " + SqlConnector.getSchema() + ".clientes where BAJA = 0 AND ID = " + id);
             return tablaClientes.Rows[0];
         }
     }

@@ -89,7 +89,7 @@ namespace AerolineaFrba.Compra
             string direccion = this.textBoxDireccion.Text;
             string mail = this.textBoxMail.Text;
             DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
-                                                                    FROM AERO.clientes c
+                                                                    FROM " + SqlConnector.getSchema() + @".clientes c
                                                                     order by 1 desc");
             return Convert.ToInt32(tabla.Rows[0].ItemArray[0]);
         }
@@ -106,7 +106,7 @@ namespace AerolineaFrba.Compra
                         DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
                          NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
                          TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                         from AERO.clientes where BAJA = 0 AND DNI = " + dni);
+                         from " + SqlConnector.getSchema() + @".clientes where BAJA = 0 AND DNI = " + dni);
                         if (tablaClientes.Rows.Count > 1)
                         {
                             Form listadoClientes = new Registro_de_Usuario.bajaModificacionDeCliente();
@@ -161,7 +161,7 @@ namespace AerolineaFrba.Compra
             DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
                          NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
                          TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                         from AERO.clientes where BAJA = 0 AND  ID = " + this.textBoxIdCliente.Text);
+                         from " + SqlConnector.getSchema() + @".clientes where BAJA = 0 AND  ID = " + this.textBoxIdCliente.Text);
 
             DataRow row = tablaClientes.Rows[0];
             textBoxIdCliente.Text = row["Id"].ToString();

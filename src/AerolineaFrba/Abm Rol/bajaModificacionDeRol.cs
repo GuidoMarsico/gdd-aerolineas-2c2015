@@ -44,7 +44,7 @@ namespace AerolineaFrba.Abm_Rol
         {
             if (rolActivo())
             {
-                bool resultado = SqlConnector.executeProcedure("AERO.inhabilitarRol",
+                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".inhabilitarRol",
                     funcionesComunes.generarListaParaProcedure("@idRol"), Convert.ToInt32(dataGridListadoRoles.SelectedCells[0].Value));
                 if (resultado)
                 {
@@ -127,7 +127,7 @@ namespace AerolineaFrba.Abm_Rol
         {
             if (!rolActivo())
             {
-                bool resultado = SqlConnector.executeProcedure("AERO.habilitarRol",
+                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".habilitarRol",
                     funcionesComunes.generarListaParaProcedure("@idRol"), Convert.ToInt32(dataGridListadoRoles.SelectedCells[0].Value));
                 if (resultado)
                 {

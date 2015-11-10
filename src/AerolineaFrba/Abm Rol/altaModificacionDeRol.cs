@@ -47,14 +47,14 @@ namespace AerolineaFrba.Abm_Rol
         private void cargarComboBoxFuncionalidades()
         {
             funcionesComunes.llenarCombobox(comboBoxFuncionalidades, "DETALLES", @"select f.ID, 
-                f.DETALLES from aero.funcionalidades f order by f.DETALLES");           
+                f.DETALLES from " + SqlConnector.getSchema() + ".funcionalidades f order by f.DETALLES");           
         }
 
         private void cargarComboBoxUsuarios()
         {
-            funcionesComunes.llenarCombobox(comboBoxUsers, "USERNAME", @"select DISTINCT u.ID, u.USERNAME from aero.usuarios u, 
-                aero.roles_por_usuario ru, AERO.roles r where ru.USUARIO_ID = u.ID and ru.ROL_ID = r.ID and '" + textRol.Text + 
-                @"' not in (select r2.NOMBRE from aero.roles_por_usuario ru2, AERO.roles r2 where ru2.ROL_ID = r2.ID and 
+            funcionesComunes.llenarCombobox(comboBoxUsers, "USERNAME", @"select DISTINCT u.ID, u.USERNAME from " + SqlConnector.getSchema() + @".usuarios u, 
+                " + SqlConnector.getSchema() + @".roles_por_usuario ru, " + SqlConnector.getSchema() + @".roles r where ru.USUARIO_ID = u.ID and ru.ROL_ID = r.ID and '" + textRol.Text +
+                @"' not in (select r2.NOMBRE from " + SqlConnector.getSchema() + @".roles_por_usuario ru2, " + SqlConnector.getSchema() + @".roles r2 where ru2.ROL_ID = r2.ID and 
                 ru2.USUARIO_ID = u.ID)");
         }
 
@@ -66,10 +66,10 @@ namespace AerolineaFrba.Abm_Rol
             {
                 if (textRol.Text.Trim() != "")
                 {
-                     DataTable tabla_rol = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT NOMBRE FROM AERO.ROLES WHERE NOMBRE ='" + this.textRol.Text + "'");
+                    DataTable tabla_rol = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT NOMBRE FROM " + SqlConnector.getSchema() + ".ROLES WHERE NOMBRE ='" + this.textRol.Text + "'");
                      if (tabla_rol.Rows.Count == 0)
                      {
-                         int id = SqlConnector.executeProcedureWithReturnValue("AERO.agregarRol",
+                         int id = SqlConnector.executeProcedureWithReturnValue(SqlConnector.getSchema() + @".agregarRol",
                           funcionesComunes.generarListaParaProcedure("@nombreRol"), textRol.Text);
                          if (id != -1)
                          {
@@ -102,7 +102,7 @@ namespace AerolineaFrba.Abm_Rol
             {
                 if (textRol.Text.Trim() != "")
                 {
-                    bool resultado = SqlConnector.executeProcedure("AERO.cambiarNombreRol",
+                    bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".cambiarNombreRol",
                     funcionesComunes.generarListaParaProcedure("@idRol","@nombre"),
                     this.textId.Text,this.textRol.Text);
                     if (resultado)
@@ -123,7 +123,7 @@ namespace AerolineaFrba.Abm_Rol
                 idRol = Convert.ToInt32(textId.Text);
                 if (!(existeFuncionalidad(idFuncionalidad)))
                 {
-                    SqlConnector.executeProcedure("AERO.agregarFuncionalidad",
+                    SqlConnector.executeProcedure(SqlConnector.getSchema() + @".agregarFuncionalidad",
                         funcionesComunes.generarListaParaProcedure("@idRol", "@idFunc"), idRol, idFuncionalidad);
                     funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text),
                         dataGridFuncionalidades);
@@ -152,7 +152,7 @@ namespace AerolineaFrba.Abm_Rol
             {
                 idFuncionalidad = Convert.ToInt32(dataGridFuncionalidades.SelectedCells[0].Value);
                 idRol = Convert.ToInt32(textId.Text);
-                SqlConnector.executeProcedure("AERO.quitarFuncionalidad",
+                SqlConnector.executeProcedure(SqlConnector.getSchema() + @".quitarFuncionalidad",
                     funcionesComunes.generarListaParaProcedure("@idRol", "@idFunc"), idRol, idFuncionalidad);
                 funcionesComunes.consultarFuncionalidadesDelRol(Convert.ToInt32(textId.Text),
                         dataGridFuncionalidades);
@@ -163,7 +163,7 @@ namespace AerolineaFrba.Abm_Rol
         {
             if (comboBoxUsers.SelectedIndex != -1)
             {
-                SqlConnector.executeProcedure("AERO.asignarRol", funcionesComunes.generarListaParaProcedure("@idRol", "@idUser"),
+                SqlConnector.executeProcedure(SqlConnector.getSchema() + @".asignarRol", funcionesComunes.generarListaParaProcedure("@idRol", "@idUser"),
                     textId.Text, comboBoxUsers.SelectedValue.ToString());
                 MessageBox.Show("El usuario fue asignado correctamente");
                 comboBoxUsers.DataSource = null;

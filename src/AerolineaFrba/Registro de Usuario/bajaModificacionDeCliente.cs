@@ -118,7 +118,7 @@ namespace AerolineaFrba.Registro_de_Usuario
 
         private void botonBaja_Click(object sender, EventArgs e)
         {
-            bool resultado = SqlConnector.executeProcedure("AERO.bajaCliente",
+            bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".bajaCliente",
                 funcionesComunes.generarListaParaProcedure("@id"), 
                 dataGridListadoClientes.SelectedCells[0].Value.ToString());
             if (resultado)

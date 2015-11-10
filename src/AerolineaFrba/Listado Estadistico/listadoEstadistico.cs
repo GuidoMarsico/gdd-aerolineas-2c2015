@@ -44,23 +44,23 @@ namespace AerolineaFrba.Listado_Estadistico
             List<string> lista = funcionesComunes.generarListaParaProcedure("@fechaFrom", "@fechaTo");
             switch ((String)this.comboBoxListados.SelectedItem){
                 case "Top 5 Destinos con más pasajes comprados":
-                    dt = SqlConnector.obtenerTablaSegunProcedure("AERO.top5DestinosConPasajes", 
+                    dt = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + ".top5DestinosConPasajes", 
                         lista, String.Format("{0:yyyyMMdd HH:mm:ss}",fechaInicio), String.Format("{0:yyyyMMdd HH:mm:ss}",fechaFin));
                     break;
                 case "Top 5 Destinos con aeronaves más vacias":
-                    dt = SqlConnector.obtenerTablaSegunProcedure("AERO.top5DestinosAeronavesVacias", 
+                    dt = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + ".top5DestinosAeronavesVacias", 
                         lista, String.Format("{0:yyyyMMdd HH:mm:ss}",fechaInicio),String.Format("{0:yyyyMMdd HH:mm:ss}",fechaFin));
                     break;
                 case "Top 5 Clientes con más puntos acumulados a la fecha":
-                    dt = SqlConnector.obtenerTablaSegunProcedure("AERO.top5ClientesMillas", lista, 
+                    dt = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + ".top5ClientesMillas", lista, 
                         String.Format("{0:yyyyMMdd HH:mm:ss}",fechaInicio), String.Format("{0:yyyyMMdd HH:mm:ss}",fechaFin));
                     break;
                 case "Top 5 Destinos con más pasajes cancelados":
-                    dt = SqlConnector.obtenerTablaSegunProcedure("AERO.top5DestinosCancelados", 
+                    dt = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + ".top5DestinosCancelados", 
                         lista, String.Format("{0:yyyyMMdd HH:mm:ss}",fechaInicio), String.Format("{0:yyyyMMdd HH:mm:ss}",fechaFin));
                     break;
                 case "Top 5 Aeronaves con mayor cantidad de dias fuera de servicio":
-                    dt = SqlConnector.obtenerTablaSegunProcedure("AERO.top5AeronavesFueraDeServicio",
+                    dt = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + ".top5AeronavesFueraDeServicio",
                         lista, String.Format("{0:yyyyMMdd HH:mm:ss}",fechaInicio), String.Format("{0:yyyyMMdd HH:mm:ss}",fechaFin));
                     break;
             }

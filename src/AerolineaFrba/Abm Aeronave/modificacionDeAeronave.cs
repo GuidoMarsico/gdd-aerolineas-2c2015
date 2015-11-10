@@ -16,8 +16,8 @@ namespace AerolineaFrba.Abm_Aeronave
         public modificacionDeAeronave()
         {
             InitializeComponent();
-            funcionesComunes.llenarCombobox(comboBoxFabricante, "NOMBRE", "select ID, NOMBRE from AERO.fabricantes");
-            funcionesComunes.llenarCombobox(comboBoxServicio, "NOMBRE", "select ID, NOMBRE from AERO.tipos_de_servicio");
+            funcionesComunes.llenarCombobox(comboBoxFabricante, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".fabricantes");
+            funcionesComunes.llenarCombobox(comboBoxServicio, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_de_servicio");
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -36,9 +36,9 @@ namespace AerolineaFrba.Abm_Aeronave
                 DataTable vuelosEnElPeriodo = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT v.ID as Id,v.FECHA_SALIDA as 'Fecha Salida',v.FECHA_LLEGADA as 'Fecha Llegada'
                         ,v.FECHA_LLEGADA_ESTIMADA as 'Fecha Estimada',r.CODIGO as 'Codigo Ruta',t.NOMBRE as Servicio, v.AERONAVE_ID as Aeronave,v.RUTA_ID as RutaID,
                         r.TIPO_SERVICIO_ID as IdServicio
-                        FROM AERO.vuelos v
-                        join AERO.rutas r on r.ID = v.Ruta_ID
-                        join AERO.tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
+                        FROM " + SqlConnector.getSchema() + @".vuelos v
+                        join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.Ruta_ID
+                        join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
                         where v.AERONAVE_ID = " + textBoxId.Text + @" AND (v.FECHA_SALIDA 
                 > convert(datetime, '" + inicioInactividad + @"',109) and (v.FECHA_SALIDA <
                 convert(datetime, '" + finInactividad + @"',109)) or v.FECHA_LLEGADA < 
@@ -60,7 +60,7 @@ namespace AerolineaFrba.Abm_Aeronave
 
         public void actualizarAeronave()
         {
-            bool resultado = SqlConnector.executeProcedure("AERO.updateAeronave",
+            bool resultado = SqlConnector.executeProcedure( SqlConnector.getSchema() + ".updateAeronave",
         funcionesComunes.generarListaParaProcedure("@id", "@fechaInicio", "@fechaFin"),
         this.textBoxId.Text,
         String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value),

@@ -111,7 +111,7 @@ namespace AerolineaFrba.Compra
                         DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
                          NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
                          TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                         from AERO.clientes where BAJA = 0 AND DNI = " + dni);
+                         from " + SqlConnector.getSchema() + @".clientes where BAJA = 0 AND DNI = " + dni);
                         if (tablaClientes.Rows.Count > 1)
                         {
                             Form listadoClientes = new Registro_de_Usuario.bajaModificacionDeCliente();
@@ -216,7 +216,7 @@ namespace AerolineaFrba.Compra
             DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
                          NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
                          TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                         from AERO.clientes where BAJA = 0 AND  ID = "+this.textBoxIdCliente.Text);
+                         from " + SqlConnector.getSchema() + @".clientes where BAJA = 0 AND  ID = " + this.textBoxIdCliente.Text);
             DataRow row = tablaClientes.Rows[0];
 
             this.textBoxIdCliente.Text = row["Id"].ToString();
@@ -252,7 +252,7 @@ namespace AerolineaFrba.Compra
         private void settearUbicacion(object sender, EventArgs e)
         {
             DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT b.TIPO as tipo
-               FROM AERO.butacas_por_vuelo bxv join AERO.butacas b on b.ID = bxv.BUTACA_ID 
+               FROM " + SqlConnector.getSchema() + @".butacas_por_vuelo bxv join " + SqlConnector.getSchema() + @".butacas b on b.ID = bxv.BUTACA_ID 
                 where bxv.VUELO_ID = " + this.textBoxIDVuelo.Text + "AND b.ID = "+ comboBoxNumeroButaca.SelectedValue.ToString());
             this.textBoxUbicacion.Text= tabla.Rows[0].ItemArray[0].ToString();
         }
@@ -345,7 +345,7 @@ namespace AerolineaFrba.Compra
         {
             this.comboBoxNumeroButaca.DataSource = null;
             funcionesComunes.llenarCombobox(this.comboBoxNumeroButaca, "NUMERO", @"SELECT b.ID,
-                b.NUMERO FROM AERO.butacas_por_vuelo bxv join AERO.butacas b on b.ID = bxv.BUTACA_ID 
+                b.NUMERO FROM " + SqlConnector.getSchema() + @".butacas_por_vuelo bxv join " + SqlConnector.getSchema() + @".butacas b on b.ID = bxv.BUTACA_ID 
                 where bxv.VUELO_ID = " + this.textBoxIDVuelo.Text + @"AND bxv.ESTADO = 'LIBRE' 
                 order by 2");
             this.textBoxUbicacion.Clear();
@@ -365,7 +365,7 @@ namespace AerolineaFrba.Compra
         private bool viajaEnOtroVuelo()
         {
             DataTable otrosVuelosEnMismoHorario = new DataTable();
-            otrosVuelosEnMismoHorario = SqlConnector.obtenerTablaSegunConsultaString(@"select * from AERO.pasajes p inner join AERO.boletos_de_compra bc on p.BOLETO_COMPRA_ID = bc.ID inner join AERO.vuelos v on bc.VUELO_ID = v.ID where 
+            otrosVuelosEnMismoHorario = SqlConnector.obtenerTablaSegunConsultaString(@"select * from " + SqlConnector.getSchema() + @".pasajes p inner join " + SqlConnector.getSchema() + @".boletos_de_compra bc on p.BOLETO_COMPRA_ID = bc.ID inner join " + SqlConnector.getSchema() + @".vuelos v on bc.VUELO_ID = v.ID where 
             p.INVALIDO = 0 and (p.CANCELACION_ID IS NULL) and bc.CLIENTE_ID =" + Int32.Parse(this.textBoxIdCliente.Text) + @" and 
             (v.FECHA_SALIDA  > convert(datetime, '" + fechaSalida + @"',109) and (v.FECHA_SALIDA <
                 convert(datetime, '" + fechaLlegada + @"',109)) or v.FECHA_LLEGADA < 
@@ -405,8 +405,8 @@ namespace AerolineaFrba.Compra
         {
             DataTable tabla = new DataTable();
             tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT r.PRECIO_BASE_KG, 
-                r.PRECIO_BASE_PASAJE,t.PORCENTAJE FROM AERO.vuelos v join AERO.rutas r on r.ID = v.RUTA_ID
-                 join AERO.tipos_de_servicio t on t.ID= r.TIPO_SERVICIO_ID   WHERE v.ID = " + this.textBoxIDVuelo.Text);
+                r.PRECIO_BASE_PASAJE,t.PORCENTAJE FROM " + SqlConnector.getSchema() + @".vuelos v join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.RUTA_ID
+                 join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID= r.TIPO_SERVICIO_ID   WHERE v.ID = " + this.textBoxIDVuelo.Text);
             Double porcentaje = Double.Parse(tabla.Rows[0].ItemArray[2].ToString());
             precioBaseKg = Double.Parse(tabla.Rows[0].ItemArray[0].ToString());
             precioBaseKg = precioBaseKg + (precioBaseKg * porcentaje);

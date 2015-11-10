@@ -76,7 +76,7 @@ namespace AerolineaFrba.Registro_Llegada_Destino
         private void botonRegistrar_Click(object sender, EventArgs e)
         {
             if (validarRegistro()) {
-                bool resultado = SqlConnector.executeProcedure("AERO.registrarLlegada",
+                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".registrarLlegada",
                     funcionesComunes.generarListaParaProcedure("@idVuelo","@fechaLlegada"),
                     dataGridListadoVuelos.SelectedCells[0].Value.ToString(), 
                     String.Format("{0:yyyyMMdd HH:mm:ss}", this.timePickerLlegada.Value));

@@ -17,7 +17,7 @@ namespace AerolineaFrba.Tarjeta
         public altaDeTarjeta()
         {
             InitializeComponent();
-            funcionesComunes.llenarCombobox(this.comboBoxTipoTarjeta, "NOMBRE", "select ID, NOMBRE from AERO.tipos_tarjeta");
+            funcionesComunes.llenarCombobox(this.comboBoxTipoTarjeta, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_tarjeta");
         }
 
         //este boton borra el contenido de todos los campos
@@ -105,7 +105,7 @@ namespace AerolineaFrba.Tarjeta
         {
             if (validarDatos())
             {
-                bool resultado = SqlConnector.executeProcedure("AERO.altaTarjeta",
+                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaTarjeta",
                     funcionesComunes.generarListaParaProcedure("@idCliente","@nroTarjeta","@idTipo","@fechaVto"), 
                     long.Parse(dataGridCliente.SelectedCells[0].Value.ToString()), 
                     long.Parse(this.textBoxNumero.Text),

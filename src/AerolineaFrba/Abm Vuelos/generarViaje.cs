@@ -105,7 +105,7 @@ namespace AerolineaFrba.Abm_Vuelos
         {
             if (this.validar())
             {
-                bool resultado = SqlConnector.executeProcedure("AERO.generarViaje",
+                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".generarViaje",
                     funcionesComunes.generarListaParaProcedure("@fechaSalida", "@fechaLlegadaEstimada",
                     "@idAeronave","@idRuta"), 
                     String.Format("{0:yyyyMMdd HH:mm:ss}",this.timePickerSalida.Value),
@@ -141,7 +141,7 @@ namespace AerolineaFrba.Abm_Vuelos
                 MessageBox.Show("La aeronave y la ruta elegida deben tener el mismo tipo de servicio");
                 return false;
             }
-            DataTable resultado = SqlConnector.obtenerTablaSegunProcedure("AERO.validarVuelo",
+            DataTable resultado = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + ".validarVuelo",
                 funcionesComunes.generarListaParaProcedure("@id", "@fechaSalida", "@fechaLlegadaEstimada"),
                 dataGridListadoAeronaves.SelectedCells[0].Value, 
                String.Format("{0:yyyyMMdd HH:mm:ss}",this.timePickerSalida.Value), 

@@ -90,7 +90,7 @@ namespace AerolineaFrba.Abm_Ruta
             this.botonModificacion.Enabled = false;
             this.botonVolver.Enabled = false;
             MessageBox.Show("Realizando la operacion, aguarde un momento ... ");
-            bool resultado = SqlConnector.executeProcedure("AERO.bajaRuta",
+            bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".bajaRuta",
                 funcionesComunes.generarListaParaProcedure("@id"),
                 dataGridListadoRutas.SelectedCells[0].Value.ToString());
             this.botonBaja.Enabled = true;

@@ -21,7 +21,7 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-            SqlConnector.executeProcedure("AERO.cambiarAeronaveDeVuelo", 
+            SqlConnector.executeProcedure( SqlConnector.getSchema() + @".cambiarAeronaveDeVuelo", 
                 funcionesComunes.generarListaParaProcedure("@idVuelo", "@idAeronaveNueva"), 
                 Int32.Parse(this.textBoxIdVuelo.Text),
                 Int32.Parse(this.dataGridListadoAeronaves.SelectedCells[0].Value.ToString())); 

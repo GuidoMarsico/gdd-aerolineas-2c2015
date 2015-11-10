@@ -37,10 +37,10 @@ namespace AerolineaFrba.Consulta_Millas
             String dni = this.textBoxDNI.Text;
             if (dni != "") {
                 DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id 
-                from AERO.clientes where BAJA = 0 AND DNI = " + dni);
+                from " + SqlConnector.getSchema() + @".clientes where BAJA = 0 AND DNI = " + dni);
                 if (tablaClientes.Rows.Count > 0)
                 {
-                    DataTable resultado = SqlConnector.obtenerTablaSegunProcedure("AERO.consultarMillas",
+                    DataTable resultado = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + @".consultarMillas",
                         funcionesComunes.generarListaParaProcedure("@dni"), Int32.Parse(dni));
                     dataGridConsultaMillas.DataSource = resultado;
                     Int32 millas = 0;

@@ -117,9 +117,9 @@ namespace AerolineaFrba.Abm_Aeronave
             return SqlConnector.obtenerTablaSegunConsultaString(@"SELECT v.ID as Id,v.FECHA_SALIDA as 'Fecha Salida',v.FECHA_LLEGADA as 'Fecha Llegada'
                         ,v.FECHA_LLEGADA_ESTIMADA as 'Fecha Estimada',r.CODIGO as 'Codigo Ruta',t.NOMBRE as Servicio, v.AERONAVE_ID as Aeronave,v.RUTA_ID as RutaID,
                         r.TIPO_SERVICIO_ID as IdServicio
-                        FROM AERO.vuelos v
-                        join AERO.rutas r on r.ID = v.Ruta_ID
-                        join AERO.tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
+                        FROM " + SqlConnector.getSchema() + @".vuelos v
+                        join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.Ruta_ID
+                        join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
                         where v.AERONAVE_ID =" + id +" AND v.INVALIDO = 0 AND v.FECHA_SALIDA > CURRENT_TIMESTAMP order by 2");
         }
 

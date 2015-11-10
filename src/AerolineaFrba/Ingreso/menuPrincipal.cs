@@ -137,16 +137,16 @@ namespace AerolineaFrba.Ingreso
             if (nombre_de_usuario == null)
             {
                 dt = SqlConnector.obtenerTablaSegunConsultaString(@"select funcionalidades.DETALLES from 
-                aero.roles inner join aero.funcionalidades_por_rol on 
-                roles.ID = funcionalidades_por_rol.ROL_ID inner join AERO.funcionalidades on 
+                " + SqlConnector.getSchema() + @".roles inner join " + SqlConnector.getSchema() + @".funcionalidades_por_rol on 
+                roles.ID = funcionalidades_por_rol.ROL_ID inner join " + SqlConnector.getSchema() + @".funcionalidades on 
                 funcionalidades_por_rol.FUNCIONALIDAD_ID = funcionalidades.ID where 
                 roles.NOMBRE = 'Cliente'");
             }
             else
             {
-                dt = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT DISTINCT f.DETALLES FROM AERO.funcionalidades f, AERO.funcionalidades_por_rol fr,
-            AERO.roles r WHERE f.ID = fr.FUNCIONALIDAD_ID AND r.ID = fr.ROL_ID AND r.NOMBRE in (SELECT r.NOMBRE from AERO.usuarios u,
-            AERO.roles_por_usuario ru, AERO.roles r2 where u.USERNAME = '" + nombre_de_usuario + @"' AND r2.ID = ru.ROL_ID and ru.USUARIO_ID = u.ID) AND r.ACTIVO = 1");
+                dt = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT DISTINCT f.DETALLES FROM " + SqlConnector.getSchema() + @".funcionalidades f, " + SqlConnector.getSchema() + @".funcionalidades_por_rol fr,
+            " + SqlConnector.getSchema() + @".roles r WHERE f.ID = fr.FUNCIONALIDAD_ID AND r.ID = fr.ROL_ID AND r.NOMBRE in (SELECT r.NOMBRE from " + SqlConnector.getSchema() + @".usuarios u,
+            " + SqlConnector.getSchema() + @".roles_por_usuario ru, " + SqlConnector.getSchema() + @".roles r2 where u.USERNAME = '" + nombre_de_usuario + @"' AND r2.ID = ru.ROL_ID and ru.USUARIO_ID = u.ID) AND r.ACTIVO = 1");
             }
             
             foreach (DataRow row in dt.Rows)

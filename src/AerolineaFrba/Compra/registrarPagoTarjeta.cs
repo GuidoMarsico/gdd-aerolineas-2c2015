@@ -127,7 +127,7 @@ namespace AerolineaFrba.Compra
                         DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
                          NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
                          TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                         from AERO.clientes where BAJA = 0 AND DNI = " + dni);
+                         from " + SqlConnector.getSchema() + @".clientes where BAJA = 0 AND DNI = " + dni);
                         if (tablaClientes.Rows.Count > 1)
                         {
                             Form listadoClientes = new Registro_de_Usuario.bajaModificacionDeCliente();
@@ -149,7 +149,7 @@ namespace AerolineaFrba.Compra
                             this.textBoxDni.Enabled = false;
 
                             DataTable tablaTarjetas = SqlConnector.obtenerTablaSegunConsultaString(@"select tc.ID as Id, tc.NUMERO as Número, tc.FECHA_VTO as Vencimiento, t.NOMBRE as Nombre, t.CUOTAS as cuotas
-                             from AERO.tarjetas_de_credito tc inner join AERO.tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text));
+                             from " + SqlConnector.getSchema() + @".tarjetas_de_credito tc inner join " + SqlConnector.getSchema() + @".tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text));
                             if (tablaTarjetas.Rows.Count > 0)
                             {
                                 DataRow rowTarj = tablaTarjetas.Rows[0];
@@ -215,7 +215,7 @@ namespace AerolineaFrba.Compra
             DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
                          NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
                          TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                         from AERO.clientes where BAJA = 0 AND  ID = " + this.textBoxIdCliente.Text);
+                         from " + SqlConnector.getSchema() + @".clientes where BAJA = 0 AND  ID = " + this.textBoxIdCliente.Text);
             DataRow row = tablaClientes.Rows[0];
             textBoxIdCliente.Text = row["Id"].ToString();
             textBoxNombre.Text = row["Nombre"].ToString();
@@ -227,7 +227,7 @@ namespace AerolineaFrba.Compra
             this.textBoxDni.Enabled = false;
 
             DataTable tablaTarjetas = SqlConnector.obtenerTablaSegunConsultaString(@"select tc.ID as Id, tc.NUMERO as Número, tc.FECHA_VTO as Vencimiento, t.NOMBRE as Nombre, t.CUOTAS as cuotas
-                             from AERO.tarjetas_de_credito tc inner join AERO.tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text));
+                             from " + SqlConnector.getSchema() + @".tarjetas_de_credito tc inner join " + SqlConnector.getSchema() + @".tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text));
             if (tablaTarjetas.Rows.Count > 0)
             {
                 DataRow rowTarj = tablaTarjetas.Rows[0];
