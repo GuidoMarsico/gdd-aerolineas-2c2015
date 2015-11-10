@@ -32,15 +32,6 @@ namespace AerolineaFrba.Ingreso
             funcionesComunes.habilitarAnterior();
         }
 
-        private void botonAceptar_Click(object sender, EventArgs e)
-        {
-            //Habria que cargar la lista de funcionalidades de la DB antes de hacer esto
-            //Solucion provisoria
-            String eleccionUsuario = (String)comboBoxFuncionalidad.SelectedItem;
-            if (eleccionUsuario != null)
-                abrirFormulario(eleccionUsuario);
-            else MessageBox.Show("Seleccione funcionalidad", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
 
         //Abre formulario segun funcionalidad elegida en combobox
         private void abrirFormulario(String eleccionUsuario)
@@ -125,13 +116,9 @@ namespace AerolineaFrba.Ingreso
         private void menuPrincipal_Load(object sender, EventArgs e)
         {
             //Cuando no este harcodeado la podemos sacar la linea de abajo
-            this.textRol.Text = funcionesComunes.getRol();
+            this.lblBienvenido.Text = "¡Bienvenido " + funcionesComunes.getRol() + "!";
             //Carga las funcionalidades dependiendo del rol en el comboBox
-            if (!funcionesComunes.containsAdmin()) {
-                this.groupBox1.Text = " ";
-                this.label2.Visible = false;
-                this.textRol.Visible = false; 
-            }
+           
 
             DataTable dt = new DataTable();
             if (nombre_de_usuario == null)
@@ -152,7 +139,15 @@ namespace AerolineaFrba.Ingreso
             foreach (DataRow row in dt.Rows)
             comboBoxFuncionalidad.Items.Add(row.ItemArray[0].ToString());
             comboBoxFuncionalidad.DisplayMember = "DETALLES";
-            comboBoxFuncionalidad.SelectedIndex = 0;
+            comboBoxFuncionalidad.SelectedIndex = -1;
+        }
+
+        private void comboBoxFuncionalidad_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            String eleccionUsuario = (String)comboBoxFuncionalidad.SelectedItem;
+            if (eleccionUsuario != null)
+                abrirFormulario(eleccionUsuario);
+            else MessageBox.Show("Seleccione funcionalidad", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
