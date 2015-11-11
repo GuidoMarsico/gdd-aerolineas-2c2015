@@ -176,8 +176,6 @@ namespace AerolineaFrba.Compra
                         if (dialogResult == DialogResult.Yes)
                         {
                             Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente(2,"Alta de Cliente",dni);
-                            int valor = 2;
-                            ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
                             funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
                             this.botonLimpiar.Enabled = false;
                         }

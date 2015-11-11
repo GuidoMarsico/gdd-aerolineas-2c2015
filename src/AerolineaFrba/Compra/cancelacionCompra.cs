@@ -57,8 +57,9 @@ namespace AerolineaFrba.Compra
                             this.textBoxDireccion.Text = row["Dirección"].ToString();
                             this.textBoxTelefono.Text = row["Teléfono"].ToString();
                             this.textBoxMail.Text = row["Mail"].ToString();
-                            this.timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
-                            this.textBoxDniPas.Enabled = false;
+                            this.textBoxDni.Text = row["Dni"].ToString();
+                            this.textBoxNacimiento.Text = ((DateTime)row["Fecha de Nacimiento"]).ToShortDateString();
+                            this.textBoxDniPas.Clear();
                         }
                     }
                     else
@@ -76,12 +77,13 @@ namespace AerolineaFrba.Compra
             this.textBoxDniPas.Clear();
             this.textBoxIdCliente.Clear();
             this.textBoxDniPas.Enabled = true;
-            this.textBoxApellido.Clear();
-            this.textBoxDireccion.Clear();
-            this.textBoxMail.Clear();
-            this.textBoxNombre.Clear();
-            this.textBoxTelefono.Clear();
-            this.timePickerNacimiento.ResetText();
+            this.textBoxApellido.Text = "";
+            this.textBoxDireccion.Text = "";
+            this.textBoxMail.Text = "";
+            this.textBoxNombre.Text = "";
+            this.textBoxTelefono.Text = "";
+            this.textBoxNacimiento.Text = "";
+            this.textBoxDni.Text = "";
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -198,8 +200,9 @@ namespace AerolineaFrba.Compra
                 this.textBoxDireccion.Text = row["Dirección"].ToString();
                 this.textBoxTelefono.Text = row["Teléfono"].ToString();
                 this.textBoxMail.Text = row["Mail"].ToString();
-                this.timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
-                this.textBoxDniPas.Enabled = false;
+                this.textBoxNacimiento.Text = ((DateTime)row["Fecha de Nacimiento"]).ToShortDateString();
+                this.textBoxDni.Text = row["Dni"].ToString();
+                this.textBoxDniPas.Text = "";
             }
         }
     }

@@ -51,14 +51,14 @@
             this.textBoxVolver = new System.Windows.Forms.TextBox();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.lblNacimiento = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.lblDni = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblNombre = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.lblApellido = new System.Windows.Forms.Label();
-            this.lblNombre = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.lblDni = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.lblNacimiento = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,7 +121,7 @@
             // 
             this.textBoxMail.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBoxMail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMail.Location = new System.Drawing.Point(139, 83);
+            this.textBoxMail.Location = new System.Drawing.Point(139, 119);
             this.textBoxMail.Name = "textBoxMail";
             this.textBoxMail.Size = new System.Drawing.Size(261, 26);
             this.textBoxMail.TabIndex = 63;
@@ -164,7 +164,7 @@
             // 
             this.textBoxDireccion.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBoxDireccion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDireccion.Location = new System.Drawing.Point(139, 115);
+            this.textBoxDireccion.Location = new System.Drawing.Point(139, 85);
             this.textBoxDireccion.Name = "textBoxDireccion";
             this.textBoxDireccion.Size = new System.Drawing.Size(261, 26);
             this.textBoxDireccion.TabIndex = 59;
@@ -350,6 +350,66 @@
             this.groupBox1.TabIndex = 81;
             this.groupBox1.TabStop = false;
             // 
+            // lblNacimiento
+            // 
+            this.lblNacimiento.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblNacimiento.AutoSize = true;
+            this.lblNacimiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNacimiento.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lblNacimiento.Location = new System.Drawing.Point(669, 80);
+            this.lblNacimiento.Name = "lblNacimiento";
+            this.lblNacimiento.Size = new System.Drawing.Size(15, 20);
+            this.lblNacimiento.TabIndex = 86;
+            this.lblNacimiento.Text = "*";
+            // 
+            // label11
+            // 
+            this.label11.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.label11.Location = new System.Drawing.Point(669, 51);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(15, 20);
+            this.label11.TabIndex = 85;
+            this.label11.Text = "*";
+            // 
+            // lblDni
+            // 
+            this.lblDni.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblDni.AutoSize = true;
+            this.lblDni.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDni.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lblDni.Location = new System.Drawing.Point(669, 19);
+            this.lblDni.Name = "lblDni";
+            this.lblDni.Size = new System.Drawing.Size(15, 20);
+            this.lblDni.TabIndex = 84;
+            this.lblDni.Text = "*";
+            // 
+            // label9
+            // 
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.label9.Location = new System.Drawing.Point(402, 83);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(15, 20);
+            this.label9.TabIndex = 83;
+            this.label9.Text = "*";
+            // 
+            // lblNombre
+            // 
+            this.lblNombre.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblNombre.AutoSize = true;
+            this.lblNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNombre.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lblNombre.Location = new System.Drawing.Point(402, 51);
+            this.lblNombre.Name = "lblNombre";
+            this.lblNombre.Size = new System.Drawing.Size(15, 20);
+            this.lblNombre.TabIndex = 82;
+            this.lblNombre.Text = "*";
+            // 
             // label14
             // 
             this.label14.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -373,66 +433,6 @@
             this.lblApellido.Size = new System.Drawing.Size(15, 20);
             this.lblApellido.TabIndex = 80;
             this.lblApellido.Text = "*";
-            // 
-            // lblNombre
-            // 
-            this.lblNombre.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblNombre.AutoSize = true;
-            this.lblNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNombre.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.lblNombre.Location = new System.Drawing.Point(402, 51);
-            this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(15, 20);
-            this.lblNombre.TabIndex = 82;
-            this.lblNombre.Text = "*";
-            // 
-            // label9
-            // 
-            this.label9.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.label9.Location = new System.Drawing.Point(402, 83);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(15, 20);
-            this.label9.TabIndex = 83;
-            this.label9.Text = "*";
-            // 
-            // lblDni
-            // 
-            this.lblDni.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblDni.AutoSize = true;
-            this.lblDni.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDni.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.lblDni.Location = new System.Drawing.Point(669, 19);
-            this.lblDni.Name = "lblDni";
-            this.lblDni.Size = new System.Drawing.Size(15, 20);
-            this.lblDni.TabIndex = 84;
-            this.lblDni.Text = "*";
-            // 
-            // label11
-            // 
-            this.label11.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.label11.Location = new System.Drawing.Point(669, 51);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(15, 20);
-            this.label11.TabIndex = 85;
-            this.label11.Text = "*";
-            // 
-            // lblNacimiento
-            // 
-            this.lblNacimiento.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblNacimiento.AutoSize = true;
-            this.lblNacimiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNacimiento.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.lblNacimiento.Location = new System.Drawing.Point(669, 80);
-            this.lblNacimiento.Name = "lblNacimiento";
-            this.lblNacimiento.Size = new System.Drawing.Size(15, 20);
-            this.lblNacimiento.TabIndex = 86;
-            this.lblNacimiento.Text = "*";
             // 
             // altaModificacionDeCliente
             // 

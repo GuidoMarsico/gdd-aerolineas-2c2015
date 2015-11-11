@@ -492,7 +492,7 @@ namespace AerolineaFrba.Compra
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
+            if ((this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0") || this.textBoxApellido.Text != "")
             {
                 this.modificarDatos = true;
                 string id = this.textBoxIdCliente.Text;

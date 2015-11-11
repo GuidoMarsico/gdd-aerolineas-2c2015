@@ -113,13 +113,13 @@ namespace AerolineaFrba.Registro_de_Usuario
                     if (TimePickerNacimiento.Value < DateTime.Today)
                     {
                         bool resultado = true;
-                        if (this.textBoxTipoForm.Text == "1")
+                        if (this.textBoxTipoForm.Text == "1" || this.textBoxTipoForm.Text == "0")
                         {
-                            this.setearParaCompras();
-                            return;
-                        }
-                        else
+
                             resultado = this.persistirCliente();
+                        }
+                       
+                            
                         if (textBoxTipoForm.Text == "2")
                         {
                             DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
@@ -133,11 +133,19 @@ namespace AerolineaFrba.Registro_de_Usuario
                         if (resultado)
                         {
                             MessageBox.Show("Se guardo exitosamente");
-                            botonLimpiar.PerformClick();
-                            if (textBoxVolver.Text == "1")
+                            if (textBoxTipoForm.Text == "1")
+                            {
+                                this.setearParaCompras();
+                            }
+                            if (textBoxTipoForm.Text == "0")
                             {
                                 funcionesComunes.habilitarAnterior();
                             }
+                            botonLimpiar.PerformClick();
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se puede guardar");
                         }
                     }
                     else
