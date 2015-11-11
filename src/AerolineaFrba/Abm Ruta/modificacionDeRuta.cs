@@ -13,10 +13,22 @@ namespace AerolineaFrba.Abm_Ruta
 {
     public partial class modificacionDeRuta : Form
     {
-        public modificacionDeRuta()
+        public modificacionDeRuta(string id, string codigo, string precioKg, string precioPasaje, string origen, string destino, string servicio)
         {
             InitializeComponent();
-            funcionesComunes.llenarCombobox(this.comboBoxServicios, "NOMBRE", @"select ID, NOMBRE 
+            llenarCombobox();
+            textBoxId.Text = id;
+            textBoxCodigo.Text = codigo;
+            textBoxPrecioKg.Text = precioKg;
+            textBoxPrecioPasaje.Text = precioPasaje;
+            textBoxOrigen.Text = origen;
+            textBoxDestino.Text = destino;
+            comboBoxServicios.Text = servicio;
+        }
+
+        private void llenarCombobox()
+        {
+              funcionesComunes.llenarCombobox(this.comboBoxServicios, "NOMBRE", @"select ID, NOMBRE 
                 from " + SqlConnector.getSchema() + ".tipos_de_servicio");
         }
 

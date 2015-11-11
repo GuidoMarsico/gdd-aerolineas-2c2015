@@ -21,14 +21,10 @@ namespace AerolineaFrba.Abm_Ruta
 
         private void botonModificacion_Click(object sender, EventArgs e)
         {
-            Form modificacionRuta = new Abm_Ruta.modificacionDeRuta();
-            ((TextBox)modificacionRuta.Controls["textBoxId"]).Text = dataGridListadoRutas.SelectedCells[0].Value.ToString();
-            ((TextBox)modificacionRuta.Controls["textBoxCodigo"]).Text = dataGridListadoRutas.SelectedCells[1].Value.ToString();
-            ((TextBox)modificacionRuta.Controls["textBoxPrecioKg"]).Text = dataGridListadoRutas.SelectedCells[2].Value.ToString();
-            ((TextBox)modificacionRuta.Controls["textBoxPrecioPasaje"]).Text = dataGridListadoRutas.SelectedCells[3].Value.ToString();
-            ((TextBox)modificacionRuta.Controls["textBoxOrigen"]).Text = dataGridListadoRutas.SelectedCells[4].Value.ToString();
-            ((TextBox)modificacionRuta.Controls["textBoxDestino"]).Text = dataGridListadoRutas.SelectedCells[5].Value.ToString();
-            ((ComboBox)modificacionRuta.Controls["comboBoxServicios"]).Text = dataGridListadoRutas.SelectedCells[6].Value.ToString();
+            Form modificacionRuta = new Abm_Ruta.modificacionDeRuta(dataGridListadoRutas.SelectedCells[0].Value.ToString(),
+                dataGridListadoRutas.SelectedCells[1].Value.ToString(),dataGridListadoRutas.SelectedCells[2].Value.ToString(),
+                dataGridListadoRutas.SelectedCells[3].Value.ToString(),dataGridListadoRutas.SelectedCells[4].Value.ToString(),
+                dataGridListadoRutas.SelectedCells[5].Value.ToString(),  dataGridListadoRutas.SelectedCells[6].Value.ToString());
             funcionesComunes.deshabilitarVentanaYAbrirNueva(modificacionRuta);
         }
 
