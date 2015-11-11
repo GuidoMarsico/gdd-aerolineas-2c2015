@@ -51,7 +51,7 @@ namespace AerolineaFrba.Ingreso
                             funcionesComunes.setRol(crearListaRoles(usuario));
                             funcionesComunes.deshabilitarVentanaYAbrirNueva(menu);
                         }else{
-                            SqlConnector.executeProcedure(SqlConnector.getSchema() + @"updateIntento",
+                            SqlConnector.executeProcedure(SqlConnector.getSchema() + @".updateIntento",
                                 funcionesComunes.generarListaParaProcedure("@nombre", "@exitoso"), this.textUsuario.Text, 2);
                             MessageBox.Show("Contraseña inválida, le quedan " + (2 - intentos) + " intentos"); 
                         }
