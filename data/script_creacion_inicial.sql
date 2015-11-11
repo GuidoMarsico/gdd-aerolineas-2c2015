@@ -1339,7 +1339,7 @@ CREATE PROCEDURE LAS_PELOTAS.top5AeronavesFueraDeServicio(@fechaFrom varchar(50)
 AS BEGIN
 select top 5 a.matricula as 'Matricula Aeronave', sum(DATEDIFF(day,pi.desde,pi.hasta)) as 'Días fuera de servicio'
 from LAS_PELOTAS.aeronaves_por_periodos ap
-join Aero.periodos_de_inactividad pi on ap.periodo_id=pi.id
+join LAS_PELOTAS.periodos_de_inactividad pi on ap.periodo_id=pi.id
 join LAS_PELOTAS.aeronaves a on ap.aeronave_id= a.id
 where pi.desde between convert(datetime, @fechaFrom,109) and convert(datetime, @fechaTo,109) AND
 pi.hasta between convert(datetime, @fechaFrom,109) and convert(datetime, @fechaTo,109) 
@@ -1405,7 +1405,7 @@ GO
 CREATE PROCEDURE LAS_PELOTAS.migracionButacasPorVuelo
 AS BEGIN
 declare @cantAeronaves int
-select @cantAeronaves = count(ID) from aero.aeronaves
+select @cantAeronaves = count(ID) from LAS_PELOTAS.aeronaves
 declare @j int
 set @j = 1
 	while(@j != @cantAeronaves+1)
