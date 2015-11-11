@@ -97,22 +97,16 @@ namespace AerolineaFrba.Registro_de_Usuario
 
         private void botonModificacion_Click(object sender, EventArgs e)
         {
-            Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-            int valor = 3;
-            ((Label)modificarCliente.Controls["campoRequeridoApellido"]).Visible= false;
-            ((Label)modificarCliente.Controls["campoRequeridoNombre"]).Visible = false;
-            ((Label)modificarCliente.Controls["campoRequeridoDNI"]).Visible = false;
-            ((Label)modificarCliente.Controls["campoRequeridoNacimiento"]).Visible = false;
-            ((TextBox)modificarCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxId"]).Text = dataGridListadoClientes.SelectedCells[0].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxNombre"]).Text = dataGridListadoClientes.SelectedCells[1].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxApellido"]).Text = dataGridListadoClientes.SelectedCells[2].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxDni"]).Text = dataGridListadoClientes.SelectedCells[3].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxDireccion"]).Text = dataGridListadoClientes.SelectedCells[4].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxTelefono"]).Text = dataGridListadoClientes.SelectedCells[5].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxMail"]).Text = dataGridListadoClientes.SelectedCells[6].Value.ToString();
-            ((DateTimePicker)modificarCliente.Controls["TimePickerNacimiento"]).Value = Convert.ToDateTime(dataGridListadoClientes.SelectedCells[7].Value.ToString());
-            modificarCliente.Text = "Modificación de Cliente";
+            string id = dataGridListadoClientes.SelectedCells[0].Value.ToString();
+            string nombre = dataGridListadoClientes.SelectedCells[1].Value.ToString();
+            string apellido = dataGridListadoClientes.SelectedCells[2].Value.ToString();
+            string dni = dataGridListadoClientes.SelectedCells[3].Value.ToString();
+            string direccion = dataGridListadoClientes.SelectedCells[4].Value.ToString();
+            string telefono = dataGridListadoClientes.SelectedCells[5].Value.ToString();
+            string mail = dataGridListadoClientes.SelectedCells[6].Value.ToString();
+            DateTime fecha = Convert.ToDateTime(dataGridListadoClientes.SelectedCells[7].Value.ToString());
+
+            Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente(3, "Modificación de Cliente", id, nombre, apellido, dni, direccion, telefono, mail, fecha);
             funcionesComunes.deshabilitarVentanaYAbrirNueva(modificarCliente);
         }
 

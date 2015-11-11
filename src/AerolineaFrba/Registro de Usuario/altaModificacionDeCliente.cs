@@ -20,9 +20,46 @@ namespace AerolineaFrba.Registro_de_Usuario
         string mail;
         string id;
 
-        public altaModificacionDeCliente()
+        public altaModificacionDeCliente(int valor, string titulo)
         {
             InitializeComponent();
+            lblTitulo.Text = titulo;
+            textBoxTipoForm.Text = valor.ToString();
+        }
+
+        public altaModificacionDeCliente(int valor, string titulo, string dni)
+        {
+            InitializeComponent();
+            lblTitulo.Text = titulo;
+            textBoxTipoForm.Text = valor.ToString();
+            textBoxDNI.Text = dni;
+            textBoxDNI.Enabled = false;
+            lblDni.Visible = false;
+            botonVolver.Visible = false;
+        }
+
+        public altaModificacionDeCliente(int valor, string titulo, string id, string nombre, string apellido, string dni, string direccion, string telefono, string mail, DateTime fecha)
+        {
+            InitializeComponent();
+            lblTitulo.Text = titulo;
+            textBoxTipoForm.Text = valor.ToString();
+            textBoxId.Text = id;
+            textBoxNombre.Text = nombre;
+            textBoxApellido.Text = apellido;
+            textBoxDNI.Text = dni;
+            textBoxDireccion.Text = direccion;
+            textBoxTelefono.Text = telefono;
+            textBoxMail.Text = mail;
+            TimePickerNacimiento.Value = fecha;
+            textBoxApellido.Enabled = false;
+            textBoxNombre.Enabled = false;
+            TimePickerNacimiento.Enabled = false;
+            textBoxDNI.Enabled = false;
+            lblApellido.Visible = false;
+            lblDni.Visible = false;
+            lblNombre.Visible = false;
+            lblNacimiento.Visible = false;
+
         }
 
         private void botonVolver_Click(object sender, EventArgs e)

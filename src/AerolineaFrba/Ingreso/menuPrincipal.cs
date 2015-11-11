@@ -42,10 +42,7 @@ namespace AerolineaFrba.Ingreso
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(new Consulta_Millas.consultaMillas());
                     break;
                 case "Alta de Cliente":
-                    Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-                    int valor = 0;
-                    ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = valor.ToString() ;
-                    altaDeCliente.Text = "Alta de Cliente";
+                    Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente(0,"Alta de Cliente");
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
                     break;
                 case "Alta de Aeronave":
@@ -73,10 +70,7 @@ namespace AerolineaFrba.Ingreso
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(new Canje_Millas.realizarCanjeMillas());
                     break;
                 case "Alta de Rol":
-                    Form altaDeRol = new Abm_Rol.altaModificacionDeRol();
-                    int val = 0;
-                    ((TextBox)altaDeRol.Controls["textTipoForm"]).Text = val.ToString() ;
-                    altaDeRol.Text = "Alta de Rol";
+                    Form altaDeRol = new Abm_Rol.altaModificacionDeRol(0,"Alta de Rol");
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeRol);
                     break;
                 case "Baja de Rol":

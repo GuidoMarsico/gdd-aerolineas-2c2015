@@ -136,12 +136,7 @@ namespace AerolineaFrba.Compra
                         DialogResult dialogResult = MessageBox.Show("Debe dar de alta el cliente con ese DNI, ¿esta seguro?", "Dni de Cliente Inexistente", MessageBoxButtons.YesNo);
                         if (dialogResult == DialogResult.Yes)
                         {
-                            Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-                            int valor = 1;
-                            ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
-                            altaDeCliente.Text = "Alta de Cliente";
-                            ((TextBox)altaDeCliente.Controls["textBoxDNI"]).Text = dni;
-                            ((TextBox)altaDeCliente.Controls["textBoxDNI"]).ReadOnly = true;
+                            Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente(2,"Alta de Cliente",dni);
                             funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
                         }
                     }
@@ -211,22 +206,15 @@ namespace AerolineaFrba.Compra
             if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
             {
                 this.modificarDatos = true;
-                Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-                int valor = 3;
-                ((Label)modificarCliente.Controls["campoRequeridoApellido"]).Visible = false;
-                ((Label)modificarCliente.Controls["campoRequeridoNombre"]).Visible = false;
-                ((Label)modificarCliente.Controls["campoRequeridoDNI"]).Visible = false;
-                ((Label)modificarCliente.Controls["campoRequeridoNacimiento"]).Visible = false;
-                ((TextBox)modificarCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
-                ((TextBox)modificarCliente.Controls["textBoxId"]).Text = this.textBoxIdCliente.Text;
-                ((TextBox)modificarCliente.Controls["textBoxNombre"]).Text = this.textBoxNombre.Text;
-                ((TextBox)modificarCliente.Controls["textBoxApellido"]).Text = this.textBoxApellido.Text;
-                ((TextBox)modificarCliente.Controls["textBoxDni"]).Text = this.textBoxDni.Text;
-                ((TextBox)modificarCliente.Controls["textBoxDireccion"]).Text = this.textBoxDireccion.Text;
-                ((TextBox)modificarCliente.Controls["textBoxTelefono"]).Text = this.textBoxTelefono.Text;
-                ((TextBox)modificarCliente.Controls["textBoxMail"]).Text = this.textBoxMail.Text;
-                ((DateTimePicker)modificarCliente.Controls["TimePickerNacimiento"]).Value = this.timePickerNacimiento.Value;
-                modificarCliente.Text = "Modificación de Cliente";
+                string id = this.textBoxIdCliente.Text;
+                string nombre = this.textBoxNombre.Text;
+                string apellido = this.textBoxApellido.Text;
+                string dni = this.textBoxDni.Text;
+                string direccion = this.textBoxDireccion.Text;
+                string telefono = this.textBoxTelefono.Text;
+                string mail = this.textBoxMail.Text;
+                DateTime fecha = this.timePickerNacimiento.Value;
+                Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente(3, "Modificación de Cliente", id, nombre, apellido, dni, direccion, telefono, mail, fecha);
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(modificarCliente);
             }
             else

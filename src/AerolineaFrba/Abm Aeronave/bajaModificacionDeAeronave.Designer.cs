@@ -29,20 +29,22 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.botonBaja = new System.Windows.Forms.Button();
             this.botonVolver = new System.Windows.Forms.Button();
             this.botonModificacion = new System.Windows.Forms.Button();
             this.botonLimpiar = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.botonBuscar = new System.Windows.Forms.Button();
+            this.textMatricula = new System.Windows.Forms.TextBox();
+            this.lblApellido = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.textFabricante = new System.Windows.Forms.TextBox();
+            this.textModelo = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textTipoServicio = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textModelo = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textMatricula = new System.Windows.Forms.TextBox();
-            this.lblApellido = new System.Windows.Forms.Label();
             this.dataGridListadoAeronaves = new System.Windows.Forms.DataGridView();
             this.label16 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -144,6 +146,35 @@
             this.botonBuscar.UseVisualStyleBackColor = false;
             this.botonBuscar.Click += new System.EventHandler(this.botonBuscar_Click);
             // 
+            // textMatricula
+            // 
+            this.textMatricula.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textMatricula.Location = new System.Drawing.Point(85, 21);
+            this.textMatricula.Name = "textMatricula";
+            this.textMatricula.Size = new System.Drawing.Size(117, 26);
+            this.textMatricula.TabIndex = 9;
+            this.textMatricula.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.matricula);
+            // 
+            // lblApellido
+            // 
+            this.lblApellido.AutoSize = true;
+            this.lblApellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblApellido.Location = new System.Drawing.Point(17, 27);
+            this.lblApellido.Name = "lblApellido";
+            this.lblApellido.Size = new System.Drawing.Size(62, 16);
+            this.lblApellido.TabIndex = 6;
+            this.lblApellido.Text = "Matrícula";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(215, 27);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(54, 16);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Modelo";
+            // 
             // textFabricante
             // 
             this.textFabricante.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -151,6 +182,14 @@
             this.textFabricante.Name = "textFabricante";
             this.textFabricante.Size = new System.Drawing.Size(148, 26);
             this.textFabricante.TabIndex = 15;
+            // 
+            // textModelo
+            // 
+            this.textModelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textModelo.Location = new System.Drawing.Point(275, 21);
+            this.textModelo.Name = "textModelo";
+            this.textModelo.Size = new System.Drawing.Size(148, 26);
+            this.textModelo.TabIndex = 11;
             // 
             // label3
             // 
@@ -180,60 +219,40 @@
             this.label2.TabIndex = 12;
             this.label2.Text = "Servicio";
             // 
-            // textModelo
-            // 
-            this.textModelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textModelo.Location = new System.Drawing.Point(275, 21);
-            this.textModelo.Name = "textModelo";
-            this.textModelo.Size = new System.Drawing.Size(148, 26);
-            this.textModelo.TabIndex = 11;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(215, 27);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 16);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Modelo";
-            // 
-            // textMatricula
-            // 
-            this.textMatricula.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textMatricula.Location = new System.Drawing.Point(85, 21);
-            this.textMatricula.Name = "textMatricula";
-            this.textMatricula.Size = new System.Drawing.Size(117, 26);
-            this.textMatricula.TabIndex = 9;
-            this.textMatricula.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.matricula);
-            // 
-            // lblApellido
-            // 
-            this.lblApellido.AutoSize = true;
-            this.lblApellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblApellido.Location = new System.Drawing.Point(17, 27);
-            this.lblApellido.Name = "lblApellido";
-            this.lblApellido.Size = new System.Drawing.Size(62, 16);
-            this.lblApellido.TabIndex = 6;
-            this.lblApellido.Text = "Matrícula";
-            // 
             // dataGridListadoAeronaves
             // 
             this.dataGridListadoAeronaves.AllowUserToAddRows = false;
             this.dataGridListadoAeronaves.AllowUserToDeleteRows = false;
             this.dataGridListadoAeronaves.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridListadoAeronaves.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridListadoAeronaves.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridListadoAeronaves.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridListadoAeronaves.GridColor = System.Drawing.Color.White;
             this.dataGridListadoAeronaves.Location = new System.Drawing.Point(6, 11);
             this.dataGridListadoAeronaves.MultiSelect = false;
             this.dataGridListadoAeronaves.Name = "dataGridListadoAeronaves";
             this.dataGridListadoAeronaves.ReadOnly = true;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridListadoAeronaves.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridListadoAeronaves.RowHeadersVisible = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Green;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
-            this.dataGridListadoAeronaves.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
+            this.dataGridListadoAeronaves.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridListadoAeronaves.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridListadoAeronaves.Size = new System.Drawing.Size(888, 238);
             this.dataGridListadoAeronaves.TabIndex = 26;

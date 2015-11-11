@@ -69,12 +69,7 @@ namespace AerolineaFrba.Abm_Rol
         {
             if (dataGridListadoRoles.SelectedRows.Count > 0)
             {
-                Form modificacionDeRol = new Abm_Rol.altaModificacionDeRol();
-                int val = 1;
-                ((TextBox)modificacionDeRol.Controls["textTipoForm"]).Text = val.ToString();
-                ((TextBox)modificacionDeRol.Controls["textId"]).Text = dataGridListadoRoles.SelectedCells[0].Value.ToString();
-                ((TextBox)modificacionDeRol.Controls["textRol"]).Text = dataGridListadoRoles.SelectedCells[1].Value.ToString();
-                modificacionDeRol.Text = "Modificación de Rol";
+                Form modificacionDeRol = new Abm_Rol.altaModificacionDeRol(1, "ModificacionDeRol", dataGridListadoRoles.SelectedCells[0].Value.ToString(), dataGridListadoRoles.SelectedCells[1].Value.ToString());
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(modificacionDeRol);
             }
             else

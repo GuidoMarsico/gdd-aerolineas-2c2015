@@ -15,9 +15,22 @@ namespace AerolineaFrba.Abm_Rol
     {
         int idFuncionalidad;
         int idRol;
-        public altaModificacionDeRol()
+        public altaModificacionDeRol(int val, string tituloLabel)
         {
             InitializeComponent();
+            textTipoForm.Text = val.ToString();
+            lblTitulo.Text = tituloLabel;
+            
+        }
+
+        public altaModificacionDeRol(int val, string tituloLabel,string id,string rol)
+        {
+            InitializeComponent();
+            textTipoForm.Text = val.ToString();
+            lblTitulo.Text = tituloLabel;
+            textId.Text = id;
+            textRol.Text = rol;
+
         }
 
         private void altaModificacionDeRol_Load(object sender, EventArgs e)
