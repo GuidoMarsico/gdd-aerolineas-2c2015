@@ -84,8 +84,11 @@ namespace AerolineaFrba.Canje_Millas
             if (dataGridCliente.DataSource == null){
                 MessageBox.Show("Debe seleccionar un cliente primero");
             }else{
-                funcionesComunes.consultarMillas(Int32.Parse(dataGridCliente.SelectedCells[5].Value.ToString()), 
-                    dataGridProductos);
+                if (dataGridCliente.Rows.Count > 0)
+                {
+                    funcionesComunes.consultarMillas(Int32.Parse(dataGridCliente.SelectedCells[5].Value.ToString()),
+                        dataGridProductos);
+                }
             }
         }
 
