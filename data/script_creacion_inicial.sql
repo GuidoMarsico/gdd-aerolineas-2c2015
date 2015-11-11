@@ -1,9 +1,4 @@
------------------------------------------------------------------------
--- MASTER TABLE
 USE GD2C2015;
-
------------------------------------------------------------------------
--- SCHEMA
 
 IF NOT EXISTS (
     SELECT schema_name 
@@ -15,8 +10,6 @@ BEGIN
     EXEC sp_executesql N'CREATE SCHEMA AERO;';
 END
 
------------------------------------------------------------------------
--- DROP TABLES
 IF OBJECT_ID('AERO.butacas_por_vuelo') IS NOT NULL
 BEGIN
     DROP TABLE AERO.butacas_por_vuelo;
@@ -141,9 +134,6 @@ IF OBJECT_ID('AERO.roles') IS NOT NULL
 BEGIN
     DROP TABLE AERO.roles;
 END;
-
------------------------------------------------------------------------
--- TABLES
 
 CREATE TABLE AERO.aeronaves (
     ID  INT   IDENTITY(1,1)    PRIMARY KEY,
@@ -344,7 +334,6 @@ CREATE TABLE AERO.tipos_tarjeta (
 	CUOTAS INT DEFAULT 0   
 )
 
-
 CREATE TABLE AERO.cancelaciones (
     ID   INT   IDENTITY(1,1)     PRIMARY KEY,
     FECHA_DEVOLUCION DATETIME		NOT NULL,
@@ -352,8 +341,7 @@ CREATE TABLE AERO.cancelaciones (
     MOTIVO         NVARCHAR(255)   NOT NULL
 )
 
------------------------------------------------------------------------
--- FOREIGN KEYS && INDEXES
+-- CONSTRAINT
 
 ALTER TABLE AERO.tarjetas_de_credito
 ADD CONSTRAINT TARJETAS_FK01 FOREIGN KEY
@@ -633,63 +621,9 @@ IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_ROL_POR_USUA_USUARIO' 
     BEGIN
        CREATE INDEX FKI_ROL_POR_USUA_USUARIO ON AERO.roles_por_usuario (USUARIO_ID);
     END
------------------------------------------------------------------------
--- INSERTS
 
-INSERT INTO AERO.funcionalidades VALUES
-('Consultar Millas'),
-('Alta de Cliente'),
-('Alta de Aeronave'),
-('Alta de Tarjeta de Crédito'),
-('Baja de Aeronave'),
-('Baja de Ciudad'),
-('Baja de Cliente'),
-('Modificacion de Aeronave'),
-('Modificacion de Cliente'),
-('Realizar Canje'),
-('Alta de Rol'),
-('Baja de Rol'),
-('Modificacion de Rol'),
-('Alta de Ruta'),
-('Baja de Ruta'),
-('Modificacion de Ruta'),
-('Comprar Pasaje/Encomienda'),
-('Generar Viaje'),
-('Registrar Llegadas'),
-('Cancelar Compra'),
-('Consultar Listado');
+--SP y FUNCIONES
 
-INSERT INTO AERO.roles (nombre, activo) VALUES
-('Administrador', 1),
-('Cliente', 1);
-
-INSERT INTO AERO.usuarios  (USERNAME, PASSWORD, FECHA_CREACION, ULTIMA_MODIFICACION, INTENTOS_LOGIN, ACTIVO) VALUES 
-('admin', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', GETDATE(), GETDATE(), 0, 1),
-('admin2', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', GETDATE(), GETDATE(), 0, 1),
-('admin3', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', GETDATE(), GETDATE(), 0, 1);
-
-INSERT INTO AERO.roles_por_usuario (ROL_ID, USUARIO_ID) VALUES 
-(1, 1),
-(1, 2),
-(1, 3);
-
-INSERT INTO AERO.productos (NOMBRE, MILLAS_REQUERIDAS, STOCK)
-VALUES ('VALIJA', 150, 50),
-('CANDADO', 10, 200),
-('ALMOHADA', 45, 100),
-('AUTO', 10000, 15),
-('CALEFACTOR', 500, 150);
-
-INSERT INTO AERO.tipos_tarjeta (NOMBRE, CUOTAS)
-VALUES ('VISA', 6),
-('MASTERCARD', 12),
-('AMEX', 3),
-('DINERS', 0);
-
------------------------------------------------------------------------
--- PROCEDURES && FUNCTIONS
-
---DROP
 IF OBJECT_ID('AERO.corrigeMail') IS NOT NULL
     DROP FUNCTION AERO.corrigeMail
 GO
@@ -962,7 +896,6 @@ BEGIN
 END;
 GO
 
---CREATE
 CREATE FUNCTION AERO.corrigeMail (@s NVARCHAR (255)) 
 RETURNS NVARCHAR(255)
 AS
@@ -1058,7 +991,6 @@ AS BEGIN
 END
 GO
 
--- ROLES Y FUNCIONALIDADES
 CREATE PROCEDURE AERO.agregarRol(@nombreRol nvarchar(255),@retorno int output)
 AS BEGIN
 	INSERT INTO AERO.Roles (NOMBRE,ACTIVO) VALUES (@nombreRol, 1)
@@ -1112,7 +1044,6 @@ WHERE ROL_ID = @idRol and FUNCIONALIDAD_ID = @idFunc
 END
 GO
 
-
 CREATE PROCEDURE AERO.cambiarNombreRol(@idRol int, @nombre nvarchar(255))
 AS BEGIN
 UPDATE AERO.roles
@@ -1121,7 +1052,6 @@ WHERE ID=@idRol
 END
 GO
 
--- INTENTOS
 CREATE PROCEDURE AERO.UpdateIntento(@nombre varchar(25), @exitoso int)
 AS BEGIN
 	IF(@exitoso = 1)
@@ -1144,7 +1074,6 @@ AS BEGIN
 END
 GO
 
--- CLIENTES
 CREATE PROCEDURE AERO.agregarCliente(@rol_id INT, @nombreCliente nvarchar(255), @apellidoCliente nvarchar(255), 
 	@documentoCliente numeric(18,0), @direccion nvarchar(255), 
 	@telefono numeric(18,0), @mail nvarchar(255), @fechaNac varchar(50))
@@ -1174,7 +1103,6 @@ WHERE ID=@id;
 END
 GO
 
---BUTACAS
 CREATE PROCEDURE AERO.crearButacas (@idAeronave int, @butacas int)
 AS BEGIN
 declare @i int
@@ -1197,7 +1125,6 @@ set @i = 0
 END
 GO
 
--- AERONAVES
 CREATE PROCEDURE AERO.agregarAeronave(@matricula nvarchar(255), @modelo nvarchar(255), @kg_disponibles numeric(18,0), 
 @fabricante int, @tipo_servicio int, @alta varchar(50), @cantButacas int)
 AS BEGIN
@@ -1232,7 +1159,6 @@ WHERE ID=@id;
 END
 GO
 
--- RUTAS
 CREATE PROCEDURE AERO.agregarRuta(@codigo int, @precioKg numeric(18,2), @precioPasaje numeric(18,2), @origen int, @destino int, 
 	@servicio int)
 AS BEGIN
@@ -1262,7 +1188,6 @@ WHERE BUTACA_ID IN (SELECT p.BUTACA_ID FROM AERO.pasajes p , AERO.boletos_de_com
 END
 GO
 
-/*SE PUEDE CANCELAR UNO O VARIOS PASAJES DEL MISMO BOLETO DE COMPRA*/
 CREATE PROCEDURE AERO.cancelarPasaje(@idPasaje int)
 AS BEGIN
 INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
@@ -1276,7 +1201,7 @@ WHERE BUTACA_ID = (SELECT BUTACA_ID FROM AERO.pasajes WHERE ID = @idPasaje)
 END
 GO
 
-/*NO SE PUEDE CANCELAR UN SOLO PAQUETE, SE CANCELAN TODOS LOS DEL BOLETO DE COMPRA*/
+/*CANCELACION DE TODOS LOS PAQUETES DE UN BOLETO DE COMPRA*/
 CREATE PROCEDURE AERO.cancelarPaquete(@idBoletoCompra int)
 AS BEGIN
 INSERT INTO AERO.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
@@ -1329,7 +1254,7 @@ GO
 --TOP 5 de los destino con mas pasajes comprados
 CREATE PROCEDURE AERO.top5DestinosConPasajes(@fechaFrom varchar(50), @fechaTo varchar(50))
 AS BEGIN
-select top 5 a.NOMBRE as Destino, count(p.ID) as 'Cantidad de Pasajes' 
+select top 5 a.NOMBRE as 'Destino', count(p.ID) as 'Pasajes comprados' 
 from AERO.pasajes p 
 join AERO.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID
 join AERO.vuelos v on bc.VUELO_ID=v.ID 
@@ -1344,7 +1269,57 @@ order by 2 desc
 END
 GO
 
---TOP 5 de los destinos con más pasajes cancelados 
+--TOP 5 de los destinos con aeronaves mas vacias
+CREATE PROCEDURE AERO.top5DestinosAeronavesVacias(@fechaFrom varchar(50), @fechaTo varchar(50))
+AS BEGIN
+select top 5 a.NOMBRE as 'Destino', count(buV.VUELO_ID) as 'Butacas Vacias' 
+from AERO.butacas_por_vuelo buV 
+join AERO.vuelos v on buV.VUELO_ID=v.ID 
+join AERO.rutas r on v.RUTA_ID=r.ID 
+join AERO.aeropuertos a on r.DESTINO_ID=a.ID 
+where buV.ESTADO = 'LIBRE' and
+v.FECHA_SALIDA between convert(datetime, @fechaFrom,109) and convert(datetime, @fechaTo,109) and
+v.FECHA_LLEGADA between convert(datetime, @fechaFrom,109) and convert(datetime, @fechaTo,109)
+group by a.NOMBRE
+order by 2 desc
+END
+GO
+
+--TOP 5 de los clientes con mas puntos acumulados a la fecha
+CREATE PROCEDURE AERO.top5ClientesMillas(@fechaFrom varchar(50), @fechaTo varchar(50))
+AS BEGIN
+create table #tablaMillas(
+Cliente varchar(255),
+Millas int
+)
+insert into #tablaMillas 
+select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
+from AERO.clientes c
+join AERO.pasajes p on c.ID=p.CLIENTE_ID
+join AERO.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
+where P.CANCELACION_ID IS NULL AND
+p.INVALIDO=0 AND
+bc.INVALIDO=0 AND
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
+group by c.nombre, c.APELLIDO
+insert into #tablaMillas 
+select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
+from AERO.Clientes c  
+join AERO.boletos_de_compra bc on bc.Cliente_ID=c.ID
+join AERO.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
+where P.CANCELACION_ID IS NULL AND
+p.INVALIDO=0 AND
+bc.INVALIDO=0 AND
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
+group by c.nombre, c.APELLIDO
+
+select top 5 * from #tablaMillas
+order by 2 desc
+drop table #tablaMillas
+END
+GO
+
+--TOP 5 de los destinos con pasajes cancelados 
 CREATE PROCEDURE AERO.top5DestinosCancelados(@fechaFrom varchar(50), @fechaTo varchar(50))
 AS BEGIN
 select top 5 a.NOMBRE as Destino, count(p.ID) as Cancelaciones from AERO.pasajes p
@@ -1359,66 +1334,10 @@ order by 2 desc
 END
 GO
 
---TOP 5 de los destino con aeronaves mas vacias
-CREATE PROCEDURE AERO.top5DestinosAeronavesVacias(@fechaFrom varchar(50), @fechaTo varchar(50))
-AS BEGIN
-select top 5 a.NOMBRE as Destino, count(buV.VUELO_ID) as 'Butacas Vacias' 
-from AERO.butacas_por_vuelo buV 
---join AERO.butacas b on naves.ID = b.Aeronave_id 
-join AERO.vuelos v on buV.VUELO_ID=v.ID 
-join AERO.rutas r on v.RUTA_ID=r.ID 
-join AERO.aeropuertos a on r.DESTINO_ID=a.ID 
-where buV.ESTADO = 'LIBRE' and
-v.FECHA_SALIDA between convert(datetime, @fechaFrom,109) and convert(datetime, @fechaTo,109) and
-v.FECHA_LLEGADA between convert(datetime, @fechaFrom,109) and convert(datetime, @fechaTo,109)
-group by a.NOMBRE
-order by 2 desc
-END
-GO
-
---TOP de los clientes con mas puntos acumulados a la fecha (la fecha es hasta el dia de hoy)
-CREATE PROCEDURE AERO.top5ClientesMillas(@fechaFrom varchar(50), @fechaTo varchar(50))
-AS BEGIN
-/*creo tabla temporal, para poder insertar de ambas queries*/
-create table #tablaMillas(
-Cliente varchar(255),
-Millas int
-)
-
-/*inserto en la tabla temporal los pasajes*/
-insert into #tablaMillas 
-select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
-from AERO.clientes c
-join AERO.pasajes p on c.ID=p.CLIENTE_ID
-join AERO.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
-where P.CANCELACION_ID IS NULL AND
-p.INVALIDO=0 AND
-bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
-group by c.nombre, c.APELLIDO
-
-/*inserto en la tabla temporal los paquetes*/
-insert into #tablaMillas 
-select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
-from AERO.Clientes c  
-join AERO.boletos_de_compra bc on bc.Cliente_ID=c.ID
-join AERO.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
-where P.CANCELACION_ID IS NULL AND
-p.INVALIDO=0 AND
-bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
-group by c.nombre, c.APELLIDO
-
-select top 5 * from #tablaMillas
-order by 2 desc
-
-drop table #tablaMillas
-END
-GO
-
+--TOP 5 de las aeronaves con mayor cantidad de dias fuera de servicio 
 CREATE PROCEDURE AERO.top5AeronavesFueraDeServicio(@fechaFrom varchar(50), @fechaTo varchar(50))
 AS BEGIN
-select top 5 a.matricula as 'Nombre Aeronave', sum(DATEDIFF(day,pi.desde,pi.hasta)) as 'Cantidad de días fuera de servicio'
+select top 5 a.matricula as 'Matricula Aeronave', sum(DATEDIFF(day,pi.desde,pi.hasta)) as 'Días fuera de servicio'
 from AERO.aeronaves_por_periodos ap
 join Aero.periodos_de_inactividad pi on ap.periodo_id=pi.id
 join AERO.aeronaves a on ap.aeronave_id= a.id
@@ -1429,7 +1348,6 @@ order by 2 desc
 END
 GO
 
--- VUELOS
 CREATE PROCEDURE AERO.generarViaje(@fechaSalida varchar(255), @fechaLlegadaEstimada varchar(255), @idAeronave int, @idRuta int)
 AS BEGIN
 INSERT INTO AERO.vuelos (FECHA_SALIDA, FECHA_LLEGADA_ESTIMADA, AERONAVE_ID, RUTA_ID)
@@ -1484,7 +1402,6 @@ WHERE ID = @idVuelo
 END
 GO
 
--- BUTACAS POR VUELO
 CREATE PROCEDURE AERO.migracionButacasPorVuelo
 AS BEGIN
 declare @cantAeronaves int
@@ -1519,18 +1436,13 @@ set @j = 1
 END
 GO
 
--- MILLAS
 CREATE PROCEDURE AERO.consultarMillas (@dni numeric(18,0))
 AS BEGIN
-
-/*creo tabla temporal, para poder insertar de ambas queries*/
 create table #tablaMillas(
 Fecha datetime,
 Motivo varchar(255),
 Millas int
 )
-
-/*inserto en la tabla temporal los pasajes*/
 insert into #tablaMillas 
 select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, bc.millas as Millas
 from AERO.clientes c
@@ -1542,7 +1454,6 @@ bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
 and c.DNI = @dni
 
-/*inserto en la tabla temporal los paquetes*/
 insert into #tablaMillas 
 select bc.FECHA_COMPRA as Fecha, 'Paquete' as Motivo, bc.millas as Millas
 from AERO.clientes c  
@@ -1554,7 +1465,6 @@ bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
 and c.DNI = @dni
 
-/*inserto en la tabla temporal los canjes*/
 insert into #tablaMillas 
 select cj.FECHA_CANJE as Fecha, 'Canje por '+CONVERT(varchar(10), cj.CANTIDAD)+' unidades de '+LOWER(p.NOMBRE) as Motivo, 
 -p.MILLAS_REQUERIDAS*cj.CANTIDAD as Millas
@@ -1564,10 +1474,7 @@ join AERO.productos p on p.ID = cj.PRODUCTO_ID
 where cj.FECHA_CANJE between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
 and c.DNI = @dni
 
-/*hago el select que me va a devolver toda la tabla para el dataGridView*/
 select * from #tablaMillas
-
-/*hago drop de la tabla temporal*/
 drop table #tablaMillas
 END
 GO
@@ -1589,7 +1496,6 @@ DROP TABLE #Result
 END
 GO
 
--- CANJES
 CREATE PROCEDURE AERO.altaCanje (@idCliente int, @idProducto int, @cantidad int)
 AS BEGIN
 INSERT INTO AERO.canjes (CLIENTE_ID, PRODUCTO_ID, CANTIDAD, FECHA_CANJE)
@@ -1600,7 +1506,6 @@ where ID = @idProducto
 END
 GO
 
--- TARJETAS
 CREATE PROCEDURE AERO.altaTarjeta (@idCliente int, @nroTarjeta numeric(18,0), @idTipo int, @fechaVto varchar(255))
 AS BEGIN
 INSERT INTO AERO.tarjetas_de_credito (Cliente_ID, NUMERO, TIPO_TARJETA_ID, FECHA_VTO)
@@ -1608,8 +1513,6 @@ VALUES (@idCliente, @nroTarjeta, @idTipo, convert(datetime, @fechaVto,109))
 END
 GO
 
--- CIUDADES
-/*Hago baja logica de todo porque sino rompe*/
 CREATE PROCEDURE AERO.bajaCiudad (@idCiudad int)
 AS BEGIN
 UPDATE AERO.aeropuertos
@@ -1632,7 +1535,6 @@ Declare @idRuta int
 END
 GO
 
--- COMPRAS
 CREATE PROCEDURE AERO.altaBoletoDeCompra (@precio numeric(18,2), @tipo nvarchar(255), @idCliente int, @idVuelo int)
 AS BEGIN
 INSERT INTO AERO.boletos_de_compra (PRECIO_COMPRA, TIPO_COMPRA, CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
@@ -1729,7 +1631,58 @@ WHERE BOLETO_COMPRA_ID in (select bc.ID from AERO.boletos_de_compra bc where bc.
 COMMIT
 GO
 
------------------------------------------------------------------------
+-- INSERTS: FUNCIONALIDADES ROLES USUARIOS PRODUCTOS TIPOS_DE_TARJETA
+
+INSERT INTO AERO.funcionalidades VALUES
+('Consultar Millas'),
+('Alta de Cliente'),
+('Alta de Aeronave'),
+('Alta de Tarjeta de Crédito'),
+('Baja de Aeronave'),
+('Baja de Ciudad'),
+('Baja de Cliente'),
+('Modificacion de Aeronave'),
+('Modificacion de Cliente'),
+('Realizar Canje'),
+('Alta de Rol'),
+('Baja de Rol'),
+('Modificacion de Rol'),
+('Alta de Ruta'),
+('Baja de Ruta'),
+('Modificacion de Ruta'),
+('Comprar Pasaje/Encomienda'),
+('Generar Viaje'),
+('Registrar Llegadas'),
+('Cancelar Compra'),
+('Consultar Listado');
+
+INSERT INTO AERO.roles (nombre, activo) VALUES
+('Administrador', 1),
+('Cliente', 1);
+
+INSERT INTO AERO.usuarios  (USERNAME, PASSWORD, FECHA_CREACION, ULTIMA_MODIFICACION, INTENTOS_LOGIN, ACTIVO) VALUES 
+('admin', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', GETDATE(), GETDATE(), 0, 1),
+('admin2', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', GETDATE(), GETDATE(), 0, 1),
+('admin3', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', GETDATE(), GETDATE(), 0, 1);
+
+INSERT INTO AERO.roles_por_usuario (ROL_ID, USUARIO_ID) VALUES 
+(1, 1),
+(1, 2),
+(1, 3);
+
+INSERT INTO AERO.productos (NOMBRE, MILLAS_REQUERIDAS, STOCK)
+VALUES ('VALIJA', 150, 50),
+('CANDADO', 10, 200),
+('ALMOHADA', 45, 100),
+('AUTO', 10000, 15),
+('CALEFACTOR', 500, 150);
+
+INSERT INTO AERO.tipos_tarjeta (NOMBRE, CUOTAS)
+VALUES ('VISA', 6),
+('MASTERCARD', 12),
+('AMEX', 3),
+('DINERS', 0);
+
 -- MIGRACION
 
 INSERT INTO AERO.fabricantes (NOMBRE)
@@ -1772,12 +1725,10 @@ from GD2C2015.gd_esquema.Maestra m, AERO.roles r
 where r.NOMBRE = 'Cliente'
 group by m.Cli_Dni, m.Cli_Nombre, m.Cli_Apellido, m.Cli_Fecha_Nac, m.Cli_Mail, m.Cli_Telefono, m.Cli_Dir, r.ID;
 
-/*la fecha de creacion es CURRENT TIMESTAMP ya que las fechas de salida de las aeronaves son en 2016*/
 INSERT INTO AERO.aeronaves (MATRICULA, MODELO, KG_DISPONIBLES, FABRICANTE_ID, TIPO_SERVICIO_ID, FECHA_ALTA, CANT_BUTACAS)
 SELECT UPPER(m.Aeronave_Matricula), UPPER(m.Aeronave_Modelo), m.Aeronave_KG_Disponibles, f.ID, ts.ID, CURRENT_TIMESTAMP, m.Butaca_Nro+1
 FROM GD2C2015.gd_esquema.Maestra m, AERO.fabricantes f, AERO.tipos_de_servicio ts
 where f.NOMBRE = m.Aeronave_Fabricante and ts.NOMBRE = m.Tipo_Servicio 
-/*QUERY PARA SABER CUAL ES EL MAYOR NUMERO DE BUTACA DE LAS AERONAVES, POR SI ES QUE SE USA ESE NUMERO PARA LA CANT_BUTACAS*/
 and m.Butaca_Nro = (select max(Butaca_Nro) from [GD2C2015].[gd_esquema].[Maestra] j where m.Aeronave_Matricula = j.Aeronave_Matricula)
 group by m.Aeronave_Matricula, m.Aeronave_Modelo, m.Aeronave_KG_Disponibles, f.ID, ts.ID, m.Butaca_Nro
 
@@ -1787,10 +1738,7 @@ FROM AERO.aeronaves A, GD2C2015.gd_esquema.Maestra M
 WHERE A.MATRICULA = M.Aeronave_Matricula and Butaca_Piso != 0
 GROUP BY M.Butaca_Nro, M.Butaca_Tipo, M.Butaca_Piso, A.ID
 
-/*Creo tabla temporal para las rutas, con esa tabla despues es mas facil unificar las filas que pertenezcan a la MISMA ruta (todo igual
-excepto que en una fila el kg base esta en 0 y en la otra el pasaje base esta en 0) porque en vez de recorrer 400000 filas recorre
-solamente 136, por lo que nos deja un total de 68 rutas diferentes (si tienen el mismo codigo de ruta pero distinto origen o destino o 
-tipo de servicio son distintas rutas)*/
+-- Tomamos como rutas distintas a las que tienen mismo codigo pero distinto origen o tipo_servicio
 SELECT DISTINCT [Ruta_Codigo], [Ruta_Precio_BaseKG], [Ruta_Precio_BasePasaje], [Ruta_Ciudad_Origen], [Ruta_Ciudad_Destino], [Tipo_Servicio]
 INTO #rutas_temporales
 FROM [GD2C2015].[gd_esquema].[Maestra]
@@ -1802,8 +1750,6 @@ WHERE d.NOMBRE = r.Ruta_Ciudad_Destino AND o.NOMBRE = r.Ruta_Ciudad_Origen AND t
 AND r.Ruta_Precio_BasePasaje = 0 AND r2.Ruta_Precio_BaseKG = 0 AND r.Ruta_Codigo = r2.Ruta_Codigo
 AND r.Ruta_Ciudad_Destino = r2.Ruta_Ciudad_Destino AND r.Ruta_Ciudad_Origen = r2.Ruta_Ciudad_Origen
 AND r.Tipo_Servicio = r2.Tipo_Servicio
-
-/*elimino la tabla temporal*/
 DROP TABLE #rutas_temporales
 
 INSERT INTO AERO.vuelos (FECHA_SALIDA, FECHA_LLEGADA_ESTIMADA, FECHA_LLEGADA, AERONAVE_ID, RUTA_ID)
@@ -1813,10 +1759,9 @@ WHERE m.[Ruta_Codigo] = r.CODIGO AND m.[Ruta_Ciudad_Origen] = p1.NOMBRE AND p1.I
 AND p2.ID = r.DESTINO_ID AND a.MATRICULA = m.[Aeronave_Matricula]
 GROUP BY m.[FechaSalida], m.[Fecha_LLegada_Estimada], m.[FechaLLegada], a.ID, r.ID
 
-/*ejecucion de procedure que migra la tabla de butacas por vuelo*/
 EXEC AERO.migracionButacasPorVuelo
 
-/*migracion de boletos de compra, con precio y millas en 0 (despues se actualizan)*/
+--(Despues se actualiza el precio y las millas de los boletos de compra)
 insert into AERO.boletos_de_compra (CLIENTE_ID, FECHA_COMPRA, MILLAS, PRECIO_COMPRA, TIPO_COMPRA, VUELO_ID)
 SELECT distinct C.ID as cliente, CASE WHEN Paquete_Codigo != 0 THEN Paquete_FechaCompra ELSE Pasaje_FechaCompra END AS FechaCompra, 0 as Millas, 0 as Precio, 'EFECTIVO' as tipoCompra, v.ID as vuelo
 FROM GD2C2015.gd_esquema.Maestra M
@@ -1831,7 +1776,6 @@ join AERO.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID =
 	where m.[Ruta_Codigo] = r.CODIGO and m.FechaSalida = v.FECHA_SALIDA and m.Fecha_LLegada_Estimada = v.FECHA_LLEGADA_ESTIMADA and
 	m.FechaLLegada = v.FECHA_LLEGADA)
 
-/*migracion de pasajes*/
 INSERT INTO AERO.pasajes (CODIGO, CLIENTE_ID, BUTACA_ID, CANCELACION_ID, BOLETO_COMPRA_ID, PRECIO)
 SELECT M.Pasaje_Codigo, C.ID, B.ID, NULL, bc.ID, M.Pasaje_Precio FROM GD2C2015.gd_esquema.Maestra M
 join AERO.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
@@ -1848,7 +1792,6 @@ join AERO.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID =
 	m.FechaLLegada = v.FECHA_LLEGADA) and v.ID=bc.VUELO_ID 
 where M.Pasaje_Codigo != 0
 
-/*migracion de paquetes*/
 INSERT INTO AERO.paquetes (CODIGO, KG, BOLETO_COMPRA_ID, CANCELACION_ID, PRECIO)
 SELECT M.Paquete_Codigo, M.Paquete_KG, bc.ID, NULL, M.Paquete_Precio FROM GD2C2015.gd_esquema.Maestra M
 join AERO.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
@@ -1864,15 +1807,10 @@ join AERO.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID =
 	m.FechaLLegada = v.FECHA_LLEGADA) and v.ID=bc.VUELO_ID 
 where M.Paquete_Codigo != 0
 
-/*actualizamos los datos del boleto de compra (precio y millas) segun la cantidad de pasajes y paquetes que los referencien*/
 update AERO.boletos_de_compra 
 set PRECIO_COMPRA= AERO.precioTotal(id)
-
 update AERO.boletos_de_compra 
 set millas= FLOOR(PRECIO_COMPRA/10)
-
------------------------------------------------------------------------
--- EJECUCION DE PROCEDURES
 
 EXEC AERO.addFuncionalidad @rol='Administrador', @func ='Consultar Millas';
 EXEC AERO.addFuncionalidad @rol='Administrador', @func ='Alta de Cliente';
@@ -1899,4 +1837,6 @@ EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Comprar Pasaje/Encomienda';
 EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Consultar Millas';
 EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Realizar Canje';
 EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Alta de Tarjeta de Crédito';
-EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Cancelar Compra';
+EXEC AERO.addFuncionalidad @rol='Cliente', @func ='Cancelar Compra'
+
+
