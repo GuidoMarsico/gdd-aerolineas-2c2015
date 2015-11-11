@@ -13,7 +13,7 @@ namespace AerolineaFrba
     {
         public static string cadena_nula = "";
         public static int entero_nulo = -1;
-        public static string schema = "AERO";
+        public static string schema = "DIVIDIDOS";
         /// <summary>
         /// Realiza la conexion a la base de datos.
         /// </summary>
