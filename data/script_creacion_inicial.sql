@@ -1224,10 +1224,10 @@ UPDATE DIVIDIDOS.aeronaves SET BAJA='POR_PERIODO' WHERE ID=@id;
 END
 GO
 
-CREATE PROCEDURE DIVIDIDOS.bajaAeronave(@id  INT)
+CREATE PROCEDURE DIVIDIDOS.bajaAeronave(@id INT, @fecha varchar(50))
 AS BEGIN
 UPDATE DIVIDIDOS.aeronaves SET BAJA='DEFINITIVA',
-FECHA_BAJA= CURRENT_TIMESTAMP
+FECHA_BAJA= CONVERT(datetime,@fecha,109)
 WHERE ID=@id;
 END
 GO
@@ -1249,10 +1249,10 @@ WHERE ID = @id
 END
 GO
 
-CREATE PROCEDURE DIVIDIDOS.cancelarPasajesDeBc(@idBc int)
+CREATE PROCEDURE DIVIDIDOS.cancelarPasajesDeBc(@idBc int, @fecha varchar(50))
 AS BEGIN
 INSERT INTO DIVIDIDOS.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-VALUES(@idBc,CURRENT_TIMESTAMP,'CANCELACION PASAJE')
+VALUES(@idBc,CONVERT(datetime,@fecha,109),'CANCELACION PASAJE')
 UPDATE DIVIDIDOS.pasajes
 SET CANCELACION_ID = SCOPE_IDENTITY()
 WHERE BOLETO_COMPRA_ID = @idBc
@@ -1263,10 +1263,10 @@ END
 GO
 
 /*SE PUEDE CANCELAR UNO O VARIOS PASAJES DEL MISMO BOLETO DE COMPRA*/
-CREATE PROCEDURE DIVIDIDOS.cancelarPasaje(@idPasaje int)
+CREATE PROCEDURE DIVIDIDOS.cancelarPasaje(@idPasaje int, @fecha varchar(50))
 AS BEGIN
 INSERT INTO DIVIDIDOS.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-SELECT BOLETO_COMPRA_ID, CURRENT_TIMESTAMP, 'CANCELACION PASAJE' FROM DIVIDIDOS.pasajes WHERE ID = @idPasaje
+SELECT BOLETO_COMPRA_ID, CONVERT(datetime,@fecha,109), 'CANCELACION PASAJE' FROM DIVIDIDOS.pasajes WHERE ID = @idPasaje
 UPDATE DIVIDIDOS.pasajes
 SET CANCELACION_ID = SCOPE_IDENTITY()
 WHERE ID = @idPasaje
@@ -1277,24 +1277,24 @@ END
 GO
 
 /*NO SE PUEDE CANCELAR UN SOLO PAQUETE, SE CANCELAN TODOS LOS DEL BOLETO DE COMPRA*/
-CREATE PROCEDURE DIVIDIDOS.cancelarPaquete(@idBoletoCompra int)
+CREATE PROCEDURE DIVIDIDOS.cancelarPaquete(@idBoletoCompra int, @fecha varchar(50))
 AS BEGIN
 INSERT INTO DIVIDIDOS.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-VALUES(@idBoletoCompra, CURRENT_TIMESTAMP, 'CANCELACION PAQUETE')
+VALUES(@idBoletoCompra, CONVERT(datetime,@fecha,109), 'CANCELACION PAQUETE')
 UPDATE DIVIDIDOS.paquetes
 SET CANCELACION_ID = SCOPE_IDENTITY()
 WHERE BOLETO_COMPRA_ID = @idBoletoCompra
 END
 GO
 
-CREATE PROCEDURE DIVIDIDOS.bajaVuelo(@id int)
+CREATE PROCEDURE DIVIDIDOS.bajaVuelo(@id int, @fecha varchar(50))
 AS BEGIN
 DELETE DIVIDIDOS.butacas_por_vuelo WHERE VUELO_ID = @id 
 UPDATE DIVIDIDOS.vuelos 
 SET INVALIDO = 1
-WHERE ID = @id AND FECHA_LLEGADA IS NULL AND FECHA_SALIDA > CURRENT_TIMESTAMP
+WHERE ID = @id AND FECHA_LLEGADA IS NULL AND FECHA_SALIDA > CONVERT(datetime,@fecha,109)
 INSERT INTO DIVIDIDOS.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-SELECT BC.ID, CURRENT_TIMESTAMP, 'BAJA VUELO' FROM DIVIDIDOS.boletos_de_compra BC, DIVIDIDOS.vuelos v WHERE BC.VUELO_ID = @id and
+SELECT BC.ID, CONVERT(datetime,@fecha,109), 'BAJA VUELO' FROM DIVIDIDOS.boletos_de_compra BC, DIVIDIDOS.vuelos v WHERE BC.VUELO_ID = @id and
 v.ID = bc.VUELO_ID and v.INVALIDO = 1 and bc.INVALIDO = 0
 SELECT BC.ID Into  #Temp FROM DIVIDIDOS.boletos_de_compra BC, DIVIDIDOS.vuelos v WHERE BC.VUELO_ID = @id and
 v.ID = bc.VUELO_ID and v.INVALIDO = 1 and bc.INVALIDO = 0
@@ -1302,14 +1302,14 @@ Declare @idBoleto int
 	While (Select Count(*) From #Temp) > 0
 	Begin
 		Select Top 1 @idBoleto = Id From #Temp
-		EXEC DIVIDIDOS.cancelarPasajesDeBc @idBc = @idBoleto
-		EXEC DIVIDIDOS.cancelarPaquete @idBoletoCompra = @idBoleto
+		EXEC DIVIDIDOS.cancelarPasajesDeBc @idBc = @idBoleto, @fecha = @fecha
+		EXEC DIVIDIDOS.cancelarPaquete @idBoletoCompra = @idBoleto, @fecha = @fecha
 		Delete #Temp Where Id = @idBoleto
 	End
 END
 GO
 
-CREATE PROCEDURE DIVIDIDOS.bajaRuta(@id INT)
+CREATE PROCEDURE DIVIDIDOS.bajaRuta(@id INT, @fecha varchar(50))
 AS BEGIN
 UPDATE DIVIDIDOS.rutas
 SET BAJA = 1
@@ -1319,7 +1319,7 @@ Declare @idVuelo int
 	While (Select Count(*) From #Temp) > 0
 	Begin
 		Select Top 1 @idVuelo = Id From #Temp
-		EXEC DIVIDIDOS.bajaVuelo @id = @idVuelo
+		EXEC DIVIDIDOS.bajaVuelo @id = @idVuelo, @fecha = @fecha
 		Delete #Temp Where Id = @idVuelo
 	End
 END
@@ -1376,8 +1376,8 @@ order by 2 desc
 END
 GO
 
---TOP de los clientes con mas puntos acumulados a la fecha (la fecha es hasta el dia de hoy)
-CREATE PROCEDURE DIVIDIDOS.top5ClientesMillas(@fechaFrom varchar(50), @fechaTo varchar(50))
+--TOP de los clientes con mas puntos acumulados a la fecha
+CREATE PROCEDURE DIVIDIDOS.top5ClientesMillas(@fechaFrom varchar(50), @fechaTo varchar(50), @fecha varchar(50))
 AS BEGIN
 /*creo tabla temporal, para poder insertar de ambas queries*/
 create table #tablaMillas(
@@ -1394,7 +1394,7 @@ join DIVIDIDOS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID
 where P.CANCELACION_ID IS NULL AND
 p.INVALIDO=0 AND
 bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 group by c.nombre, c.APELLIDO
 
 /*inserto en la tabla temporal los paquetes*/
@@ -1406,7 +1406,7 @@ join DIVIDIDOS.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
 where P.CANCELACION_ID IS NULL AND
 p.INVALIDO=0 AND
 bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 group by c.nombre, c.APELLIDO
 
 select top 5 * from #tablaMillas
@@ -1520,7 +1520,7 @@ END
 GO
 
 -- MILLAS
-CREATE PROCEDURE DIVIDIDOS.consultarMillas (@dni numeric(18,0))
+CREATE PROCEDURE DIVIDIDOS.consultarMillas (@dni numeric(18,0), @fecha varchar(50))
 AS BEGIN
 
 /*creo tabla temporal, para poder insertar de ambas queries*/
@@ -1539,7 +1539,7 @@ join DIVIDIDOS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID
 where bc.ID NOT IN (select BOLETO_COMPRA_ID from DIVIDIDOS.cancelaciones) and
 p.INVALIDO=0 AND
 bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 and c.DNI = @dni
 
 /*inserto en la tabla temporal los paquetes*/
@@ -1551,7 +1551,7 @@ join DIVIDIDOS.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
 where bc.ID NOT IN (select BOLETO_COMPRA_ID from DIVIDIDOS.cancelaciones) and
 p.INVALIDO=0 AND
 bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 and c.DNI = @dni
 
 /*inserto en la tabla temporal los canjes*/
@@ -1561,7 +1561,7 @@ select cj.FECHA_CANJE as Fecha, 'Canje por '+CONVERT(varchar(10), cj.CANTIDAD)+'
 from DIVIDIDOS.clientes c
 join DIVIDIDOS.canjes cj on cj.CLIENTE_ID=c.ID
 join DIVIDIDOS.productos p on p.ID = cj.PRODUCTO_ID
-where cj.FECHA_CANJE between DATEADD(YYYY, -1, CURRENT_TIMESTAMP) and CURRENT_TIMESTAMP
+where cj.FECHA_CANJE between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 and c.DNI = @dni
 
 /*hago el select que me va a devolver toda la tabla para el dataGridView*/
@@ -1572,14 +1572,14 @@ drop table #tablaMillas
 END
 GO
 
-CREATE PROCEDURE DIVIDIDOS.obtenerClienteConMillas (@dni numeric(18,0))
+CREATE PROCEDURE DIVIDIDOS.obtenerClienteConMillas (@dni numeric(18,0), @fecha varchar(50))
 AS BEGIN
 CREATE TABLE #Result (
   FECHA_COMPRA datetime,
   Motivo varchar(255),
   Millas int
 )
-INSERT INTO #Result EXEC DIVIDIDOS.consultarMillas @dni
+INSERT INTO #Result EXEC DIVIDIDOS.consultarMillas @dni, @fecha
 
 SELECT c.ID, c.NOMBRE as Nombre, c.APELLIDO as Apellido, c.DNI as Dni, c.FECHA_NACIMIENTO as 'Fecha de Nacimiento', SUM(r.Millas) as Millas
 FROM #Result r
@@ -1590,10 +1590,10 @@ END
 GO
 
 -- CANJES
-CREATE PROCEDURE DIVIDIDOS.altaCanje (@idCliente int, @idProducto int, @cantidad int)
+CREATE PROCEDURE DIVIDIDOS.altaCanje (@idCliente int, @idProducto int, @cantidad int, @fecha varchar(50))
 AS BEGIN
 INSERT INTO DIVIDIDOS.canjes (CLIENTE_ID, PRODUCTO_ID, CANTIDAD, FECHA_CANJE)
-VALUES (@idCliente, @idProducto, @cantidad, CURRENT_TIMESTAMP)
+VALUES (@idCliente, @idProducto, @cantidad, CONVERT(datetime,@fecha,109))
 UPDATE DIVIDIDOS.productos
 SET STOCK = STOCK - @cantidad
 where ID = @idProducto
@@ -1610,7 +1610,7 @@ GO
 
 -- CIUDADES
 /*Hago baja logica de todo porque sino rompe*/
-CREATE PROCEDURE DIVIDIDOS.bajaCiudad (@idCiudad int)
+CREATE PROCEDURE DIVIDIDOS.bajaCiudad (@idCiudad int, @fecha varchar(50))
 AS BEGIN
 UPDATE DIVIDIDOS.aeropuertos
 SET BAJA = 1
@@ -1626,17 +1626,17 @@ Declare @idRuta int
 	While (Select Count(*) From #Temp) > 0
 	Begin
 		Select Top 1 @idRuta = Id From #Temp
-		EXEC DIVIDIDOS.bajaRuta @id = @idRuta
+		EXEC DIVIDIDOS.bajaRuta @id = @idRuta, @fecha = @fecha
 		Delete #Temp Where Id = @idRuta
 	End
 END
 GO
 
 -- COMPRAS
-CREATE PROCEDURE DIVIDIDOS.altaBoletoDeCompra (@precio numeric(18,2), @tipo nvarchar(255), @idCliente int, @idVuelo int)
+CREATE PROCEDURE DIVIDIDOS.altaBoletoDeCompra (@precio numeric(18,2), @tipo nvarchar(255), @idCliente int, @idVuelo int, @fecha varchar(50))
 AS BEGIN
 INSERT INTO DIVIDIDOS.boletos_de_compra (PRECIO_COMPRA, TIPO_COMPRA, CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
-VALUES (@precio, UPPER(@tipo), @idCliente, @idVuelo, CURRENT_TIMESTAMP, 0)
+VALUES (@precio, UPPER(@tipo), @idCliente, @idVuelo, CONVERT(datetime,@fecha,109), 0)
 END
 GO
 

@@ -234,81 +234,107 @@
     </Compile>
     <EmbeddedResource Include="Abm Aeronave\altaDeAeronave.resx">
       <DependentUpon>altaDeAeronave.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Aeronave\bajaModificacionDeAeronave.resx">
       <DependentUpon>bajaModificacionDeAeronave.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Aeronave\modificacionDeAeronave.resx">
       <DependentUpon>modificacionDeAeronave.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Ciudad\bajaModificacionDeCiudad.resx">
       <DependentUpon>bajaModificacionDeCiudad.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\altaModificacionDeRol.resx">
       <DependentUpon>altaModificacionDeRol.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\bajaModificacionDeRol.resx">
       <DependentUpon>bajaModificacionDeRol.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Ruta\altaDeRuta.resx">
       <DependentUpon>altaDeRuta.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Ruta\bajaModificacionDeRuta.resx">
       <DependentUpon>bajaModificacionDeRuta.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Ruta\modificacionDeRuta.resx">
       <DependentUpon>modificacionDeRuta.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Vuelos\generarViaje.resx">
       <DependentUpon>generarViaje.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CancelarReprogramarVuelos\CancelarVuelos.resx">
       <DependentUpon>CancelarVuelos.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CancelarReprogramarVuelos\SeleccionarAeronave.resx">
       <DependentUpon>SeleccionarAeronave.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CancelarReprogramarVuelos\VuelosARemplazar.resx">
       <DependentUpon>VuelosARemplazar.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Canje Millas\realizarCanjeMillas.resx">
       <DependentUpon>realizarCanjeMillas.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra\cancelacionCompra.resx">
       <DependentUpon>cancelacionCompra.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra\cargaDeDatos.resx">
       <DependentUpon>cargaDeDatos.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra\formaDePago.resx">
       <DependentUpon>formaDePago.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra\procesoCompraExitoso.resx">
       <DependentUpon>procesoCompraExitoso.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra\registrarPagoEfectivo.resx">
       <DependentUpon>registrarPagoEfectivo.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra\registrarPagoTarjeta.resx">
       <DependentUpon>registrarPagoTarjeta.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra\viajesDisponibles.resx">
       <DependentUpon>viajesDisponibles.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Consulta Millas\consultaMillas.resx">
       <DependentUpon>consultaMillas.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ingreso\Ingreso.resx">
       <DependentUpon>Ingreso.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ingreso\menuPrincipal.resx">
       <DependentUpon>menuPrincipal.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Listado Estadistico\listadoEstadistico.resx">
       <DependentUpon>listadoEstadistico.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -321,15 +347,19 @@
     </Compile>
     <EmbeddedResource Include="Registro de Usuario\altaModificacionDeCliente.resx">
       <DependentUpon>altaModificacionDeCliente.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Registro de Usuario\bajaModificacionDeCliente.resx">
       <DependentUpon>bajaModificacionDeCliente.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Registro Llegada Destino\registroDeLlegadaADestino.resx">
       <DependentUpon>registroDeLlegadaADestino.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Tarjeta\altaDeTarjeta.resx">
       <DependentUpon>altaDeTarjeta.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -342,7 +372,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

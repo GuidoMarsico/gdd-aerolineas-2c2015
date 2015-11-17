@@ -120,7 +120,7 @@ namespace AerolineaFrba.Abm_Aeronave
                         FROM " + SqlConnector.getSchema() + @".vuelos v
                         join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.Ruta_ID
                         join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
-                        where v.AERONAVE_ID =" + id +" AND v.INVALIDO = 0 AND v.FECHA_SALIDA > CURRENT_TIMESTAMP order by 2");
+                        where v.AERONAVE_ID =" + id + " AND v.INVALIDO = 0 AND v.FECHA_SALIDA > convert(datetime,'" + funcionesComunes.getFecha() + "',109) order by 2");
         }
 
         private void bajaModificacionDeAeronave_Enter(object sender, EventArgs e)

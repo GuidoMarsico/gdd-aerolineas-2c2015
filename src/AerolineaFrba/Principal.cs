@@ -20,7 +20,7 @@ namespace AerolineaFrba
         public Principal()
         {
             InitializeComponent();
-            
+            funcionesComunes.setFecha(String.Format("{0:yyyyMMdd HH:mm:ss}",DateTime.Parse(@System.Configuration.ConfigurationSettings.AppSettings["Fecha"])));
         }
 
         private void Principal_Load(object sender, EventArgs e)

@@ -13,6 +13,8 @@ namespace AerolineaFrba
     //creamos una clase con funciones que utilizan las demas para no repetir codigo
     class funcionesComunes
     {
+        public static string fecha;
+
         #region Singletons Ventanas
         private static Form ventanaAnterior;
         private static Form ventanaActual;
@@ -31,7 +33,7 @@ namespace AerolineaFrba
         public static void deshabilitarVentanaYAbrirNueva(Form ventanaNueva)
         {
             pos = listaVentanas.Count();
-            ventanaAnterior = listaVentanas[pos -1];
+            ventanaAnterior = listaVentanas[pos - 1];
             ventanaAnterior.Hide();
             listaVentanas.Add(ventanaNueva);
             ventanaNueva.MdiParent = Principal.ActiveForm;
@@ -52,10 +54,10 @@ namespace AerolineaFrba
                 ventanaAnterior.Show();
             }
         }
-        public static Form getVentanaAnterior() 
+        public static Form getVentanaAnterior()
         {
             pos = listaVentanas.Count();
-            return listaVentanas[pos-2];        
+            return listaVentanas[pos - 2];
         }
 
         //esta funcion permite volver al menu principal
@@ -97,7 +99,7 @@ namespace AerolineaFrba
 
         public static bool containsAdmin()
         {
-            return roles.Contains("Administrador");            
+            return roles.Contains("Administrador");
         }
 
         public static Int32 getIdRolCliente()
@@ -134,7 +136,7 @@ namespace AerolineaFrba
         }
 
         public static void soloPrecio(KeyPressEventArgs e)
-        {   
+        {
             if (!((char.IsDigit(e.KeyChar)) || (e.KeyChar == ',') || (e.KeyChar == (char)Keys.Back)))
             {
                 e.Handled = true;
@@ -161,7 +163,7 @@ namespace AerolineaFrba
         {
             if (!((char.IsLetter(e.KeyChar)) || (e.KeyChar == (char)Keys.Back) || (e.KeyChar == (char)Keys.Space)))
             {
-                 e.Handled = true;
+                e.Handled = true;
             }
         }
 
@@ -181,7 +183,7 @@ namespace AerolineaFrba
             }
         }
 
-       
+
 
         #endregion
 
@@ -235,20 +237,25 @@ namespace AerolineaFrba
         {
             DataTable listado = SqlConnector.obtenerTablaSegunConsultaString(@"select f.ID as Id, 
                 f.DETALLES as Funcionalidad from " + SqlConnector.getSchema() + @".funcionalidades_por_rol fr inner 
-                join " + SqlConnector.getSchema() + @".funcionalidades f on fr.FUNCIONALIDAD_ID = f.ID where fr.ROL_ID = '" + 
+                join " + SqlConnector.getSchema() + @".funcionalidades f on fr.FUNCIONALIDAD_ID = f.ID where fr.ROL_ID = '" +
                 valor + "'");
             datagridview.DataSource = listado;
             datagridview.Columns[0].Visible = false;
         }
 
-        public static DataTable consultarRoles(DataGridView datagridview){
+        public static DataTable consultarRoles(DataGridView datagridview)
+        {
             DataTable listado = SqlConnector.obtenerTablaSegunConsultaString(@"select r.ID as IdRol, 
                 r.NOMBRE as Rol, r.ACTIVO as Activo from " + SqlConnector.getSchema() + ".roles r");
             listado.Columns.Add("Estado", typeof(String));
-            foreach (DataRow row in listado.Rows){
-                if (Convert.ToInt32(row[2]) == 0){
+            foreach (DataRow row in listado.Rows)
+            {
+                if (Convert.ToInt32(row[2]) == 0)
+                {
                     row[3] = "Inactivo";
-                }else{
+                }
+                else
+                {
                     row[3] = "Activo";
                 }
             }
@@ -269,7 +276,7 @@ namespace AerolineaFrba
             return listado;
         }
 
-       public static DataTable consultarViajesDisponibles(DataGridView datagridview,string fecha)
+        public static DataTable consultarViajesDisponibles(DataGridView datagridview, string fecha)
         {
             DataTable listado;
             listado = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + ".vuelosDisponibles",
@@ -279,31 +286,41 @@ namespace AerolineaFrba
             return listado;
         }
 
-         public  static void darDeBajaAeronave(String id)
+        public static void darDeBajaAeronave(String id)
         {
-            bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".bajaAeronave", 
-                generarListaParaProcedure("@id"), id);
+            bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".bajaAeronave",
+                generarListaParaProcedure("@id", "@fecha"), id, funcionesComunes.getFecha());
             if (resultado)
             {
                 MessageBox.Show("La aeronave se dio de baja exitosamente");
             }
         }
         public static void darDebajaVuelo(int id)
-       {
-           SqlConnector.executeProcedure(SqlConnector.getSchema() + ".bajaVuelo", generarListaParaProcedure("@id"), id);
-       }
+        {
+            SqlConnector.executeProcedure(SqlConnector.getSchema() + ".bajaVuelo", generarListaParaProcedure("@id", "@fecha"), id, funcionesComunes.getFecha());
+        }
 
         public static List<string> generarListaParaProcedure(params Object[] parametros)
         {
             List<string> lista = new List<string>();
-            for (int i = 0; i < parametros.Length; i++ )
+            for (int i = 0; i < parametros.Length; i++)
             {
                 lista.Add(parametros[i].ToString());
-            }            
+            }
             return lista;
         }
 
         #endregion
+
+        public static void setFecha(String fec)
+        {
+            fecha = fec;
+        }
+
+        public static string getFecha()
+        {
+            return fecha;
+        }
 
         public static double precioEncomienda(DataGridViewRow encomienda)
         {
@@ -317,20 +334,20 @@ namespace AerolineaFrba
             return Double.Parse(pasaje.Cells[6].Value.ToString());
         }
 
-        public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, string tipoCompra, Int32 idCliente,Int32 idVuelo )
+        public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, string tipoCompra, Int32 idCliente, Int32 idVuelo)
         {
 
 
             SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaBoletoDeCompra",
-                funcionesComunes.generarListaParaProcedure("@precio", "@tipo", "@idCliente", "@idVuelo"),
-                precioCompra, tipoCompra, idCliente, idVuelo);
+                funcionesComunes.generarListaParaProcedure("@precio", "@tipo", "@idCliente", "@idVuelo", "@fecha"),
+                precioCompra, tipoCompra, idCliente, idVuelo, funcionesComunes.getFecha());
 
             Int32 idBoleto = funcionesComunes.obtenerBoleto();
             if (pasajes.RowCount != 0)
-                funcionesComunes.darAltaPasajes(pasajes,idBoleto);
+                funcionesComunes.darAltaPasajes(pasajes, idBoleto);
             if (encomiendas.RowCount != 0)
-                funcionesComunes.darAltaEncomiendas(encomiendas,idBoleto);
-         
+                funcionesComunes.darAltaEncomiendas(encomiendas, idBoleto);
+
             return idBoleto.ToString();
         }
 
@@ -342,36 +359,37 @@ namespace AerolineaFrba
             return Convert.ToInt32(tabla.Rows[0].ItemArray[0]);
         }
 
-        private static void darAltaEncomiendas(DataGridView encomiendas,Int32 idBoleto)
+        private static void darAltaEncomiendas(DataGridView encomiendas, Int32 idBoleto)
         {
-            foreach (DataGridViewRow encomienda in encomiendas.Rows) 
-            { 
+            foreach (DataGridViewRow encomienda in encomiendas.Rows)
+            {
                 /*Aca por cada encomienda que me ahora veo que le decimos paquete
                  le mandamos al procedure el precio , los kg, id boleto de compra
-                 */ 
+                 */
                 double kg = Convert.ToDouble(encomienda.Cells[4].Value);
                 double precio = Convert.ToDouble(encomienda.Cells[5].Value);
                 SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaPaquete",
                     funcionesComunes.generarListaParaProcedure("@idBoletoCompra", "@kg", "@precio"),
-                    idBoleto,kg,precio);
+                    idBoleto, kg, precio);
                 //Ahora le mando un 1 al codigo pero hay que ver como generar
             }
         }
 
-        private static void darAltaPasajes(DataGridView pasajes,Int32 idBoleto)
+        private static void darAltaPasajes(DataGridView pasajes, Int32 idBoleto)
         {
-            foreach (DataGridViewRow pasaje in pasajes.Rows) 
+            foreach (DataGridViewRow pasaje in pasajes.Rows)
             {
                 Int32 idPasajero = Int32.Parse(pasaje.Cells[0].Value.ToString());
                 Int32 idButaca = Int32.Parse(pasaje.Cells[11].Value.ToString());
                 Double precio = Convert.ToDouble(pasaje.Cells[6].Value.ToString());
 
-                if ( idPasajero == 0) {
+                if (idPasajero == 0)
+                {
                     idPasajero = funcionesComunes.darAltaCliente(pasaje);
                 }
                 SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaPasaje",
-                funcionesComunes.generarListaParaProcedure("@idCliente","@idButaca","@idBoletoCompra","@precio"),
-                idPasajero,idButaca,idBoleto,precio);
+                funcionesComunes.generarListaParaProcedure("@idCliente", "@idButaca", "@idBoletoCompra", "@precio"),
+                idPasajero, idButaca, idBoleto, precio);
                 //Aca hacemos el insert del pasaje usando el idBoleto , el idPasajero, el precio , el id de la butaca y el codigo que hay que ver como generar
             }
         }
@@ -379,22 +397,22 @@ namespace AerolineaFrba
         private static int darAltaCliente(DataGridViewRow pasaje)
         {
             string nombre = pasaje.Cells[1].Value.ToString();
-            string apellido=pasaje.Cells[2].Value.ToString();
+            string apellido = pasaje.Cells[2].Value.ToString();
             long dni = long.Parse(pasaje.Cells[3].Value.ToString());
-            long telefono= long.Parse(pasaje.Cells[7].Value.ToString());
-            string direccion= pasaje.Cells[8].Value.ToString();
-            string mail= pasaje.Cells[9].Value.ToString();
+            long telefono = long.Parse(pasaje.Cells[7].Value.ToString());
+            string direccion = pasaje.Cells[8].Value.ToString();
+            string mail = pasaje.Cells[9].Value.ToString();
             SqlConnector.executeProcedure(SqlConnector.getSchema() + ".agregarCliente",
                 funcionesComunes.generarListaParaProcedure("@rol_id", "@nombreCliente", "@apellidoCliente",
                 "@documentoCliente", "@direccion", "@telefono", "@mail", "@fechaNac"),
                 funcionesComunes.getIdRolCliente(), nombre, apellido, dni, direccion,
                 telefono, mail, String.Format("{0:yyyyMMdd HH:mm:ss}", Convert.ToDateTime(pasaje.Cells[10].Value.ToString())));
             // Tenemos que hacer que me devuelva el id del cliente dado de alta para despues usarlo en el alta del pasaje
-            DataTable tabla= SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
+            DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
                                                                     FROM " + SqlConnector.getSchema() + @".clientes c
                                                                     order by 1 desc");
 
-            return Convert.ToInt32( tabla.Rows[0].ItemArray[0]);
+            return Convert.ToInt32(tabla.Rows[0].ItemArray[0]);
         }
 
         public static bool validarDni(string dni)
