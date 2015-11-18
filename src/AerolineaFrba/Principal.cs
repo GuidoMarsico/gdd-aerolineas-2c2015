@@ -27,6 +27,8 @@ namespace AerolineaFrba
         {
 
             if (SqlConnector.conectarABaseDeDatos()){
+                SqlConnector.executeProcedure(SqlConnector.getSchema() + @".activarAeronaves",
+                funcionesComunes.generarListaParaProcedure("@fecha"), funcionesComunes.getFecha());
                 funcionesComunes.ventanaInicial(new Ingreso.Ingreso());
             }else{
                 MessageBox.Show("Cierre el programa e intente nuevamente");

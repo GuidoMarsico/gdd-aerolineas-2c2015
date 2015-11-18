@@ -962,6 +962,12 @@ BEGIN
 END;
 GO
 
+IF OBJECT_ID('DIVIDIDOS.activarAeronaves') IS NOT NULL
+BEGIN
+	DROP PROCEDURE DIVIDIDOS.activarAeronaves;
+END;
+GO
+
 --CREATE
 CREATE FUNCTION DIVIDIDOS.corrigeMail (@s NVARCHAR (255)) 
 RETURNS NVARCHAR(255)
@@ -1229,6 +1235,17 @@ AS BEGIN
 UPDATE DIVIDIDOS.aeronaves SET BAJA='DEFINITIVA',
 FECHA_BAJA= CONVERT(datetime,@fecha,109)
 WHERE ID=@id;
+END
+GO
+
+CREATE PROCEDURE DIVIDIDOS.activarAeronaves(@fecha varchar(50))
+AS BEGIN
+UPDATE DIVIDIDOS.aeronaves
+SET BAJA = NULL
+WHERE ID IN (SELECT axp.AERONAVE_ID FROM DIVIDIDOS.aeronaves_por_periodos axp, DIVIDIDOS.periodos_de_inactividad p
+WHERE p.ID = axp.PERIODO_ID AND p.HASTA <= CONVERT(datetime, @fecha, 109)) AND ID NOT IN (SELECT axp.AERONAVE_ID FROM 
+DIVIDIDOS.aeronaves_por_periodos axp, DIVIDIDOS.periodos_de_inactividad p
+where p.ID = axp.PERIODO_ID AND p.HASTA > CONVERT(datetime, @fecha, 109) AND p.DESDE <= CONVERT(datetime, @fecha, 109))
 END
 GO
 

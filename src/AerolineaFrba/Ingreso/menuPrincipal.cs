@@ -20,7 +20,6 @@ namespace AerolineaFrba.Ingreso
         {
             InitializeComponent();
             this.textBoxFecha.Text = String.Format("{0:dd-MM-yyyy HH:mm:ss}", DateTime.Parse(@System.Configuration.ConfigurationSettings.AppSettings["Fecha"]));
-            MessageBox.Show(funcionesComunes.getFecha());
         }
 
         public menuPrincipal(String nombre)
