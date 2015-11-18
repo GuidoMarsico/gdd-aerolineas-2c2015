@@ -13,6 +13,8 @@ namespace AerolineaFrba
     //creamos una clase con funciones que utilizan las demas para no repetir codigo
     class funcionesComunes
     {
+        public static string fecha;
+
         #region Singletons Ventanas
         private static Form ventanaAnterior;
         private static Form ventanaActual;
@@ -282,16 +284,16 @@ namespace AerolineaFrba
          public  static void darDeBajaAeronave(String id)
         {
             bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".bajaAeronave", 
-                generarListaParaProcedure("@id"), id);
+                generarListaParaProcedure("@id","@fecha"), id,funcionesComunes.getFecha());
             if (resultado)
             {
                 MessageBox.Show("La aeronave se dio de baja exitosamente");
             }
         }
         public static void darDebajaVuelo(int id)
-       {
-           SqlConnector.executeProcedure(SqlConnector.getSchema() + ".bajaVuelo", generarListaParaProcedure("@id"), id);
-       }
+        {
+           SqlConnector.executeProcedure(SqlConnector.getSchema() + ".bajaVuelo", generarListaParaProcedure("@id","@fecha"), id,funcionesComunes.getFecha());
+        }
 
         public static List<string> generarListaParaProcedure(params Object[] parametros)
         {
@@ -304,6 +306,17 @@ namespace AerolineaFrba
         }
 
         #endregion
+
+        public static void setFecha(String fec)
+        {
+
+           fecha = fec;     
+        }
+
+      public static string getFecha()
+      {
+            return fecha;
+      }
 
         public static double precioEncomienda(DataGridViewRow encomienda)
         {
@@ -322,8 +335,8 @@ namespace AerolineaFrba
 
 
             SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaBoletoDeCompra",
-                funcionesComunes.generarListaParaProcedure("@precio", "@tipo", "@idCliente", "@idVuelo"),
-                precioCompra, tipoCompra, idCliente, idVuelo);
+            funcionesComunes.generarListaParaProcedure("@precio", "@tipo", "@idCliente", "@idVuelo", "@fecha"),
+                precioCompra, tipoCompra, idCliente, idVuelo, funcionesComunes.getFecha());
 
             Int32 idBoleto = funcionesComunes.obtenerBoleto();
             if (pasajes.RowCount != 0)

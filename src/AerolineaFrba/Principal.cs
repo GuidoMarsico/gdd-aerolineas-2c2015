@@ -20,6 +20,7 @@ namespace AerolineaFrba
         public Principal()
         {
             InitializeComponent();
+            funcionesComunes.setFecha(String.Format("{0:yyyyMMdd HH:mm:ss}", DateTime.Parse(@System.Configuration.ConfigurationSettings.AppSettings["Fecha"])));
             
         }
 
@@ -27,6 +28,7 @@ namespace AerolineaFrba
         {
 
             if (SqlConnector.conectarABaseDeDatos()){
+                SqlConnector.executeProcedure(SqlConnector.getSchema() + @".activarAeronaves", funcionesComunes.generarListaParaProcedure("@fecha"), funcionesComunes.getFecha());
                 funcionesComunes.ventanaInicial(new Ingreso.Ingreso());
             }else{
                 MessageBox.Show("Cierre el programa e intente nuevamente");

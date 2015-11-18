@@ -33,6 +33,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblBienvenido = new System.Windows.Forms.Label();
             this.label = new System.Windows.Forms.Label();
+            this.textBoxFecha = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // botonSalir
@@ -95,12 +96,20 @@
             this.label.TabIndex = 11;
             this.label.Text = "Seleccione una acción a realizar";
             // 
+            // textBoxFecha
+            // 
+            this.textBoxFecha.Location = new System.Drawing.Point(372, 49);
+            this.textBoxFecha.Name = "textBoxFecha";
+            this.textBoxFecha.Size = new System.Drawing.Size(165, 20);
+            this.textBoxFecha.TabIndex = 12;
+            // 
             // menuPrincipal
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(549, 247);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxFecha);
             this.Controls.Add(this.label);
             this.Controls.Add(this.lblBienvenido);
             this.Controls.Add(this.botonSalir);
@@ -121,5 +130,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblBienvenido;
         private System.Windows.Forms.Label label;
+        private System.Windows.Forms.TextBox textBoxFecha;
     }
 }

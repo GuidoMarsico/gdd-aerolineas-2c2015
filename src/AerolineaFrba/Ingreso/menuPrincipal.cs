@@ -19,12 +19,14 @@ namespace AerolineaFrba.Ingreso
         public menuPrincipal()
         {
             InitializeComponent();
+            this.textBoxFecha.Text = String.Format("{0:dd-MM-yyyy HH:mm:ss}", DateTime.Parse(@System.Configuration.ConfigurationSettings.AppSettings["Fecha"]));
         }
 
         public menuPrincipal(String nombre)
         {
             InitializeComponent();
             nombre_de_usuario = nombre;
+            this.textBoxFecha.Text = String.Format("{0:dd-MM-yyyy HH:mm:ss}", DateTime.Parse(@System.Configuration.ConfigurationSettings.AppSettings["Fecha"]));
         }
 
         private void botonSalir_Click(object sender, EventArgs e)

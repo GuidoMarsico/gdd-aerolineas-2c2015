@@ -53,8 +53,8 @@ namespace AerolineaFrba.Abm_Ciudad
                 this.botonVolver.Enabled = false;
                 MessageBox.Show("Realizando la operacion, aguarde un momento ... ");
                 bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".bajaCiudad",
-                    funcionesComunes.generarListaParaProcedure("@idCiudad"),
-                   Int32.Parse(dataGridListadoCiudades.Rows[dataGridListadoCiudades.SelectedCells[0].RowIndex].Cells[0].Value.ToString()));
+                   funcionesComunes.generarListaParaProcedure("@idCiudad","@fecha"),
+                   Int32.Parse(dataGridListadoCiudades.Rows[dataGridListadoCiudades.SelectedCells[0].RowIndex].Cells[0].Value.ToString()),funcionesComunes.getFecha());
                 this.botonBaja.Enabled = true;
                 this.botonBuscar.Enabled = true;
                 this.botonLimpiar.Enabled = true;

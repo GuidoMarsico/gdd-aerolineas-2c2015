@@ -52,8 +52,9 @@ namespace AerolineaFrba.Listado_Estadistico
                         lista, String.Format("{0:yyyyMMdd HH:mm:ss}",fechaInicio),String.Format("{0:yyyyMMdd HH:mm:ss}",fechaFin));
                     break;
                 case "Top 5 Clientes con más puntos acumulados a la fecha":
+                    lista.Add("@fecha");
                     dt = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + ".top5ClientesMillas", lista, 
-                        String.Format("{0:yyyyMMdd HH:mm:ss}",fechaInicio), String.Format("{0:yyyyMMdd HH:mm:ss}",fechaFin));
+                        String.Format("{0:yyyyMMdd HH:mm:ss}",fechaInicio), String.Format("{0:yyyyMMdd HH:mm:ss}",fechaFin),funcionesComunes.getFecha());
                     break;
                 case "Top 5 Destinos con más pasajes cancelados":
                     dt = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + ".top5DestinosCancelados", 

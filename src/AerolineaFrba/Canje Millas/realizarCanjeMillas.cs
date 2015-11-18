@@ -28,7 +28,7 @@ namespace AerolineaFrba.Canje_Millas
             if (dni != "")
             {
                 DataTable resultado = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + @".obtenerClienteConMillas",
-                    funcionesComunes.generarListaParaProcedure("@dni"), dni);
+                    funcionesComunes.generarListaParaProcedure("@dni","@fecha"), dni,funcionesComunes.getFecha());
                 dataGridCliente.DataSource = resultado;
                 dataGridCliente.Columns[0].Visible = false;
             }
@@ -58,9 +58,9 @@ namespace AerolineaFrba.Canje_Millas
                         Int32 millasRequeridas = Int32.Parse(dataGridProductos.SelectedCells[2].Value.ToString());
                         if ( millas > (cantidadACanjear * millasRequeridas)){
                             bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".altaCanje",
-                                funcionesComunes.generarListaParaProcedure("@idCliente","@idProducto","@cantidad"),
+                                funcionesComunes.generarListaParaProcedure("@idCliente","@idProducto","@cantidad","@fecha"),
                                 dataGridCliente.SelectedCells[0].Value, dataGridProductos.SelectedCells[0].Value,
-                                cantidad);
+                                cantidad,funcionesComunes.getFecha());
                             if (resultado == true){
                                 MessageBox.Show("El canje ha sido realizado con éxito");
                                 consultarContactos();

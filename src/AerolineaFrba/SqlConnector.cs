@@ -25,7 +25,7 @@ namespace AerolineaFrba
         {
             try
             {
-                cn = new SqlConnection("Data Source=(local)" + "\\" + "SQLSERVER2012;Initial Catalog=GD2C2015;User ID=gd;Password=gd2015;");
+                cn = new SqlConnection(@System.Configuration.ConfigurationSettings.AppSettings["ConnectionString"]);
                 cn.Open();
                 return true;
             }
