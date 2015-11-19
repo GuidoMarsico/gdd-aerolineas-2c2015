@@ -335,8 +335,8 @@ namespace AerolineaFrba
 
 
             SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaBoletoDeCompra",
-            funcionesComunes.generarListaParaProcedure("@precio", "@tipo", "@idCliente", "@idVuelo", "@fecha"),
-                precioCompra, tipoCompra, idCliente, idVuelo, funcionesComunes.getFecha());
+            funcionesComunes.generarListaParaProcedure("@tipo", "@idCliente", "@idVuelo", "@fecha"),
+                tipoCompra, idCliente, idVuelo, funcionesComunes.getFecha());
 
             Int32 idBoleto = funcionesComunes.obtenerBoleto();
             if (pasajes.RowCount != 0)
