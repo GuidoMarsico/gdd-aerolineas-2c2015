@@ -405,8 +405,12 @@ namespace AerolineaFrba.Compra
         {
             DataTable tabla = new DataTable();
             tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT r.PRECIO_BASE_KG, 
-                r.PRECIO_BASE_PASAJE,t.PORCENTAJE FROM " + SqlConnector.getSchema() + @".vuelos v join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.RUTA_ID
-                 join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID= r.TIPO_SERVICIO_ID   WHERE v.ID = " + this.textBoxIDVuelo.Text);
+                r.PRECIO_BASE_PASAJE,t.PORCENTAJE FROM " + SqlConnector.getSchema() + @".vuelos v 
+                join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.RUTA_ID
+                join " + SqlConnector.getSchema() + @".servicios_por_rutas sxr on sxr.RUTA_ID = r.ID 
+                join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID= sxr.
+
+                WHERE v.ID = " + this.textBoxIDVuelo.Text);
             Double porcentaje = Double.Parse(tabla.Rows[0].ItemArray[2].ToString());
             precioBaseKg = Double.Parse(tabla.Rows[0].ItemArray[0].ToString());
             precioBaseKg = precioBaseKg + (precioBaseKg * porcentaje);

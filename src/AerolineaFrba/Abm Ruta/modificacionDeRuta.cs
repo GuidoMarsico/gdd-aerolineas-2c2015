@@ -93,6 +93,7 @@ namespace AerolineaFrba.Abm_Ruta
 
         private void botonAgregarServicio_Click(object sender, EventArgs e)
         {
+            this.comboBoxServicios.DataSource = null;
             funcionesComunes.llenarCombobox(this.comboBoxServicios, "NOMBRE", @"select ID, NOMBRE 
                 from " + SqlConnector.getSchema() + ".tipos_de_servicio where ID not in (select TIPO_SERVICIO_ID from " + SqlConnector.getSchema() +
                        ".servicios_por_rutas where RUTA_ID = " + this.textBoxId.Text + ")");

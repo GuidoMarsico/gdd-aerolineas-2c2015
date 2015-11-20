@@ -194,8 +194,9 @@ namespace AerolineaFrba
             DataTable listadoRutas = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT r.ID as ID, r.CODIGO as Codigo, 
                 r.PRECIO_BASE_KG as 'Precio Base Kg', r.PRECIO_BASE_PASAJE as 'Precio Base Pasaje', 
                 c1.NOMBRE as Origen, c2.NOMBRE as Destino, t.NOMBRE as Servicio from " + SqlConnector.getSchema() + @".rutas r, 
-                " + SqlConnector.getSchema() + @".aeropuertos c1, " + SqlConnector.getSchema() + @".aeropuertos c2, " + SqlConnector.getSchema() + @".tipos_de_servicio t WHERE r.ORIGEN_ID = c1.ID AND 
-                r.DESTINO_ID=c2.ID AND r.TIPO_SERVICIO_ID = t.ID AND r.BAJA = 0 ");
+                " + SqlConnector.getSchema() + @".ciudades c1, " + SqlConnector.getSchema() + @".ciudades c2, " + 
+                  SqlConnector.getSchema() + @".servicios_por_rutas sxr, " + SqlConnector.getSchema() + 
+                @".tipos_de_servicio t WHERE r.ORIGEN_ID = c1.ID AND r.DESTINO_ID=c2.ID AND sxr.RUTA_ID = r.ID AND sxr.TIPO_SERVICIO_ID = t.ID AND r.BAJA = 0 ");
             datagridview.DataSource = listadoRutas;
             datagridview.Columns[0].Visible = false;
             return listadoRutas;
@@ -219,7 +220,7 @@ namespace AerolineaFrba
                 a.MATRICULA as Matricula,r.CODIGO as 'Codigo de Ruta', o.NOMBRE as Origen, d.NOMBRE 
                 as Destino,v.FECHA_SALIDA as 'Fecha De Salida' from " + SqlConnector.getSchema() + @".vuelos v join 
                 " + SqlConnector.getSchema() + @".aeronaves a on v.AERONAVE_ID = a.ID join " + SqlConnector.getSchema() + @".rutas r on v.RUTA_ID = r.ID join 
-                " + SqlConnector.getSchema() + @".aeropuertos o on r.ORIGEN_ID = o.ID join " + SqlConnector.getSchema() + @".aeropuertos d on 
+                " + SqlConnector.getSchema() + @".ciudades o on r.ORIGEN_ID = o.ID join " + SqlConnector.getSchema() + @".ciudades d on 
                 r.DESTINO_ID = d.ID where v.FECHA_LLEGADA IS NULL AND v.INVALIDO = 0");
             return listado;
         }

@@ -16,8 +16,8 @@ namespace AerolineaFrba.Abm_Ruta
         public altaDeRuta()
         {
             InitializeComponent();
-            funcionesComunes.llenarCombobox(this.comboBoxOrigen, "NOMBRE", "select ID,NOMBRE from " + SqlConnector.getSchema() + ".aeropuertos");
-            funcionesComunes.llenarCombobox(this.comboBoxDestino, "NOMBRE", "select ID,NOMBRE from " + SqlConnector.getSchema() + ".aeropuertos");
+            funcionesComunes.llenarCombobox(this.comboBoxOrigen, "NOMBRE", "select ID,NOMBRE from " + SqlConnector.getSchema() + ".ciudades");
+            funcionesComunes.llenarCombobox(this.comboBoxDestino, "NOMBRE", "select ID,NOMBRE from " + SqlConnector.getSchema() + ".ciudades");
             funcionesComunes.llenarCombobox(this.comboBoxServicios, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_de_servicio");
         }
 
