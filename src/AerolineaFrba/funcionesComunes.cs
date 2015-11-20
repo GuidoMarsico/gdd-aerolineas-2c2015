@@ -327,8 +327,6 @@ namespace AerolineaFrba
             return Double.Parse(encomienda.Cells[5].Value.ToString());
         }
 
-
-
         public static double precioPasaje(DataGridViewRow pasaje)
         {
             return Double.Parse(pasaje.Cells[6].Value.ToString());
@@ -336,11 +334,9 @@ namespace AerolineaFrba
 
         public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, string tipoCompra, Int32 idCliente, Int32 idVuelo)
         {
-
-
             SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaBoletoDeCompra",
-                funcionesComunes.generarListaParaProcedure("@precio", "@tipo", "@idCliente", "@idVuelo", "@fecha"),
-                precioCompra, tipoCompra, idCliente, idVuelo, funcionesComunes.getFecha());
+                funcionesComunes.generarListaParaProcedure("@tipo", "@idCliente", "@idVuelo", "@fecha"),
+                tipoCompra, idCliente, idVuelo, funcionesComunes.getFecha());
 
             Int32 idBoleto = funcionesComunes.obtenerBoleto();
             if (pasajes.RowCount != 0)
@@ -411,7 +407,6 @@ namespace AerolineaFrba
             DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
                                                                     FROM " + SqlConnector.getSchema() + @".clientes c
                                                                     order by 1 desc");
-
             return Convert.ToInt32(tabla.Rows[0].ItemArray[0]);
         }
 
@@ -423,7 +418,6 @@ namespace AerolineaFrba
                 from " + SqlConnector.getSchema() + ".clientes where BAJA = 0 AND DNI = " + dni);
             return tablaClientes.Rows.Count != 0;
         }
-
 
         public static DataRow getcliente(string id)
         {

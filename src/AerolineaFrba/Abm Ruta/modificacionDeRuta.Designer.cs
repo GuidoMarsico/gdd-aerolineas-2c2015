@@ -47,6 +47,7 @@
             this.comboBoxServicios = new System.Windows.Forms.ComboBox();
             this.textBoxOrigen = new System.Windows.Forms.TextBox();
             this.textBoxDestino = new System.Windows.Forms.TextBox();
+            this.botonAgregarServicio = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label10
@@ -256,12 +257,25 @@
             this.textBoxDestino.Size = new System.Drawing.Size(202, 26);
             this.textBoxDestino.TabIndex = 128;
             // 
+            // botonAgregarServicio
+            // 
+            this.botonAgregarServicio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.botonAgregarServicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.botonAgregarServicio.Location = new System.Drawing.Point(252, 119);
+            this.botonAgregarServicio.Name = "botonAgregarServicio";
+            this.botonAgregarServicio.Size = new System.Drawing.Size(137, 32);
+            this.botonAgregarServicio.TabIndex = 129;
+            this.botonAgregarServicio.Text = "Agregar Servicio";
+            this.botonAgregarServicio.UseVisualStyleBackColor = true;
+            this.botonAgregarServicio.Click += new System.EventHandler(this.botonAgregarServicio_Click);
+            // 
             // modificacionDeRuta
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(553, 349);
             this.ControlBox = false;
+            this.Controls.Add(this.botonAgregarServicio);
             this.Controls.Add(this.textBoxDestino);
             this.Controls.Add(this.textBoxOrigen);
             this.Controls.Add(this.textBoxId);
@@ -310,5 +324,6 @@
         private System.Windows.Forms.ComboBox comboBoxServicios;
         private System.Windows.Forms.TextBox textBoxOrigen;
         private System.Windows.Forms.TextBox textBoxDestino;
+        private System.Windows.Forms.Button botonAgregarServicio;
     }
 }
