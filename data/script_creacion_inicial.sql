@@ -55,16 +55,6 @@ BEGIN
     DROP TABLE LAS_PELOTAS.usuarios;
 END;
 
-IF OBJECT_ID('LAS_PELOTAS.tarjetas_de_credito') IS NOT NULL
-BEGIN
-    DROP TABLE LAS_PELOTAS.tarjetas_de_credito;
-END;
-
-IF OBJECT_ID('LAS_PELOTAS.tipos_tarjeta') IS NOT NULL
-BEGIN
-    DROP TABLE LAS_PELOTAS.tipos_tarjeta;
-END;
-
 IF OBJECT_ID('LAS_PELOTAS.paquetes') IS NOT NULL
 BEGIN
     DROP TABLE LAS_PELOTAS.paquetes;
@@ -88,6 +78,16 @@ END;
 IF OBJECT_ID('LAS_PELOTAS.formas_de_pago') IS NOT NULL
 BEGIN
     DROP TABLE LAS_PELOTAS.formas_de_pago;
+END;
+
+IF OBJECT_ID('LAS_PELOTAS.tarjetas_de_credito') IS NOT NULL
+BEGIN
+    DROP TABLE LAS_PELOTAS.tarjetas_de_credito;
+END;
+
+IF OBJECT_ID('LAS_PELOTAS.tipos_tarjeta') IS NOT NULL
+BEGIN
+    DROP TABLE LAS_PELOTAS.tipos_tarjeta;
 END;
 
 IF OBJECT_ID('LAS_PELOTAS.vuelos') IS NOT NULL
@@ -207,7 +207,7 @@ CREATE TABLE LAS_PELOTAS.clientes (
 	BAJA			INT DEFAULT 0
 )
 
-CREATE TABLE formas_de_pago(
+CREATE TABLE LAS_PELOTAS.FORMAS_DE_PAGO(
 ID INT IDENTITY(1,1) PRIMARY KEY,
 TARJETA_DE_CREDITO_ID  INT,
 CANTIAD_DE_CUOTAS INT
@@ -216,12 +216,12 @@ CANTIAD_DE_CUOTAS INT
 CREATE TABLE LAS_PELOTAS.boletos_de_compra (
     ID INT IDENTITY(100000,1)    PRIMARY KEY,
     FECHA_COMPRA    DATETIME          NOT NULL,
-    TIPO_COMPRA    NVARCHAR(255),
     CLIENTE_ID        INT            NOT NULL,
 	MILLAS 			  INT,
 	VUELO_ID         INT		NOT NULL,
 	INVALIDO INT DEFAULT 0,
-    CONSTRAINT boletos_de_compra_CK001 CHECK (TIPO_COMPRA IN ('EFECTIVO', 'TARJETA'))
+	FORMA_DE_PAGO_ID INT 
+    
 )
 
 CREATE TABLE LAS_PELOTAS.roles (
@@ -301,7 +301,6 @@ CREATE TABLE LAS_PELOTAS.rutas (
     PRECIO_BASE_PASAJE NUMERIC(18,2) NOT NULL,
     ORIGEN_ID        INT            NOT NULL,
     DESTINO_ID        INT            NOT NULL,
-	TIPO_SERVICIO_ID INT NOT NULL,
 	BAJA			INT DEFAULT 0
 )
 
@@ -346,7 +345,7 @@ CREATE TABLE LAS_PELOTAS.tipos_tarjeta (
 CREATE TABLE LAS_PELOTAS.cancelaciones (
     ID   INT   IDENTITY(1,1)     PRIMARY KEY,
     FECHA_DEVOLUCION DATETIME		NOT NULL,
-    BOLETO_COMPRA_ID INT            NOT NULL,
+   -- BOLETO_COMPRA_ID INT            NOT NULL,
     MOTIVO         NVARCHAR(255)   NOT NULL
 )
 
@@ -531,7 +530,7 @@ IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_VUEL_RUT' AND object_i
     BEGIN
        CREATE INDEX FKI_VUEL_RUT ON LAS_PELOTAS.vuelos (RUTA_ID);
     END
-
+/*
 ALTER TABLE LAS_PELOTAS.rutas
 ADD CONSTRAINT rutas_FK01 FOREIGN KEY
 (TIPO_SERVICIO_ID) REFERENCES LAS_PELOTAS.tipos_de_servicio (ID)
@@ -540,10 +539,10 @@ IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_rutas_tipo_servicio' A
     BEGIN
        CREATE INDEX FKI_rutas_tipo_servicio ON LAS_PELOTAS.rutas (TIPO_SERVICIO_ID);
     END
-/*
+*/
 ALTER TABLE LAS_PELOTAS.Servicios_Por_Ruta
 ADD CONSTRAINT Servicios_Por_Ruta_FK01 FOREIGN KEY
-(TIPOS_SERVICIO_ID) REFERENCES LAS_PELOTAS.tipos_de_servicio (ID)
+(TIPOS_DE_SERVICIO_ID) REFERENCES LAS_PELOTAS.tipos_de_servicio (ID)
 
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_servicios_Por_Ruta_Tipos_De_Servicio' AND object_id = OBJECT_ID('LAS_PELOTAS.Servicios_Por_Ruta'))
     BEGIN
@@ -574,9 +573,9 @@ ADD CONSTRAINT boletos_de_compra_FK03 FOREIGN KEY
 
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_boletos_de_compra_formas' AND object_id = OBJECT_ID('LAS_PELOTAS.boletos_de_compra'))
     BEGIN
-       CREATE INDEX FKI_boletos_de_compra_formas ON LAS_PELOTAS.formas_de_pago (FORMA_DE_PAGO_ID);
+       CREATE INDEX FKI_boletos_de_compra_formas ON LAS_PELOTAS.boletos_de_compra (FORMA_DE_PAGO_ID);
     END
-*/
+
 ALTER TABLE LAS_PELOTAS.rutas
 ADD CONSTRAINT RUTAS_FK02 FOREIGN KEY
 (ORIGEN_ID) REFERENCES LAS_PELOTAS.ciudades (ID)
@@ -630,7 +629,7 @@ IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_CANJ_CLIE' AND object_
     BEGIN
        CREATE INDEX FKI_CANJ_CLIE ON LAS_PELOTAS.canjes (CLIENTE_ID);
     END
-
+/*
 ALTER TABLE LAS_PELOTAS.cancelaciones
 ADD CONSTRAINT CANCELACIONES_FK01 FOREIGN KEY
 (BOLETO_COMPRA_ID) REFERENCES LAS_PELOTAS.boletos_de_compra (ID)
@@ -639,7 +638,7 @@ IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_CANC_BOLCOMP' AND obje
     BEGIN
        CREATE INDEX FKI_CANC_BOLCOMP ON LAS_PELOTAS.cancelaciones (BOLETO_COMPRA_ID);
     END
-
+*/
 ALTER TABLE LAS_PELOTAS.roles_por_usuario
 ADD CONSTRAINT ROLES_POR_USUARIO_FK01 FOREIGN KEY
 (ROL_ID) REFERENCES LAS_PELOTAS.roles (ID)
@@ -938,6 +937,12 @@ BEGIN
 END;
 GO
 
+IF OBJECT_ID('LAS_PELOTAS.agregarServicioARuta') IS NOT NULL
+BEGIN
+	DROP PROCEDURE LAS_PELOTAS.agregarServicioARuta;
+END;
+GO
+
 CREATE FUNCTION LAS_PELOTAS.corrigeMail (@s NVARCHAR (255)) 
 RETURNS NVARCHAR(255)
 AS
@@ -995,7 +1000,7 @@ AS BEGIN
 	DECLARE @KgTot INT
 	SET @kgOcupados=(SELECT SUM(p.KG) from LAS_PELOTAS.boletos_de_compra b 
 	join LAS_PELOTAS.paquetes p on p.BOLETO_COMPRA_ID = b.ID
-	where b.VUELO_ID = @vuelo and b.ID not in (SELECT BOLETO_COMPRA_ID FROM LAS_PELOTAS.cancelaciones))
+	where b.VUELO_ID = @vuelo and p.CANCELACION_ID IS NULL)
 	SET @KgTot=(SELECT a.KG_DISPONIBLES from LAS_PELOTAS.vuelos v join
 	LAS_PELOTAS.aeronaves a on a.ID = v.AERONAVE_ID
 	where v.ID = @vuelo )
@@ -1011,9 +1016,9 @@ AS BEGIN
 	DECLARE @totPas numeric(18,2);
 	DECLARE @totPaq numeric(18,2);
 	SET @totPas=(SELECT SUM(pas.PRECIO) from LAS_PELOTAS.pasajes pas 
-	where @id=pas.BOLETO_COMPRA_ID)
+	where @id=pas.BOLETO_COMPRA_ID and pas.CANCELACION_ID is NULL)
 	SET @totPaq=(SELECT SUM(paq.PRECIO) from LAS_PELOTAS.paquetes paq 
-	where @id=paq.BOLETO_COMPRA_ID)
+	where @id=paq.BOLETO_COMPRA_ID and paq.CANCELACION_ID is NULL)
 	IF(@totPas IS NULL)
 	set @totPas= 0
 	IF(@totPaq IS NULL)
@@ -1215,23 +1220,25 @@ GO
 CREATE PROCEDURE LAS_PELOTAS.agregarRuta(@codigo int, @precioKg numeric(18,2), @precioPasaje numeric(18,2), @origen int, @destino int, 
 	@servicio int)
 AS BEGIN
-	INSERT INTO LAS_PELOTAS.rutas(CODIGO, PRECIO_BASE_KG, PRECIO_BASE_PASAJE, ORIGEN_ID, DESTINO_ID, TIPO_SERVICIO_ID)
-	VALUES (@codigo, @precioKg, @precioPasaje, @origen, @destino, @servicio)
+	INSERT INTO LAS_PELOTAS.rutas(CODIGO, PRECIO_BASE_KG, PRECIO_BASE_PASAJE, ORIGEN_ID, DESTINO_ID)
+	VALUES (@codigo, @precioKg, @precioPasaje, @origen, @destino)
+	INSERT INTO LAS_PELOTAS.servicios_por_ruta (TIPOS_DE_SERVICIO_ID, RUTAS_ID)
+	VALUES (@servicio, SCOPE_IDENTITY())
 END
 GO
 
-CREATE PROCEDURE LAS_PELOTAS.updateRuta(@id INT, @precioKg numeric(18,2), @precioPasaje numeric(18,2), @servicio INT)
+CREATE PROCEDURE LAS_PELOTAS.updateRuta(@id INT, @precioKg numeric(18,2), @precioPasaje numeric(18,2))
 AS BEGIN
 UPDATE LAS_PELOTAS.rutas
-SET PRECIO_BASE_KG = @precioKg, PRECIO_BASE_PASAJE = @precioPasaje, TIPO_SERVICIO_ID = @servicio
+SET PRECIO_BASE_KG = @precioKg, PRECIO_BASE_PASAJE = @precioPasaje
 WHERE ID = @id
 END
 GO
 
 CREATE PROCEDURE LAS_PELOTAS.cancelarPasajesDeBc(@idBc int, @fecha varchar(50))
 AS BEGIN
-INSERT INTO LAS_PELOTAS.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-VALUES(@idBc,CONVERT(datetime,@fecha,109),'CANCELACION PASAJE')
+INSERT INTO LAS_PELOTAS.cancelaciones ( FECHA_DEVOLUCION, MOTIVO)
+VALUES(CONVERT(datetime,@fecha,109),'CANCELACION PASAJE')
 UPDATE LAS_PELOTAS.pasajes
 SET CANCELACION_ID = SCOPE_IDENTITY()
 WHERE BOLETO_COMPRA_ID = @idBc
@@ -1243,8 +1250,8 @@ GO
 
 CREATE PROCEDURE LAS_PELOTAS.cancelarPasaje(@idPasaje int, @fecha varchar(50))
 AS BEGIN
-INSERT INTO LAS_PELOTAS.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-SELECT BOLETO_COMPRA_ID, CONVERT(datetime,@fecha,109), 'CANCELACION PASAJE' FROM LAS_PELOTAS.pasajes WHERE ID = @idPasaje
+INSERT INTO LAS_PELOTAS.cancelaciones (FECHA_DEVOLUCION, MOTIVO)
+VALUES(CONVERT(datetime,@fecha,109), 'CANCELACION PASAJE')
 UPDATE LAS_PELOTAS.pasajes
 SET CANCELACION_ID = SCOPE_IDENTITY()
 WHERE ID = @idPasaje
@@ -1257,8 +1264,8 @@ GO
 /*CANCELACION DE TODOS LOS PAQUETES DE UN BOLETO DE COMPRA*/
 CREATE PROCEDURE LAS_PELOTAS.cancelarPaquete(@idBoletoCompra int, @fecha varchar(50))
 AS BEGIN
-INSERT INTO LAS_PELOTAS.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-VALUES(@idBoletoCompra, CONVERT(datetime,@fecha,109), 'CANCELACION PAQUETE')
+INSERT INTO LAS_PELOTAS.cancelaciones (FECHA_DEVOLUCION, MOTIVO)
+VALUES(CONVERT(datetime,@fecha,109), 'CANCELACION PAQUETE')
 UPDATE LAS_PELOTAS.paquetes
 SET CANCELACION_ID = SCOPE_IDENTITY()
 WHERE BOLETO_COMPRA_ID = @idBoletoCompra
@@ -1271,10 +1278,9 @@ DELETE LAS_PELOTAS.butacas_por_vuelo WHERE VUELO_ID = @id
 UPDATE LAS_PELOTAS.vuelos 
 SET INVALIDO = 1
 WHERE ID = @id AND FECHA_LLEGADA IS NULL AND FECHA_SALIDA > CONVERT(datetime,@fecha,109)
-INSERT INTO LAS_PELOTAS.cancelaciones (BOLETO_COMPRA_ID, FECHA_DEVOLUCION, MOTIVO)
-SELECT BC.ID, CONVERT(datetime,@fecha,109), 'BAJA VUELO' FROM LAS_PELOTAS.boletos_de_compra BC, LAS_PELOTAS.vuelos v WHERE BC.VUELO_ID = @id and
-v.ID = bc.VUELO_ID and v.INVALIDO = 1 and bc.INVALIDO = 0
-SELECT BC.ID Into  #Temp FROM LAS_PELOTAS.boletos_de_compra BC, LAS_PELOTAS.vuelos v WHERE BC.VUELO_ID = @id and
+INSERT INTO LAS_PELOTAS.cancelaciones (FECHA_DEVOLUCION, MOTIVO)
+VALUES(CONVERT(datetime,@fecha,109), 'BAJA VUELO')
+SELECT BC.ID Into #Temp FROM LAS_PELOTAS.boletos_de_compra BC, LAS_PELOTAS.vuelos v WHERE BC.VUELO_ID = @id and
 v.ID = bc.VUELO_ID and v.INVALIDO = 1 and bc.INVALIDO = 0
 Declare @idBoleto int
 	While (Select Count(*) From #Temp) > 0
@@ -1303,6 +1309,13 @@ Declare @idVuelo int
 END
 GO
 
+CREATE PROCEDURE LAS_PELOTAS.agregarServicioARuta(@idRuta int, @idServicio int)
+AS BEGIN
+INSERT INTO LAS_PELOTAS.servicios_por_ruta (TIPOS_DE_SERVICIO_ID, RUTAS_ID)
+VALUES (@idServicio, @idRuta)
+END
+GO
+
 --LISTADOS ESTADISTICOS
 --TOP 5 de los destino con mas pasajes comprados
 CREATE PROCEDURE LAS_PELOTAS.top5DestinosConPasajes(@fechaFrom varchar(50), @fechaTo varchar(50))
@@ -1313,7 +1326,7 @@ join LAS_PELOTAS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID
 join LAS_PELOTAS.vuelos v on bc.VUELO_ID=v.ID 
 join LAS_PELOTAS.rutas r on v.RUTA_ID=r.ID
 join LAS_PELOTAS.ciudades c on r.DESTINO_ID=c.ID
-where bc.id NOT IN (select BOLETO_COMPRA_ID from LAS_PELOTAS.cancelaciones) and
+where p.CANCELACION_ID IS NULL and
 p.INVALIDO=0 AND
 bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between convert(datetime, @fechaFrom,109) and convert(datetime, @fechaTo,109)
@@ -1372,7 +1385,7 @@ drop table #tablaMillas
 END
 GO
 
---TOP 5 de los destinos con pasajes cancelados 
+--TOP 5 de los destinos con pasajes más cancelados 
 CREATE PROCEDURE LAS_PELOTAS.top5DestinosCancelados(@fechaFrom varchar(50), @fechaTo varchar(50))
 AS BEGIN
 select top 5 c.NOMBRE as Destino, count(p.ID) as Cancelaciones from LAS_PELOTAS.pasajes p
@@ -1418,7 +1431,7 @@ SET FECHA_LLEGADA = convert(datetime, @fechaLlegada,109)
 WHERE ID = @idVuelo
 UPDATE LAS_PELOTAS.boletos_de_compra
 SET MILLAS = FLOOR(LAS_PELOTAS.precioTotal(ID)/10)
-WHERE VUELO_ID = @idVuelo and ID not in (SELECT BOLETO_COMPRA_ID FROM LAS_PELOTAS.cancelaciones)
+WHERE VUELO_ID = @idVuelo and INVALIDO=0
 END
 GO
 
@@ -1431,7 +1444,8 @@ AS BEGIN
 	join LAS_PELOTAS.ciudades o on r.ORIGEN_ID = o.ID
 	join LAS_PELOTAS.ciudades d on r.DESTINO_ID = d.ID
 	join LAS_PELOTAS.aeronaves a on v.AERONAVE_ID = a.ID
-	join LAS_PELOTAS.tipos_de_servicio t on t.ID = a.TIPO_SERVICIO_ID and t.ID = r.TIPO_SERVICIO_ID
+	join LAS_PELOTAS.servicios_por_ruta sxr on sxr.RUTAS_ID = r.ID
+	join LAS_PELOTAS.tipos_de_servicio t on t.ID = a.TIPO_SERVICIO_ID and t.ID = sxr.TIPOS_DE_SERVICIO_ID
 	where (v.INVALIDO = 0) AND (v.FECHA_SALIDA > convert(datetime, @fecha,109)) 
 	AND( (LAS_PELOTAS.cantButacasLibres(v.ID)  != 0 ) OR (LAS_PELOTAS.kgLibres(v.ID) !=0 ))
 	order by 2
@@ -1501,9 +1515,7 @@ select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, bc.millas as Millas
 from LAS_PELOTAS.clientes c
 join LAS_PELOTAS.pasajes p on c.ID=p.CLIENTE_ID 
 join LAS_PELOTAS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
-where bc.ID NOT IN (select BOLETO_COMPRA_ID from LAS_PELOTAS.cancelaciones) and
-p.INVALIDO=0 AND
-bc.INVALIDO=0 AND
+where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1,  CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 and c.DNI = @dni
 
@@ -1512,9 +1524,7 @@ select bc.FECHA_COMPRA as Fecha, 'Paquete' as Motivo, bc.millas as Millas
 from LAS_PELOTAS.clientes c  
 join LAS_PELOTAS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join LAS_PELOTAS.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
-where bc.ID NOT IN (select BOLETO_COMPRA_ID from LAS_PELOTAS.cancelaciones) and
-p.INVALIDO=0 AND
-bc.INVALIDO=0 AND
+where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1,  CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 and c.DNI = @dni
 
@@ -1584,10 +1594,17 @@ Declare @idRuta int
 END
 GO
 
-CREATE PROCEDURE LAS_PELOTAS.altaBoletoDeCompra (@tipo nvarchar(255), @idCliente int, @idVuelo int,@fecha varchar(50))
+CREATE PROCEDURE LAS_PELOTAS.altaBoletoDeCompra (@idCliente int, @idVuelo int,@fecha varchar(50),@id_tarj int, @cant_cuotas int)
 AS BEGIN
-INSERT INTO LAS_PELOTAS.boletos_de_compra (TIPO_COMPRA, CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
-VALUES (UPPER(@tipo), @idCliente, @idVuelo, CONVERT(datetime,@fecha,109), 0)
+DECLARE @ID_FORMA_DE_PAGO INT
+SET @ID_FORMA_DE_PAGO= 1
+if @id_tarj is not Null 
+BEGIN
+	insert into formas_de_pago values(@id_tarj,@cant_cuotas)
+	SET @ID_FORMA_DE_PAGO= SCOPE_IDENTITY()
+END
+INSERT INTO LAS_PELOTAS.boletos_de_compra (CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS,FORMA_DE_PAGO_ID)
+VALUES (@idCliente, @idVuelo, CONVERT(datetime,@fecha,109), 0,@ID_FORMA_DE_PAGO)
 END
 GO
 
@@ -1614,7 +1631,6 @@ VALUES (@idBoletoCompra, @kg, @precio, @codigo+1, NULL)
 END
 GO
 
------------------------------------------------------------------------
 -- TRIGGERS
 
 IF OBJECT_ID('LAS_PELOTAS.insertVuelos') IS NOT NULL
@@ -1792,26 +1808,33 @@ SELECT DISTINCT [Ruta_Codigo], [Ruta_Precio_BaseKG], [Ruta_Precio_BasePasaje], [
 INTO #rutas_temporales
 FROM [GD2C2015].[gd_esquema].[Maestra]
 
-INSERT INTO LAS_PELOTAS.rutas (CODIGO, PRECIO_BASE_KG, PRECIO_BASE_PASAJE, ORIGEN_ID, DESTINO_ID, TIPO_SERVICIO_ID)
-SELECT r.Ruta_Codigo, r.Ruta_Precio_BaseKG, r2.Ruta_Precio_BasePasaje, o.ID, d.ID, ts.ID
-FROM #rutas_temporales r, #rutas_temporales r2, LAS_PELOTAS.ciudades o, LAS_PELOTAS.ciudades d, LAS_PELOTAS.tipos_de_servicio ts
-WHERE d.NOMBRE = r.Ruta_Ciudad_Destino AND o.NOMBRE = r.Ruta_Ciudad_Origen AND ts.NOMBRE = r.Tipo_Servicio
-AND r.Ruta_Precio_BasePasaje = 0 AND r2.Ruta_Precio_BaseKG = 0 AND r.Ruta_Codigo = r2.Ruta_Codigo
+INSERT INTO LAS_PELOTAS.rutas (CODIGO, PRECIO_BASE_KG, PRECIO_BASE_PASAJE, ORIGEN_ID, DESTINO_ID)
+SELECT r.Ruta_Codigo, r.Ruta_Precio_BaseKG, r2.Ruta_Precio_BasePasaje, o.ID, d.ID
+FROM #rutas_temporales r, #rutas_temporales r2, LAS_PELOTAS.ciudades o, LAS_PELOTAS.ciudades d
+WHERE d.NOMBRE = r.Ruta_Ciudad_Destino AND o.NOMBRE = r.Ruta_Ciudad_Origen AND r.Ruta_Precio_BasePasaje = 0 
+AND r2.Ruta_Precio_BaseKG = 0 AND r.Ruta_Codigo = r2.Ruta_Codigo
 AND r.Ruta_Ciudad_Destino = r2.Ruta_Ciudad_Destino AND r.Ruta_Ciudad_Origen = r2.Ruta_Ciudad_Origen
 AND r.Tipo_Servicio = r2.Tipo_Servicio
+INSERT INTO LAS_PELOTAS.servicios_por_ruta (TIPOS_DE_SERVICIO_ID, RUTAS_ID)
+SELECT DISTINCT ts.ID, ru.ID FROM #rutas_temporales r, LAS_PELOTAS.rutas ru, LAS_PELOTAS.tipos_de_servicio ts, LAS_PELOTAS.ciudades o, 
+LAS_PELOTAS.ciudades d
+WHERE ts.NOMBRE = r.Tipo_Servicio AND r.Ruta_Codigo = ru.CODIGO and o.ID = ru.ORIGEN_ID AND r.Ruta_Ciudad_Origen = o.NOMBRE 
+and d.ID = ru.DESTINO_ID AND r.Ruta_Ciudad_Destino = d.NOMBRE 
 DROP TABLE #rutas_temporales
 
 INSERT INTO LAS_PELOTAS.vuelos (FECHA_SALIDA, FECHA_LLEGADA_ESTIMADA, FECHA_LLEGADA, AERONAVE_ID, RUTA_ID)
 SELECT m.[FechaSalida], m.[Fecha_LLegada_Estimada], m.[FechaLLegada], a.ID, r.ID
-FROM [GD2C2015].[gd_esquema].[Maestra] m, LAS_PELOTAS.aeronaves a, LAS_PELOTAS.rutas r, LAS_PELOTAS.ciudades p1, LAS_PELOTAS.ciudades p2
-WHERE m.[Ruta_Codigo] = r.CODIGO AND m.[Ruta_Ciudad_Origen] = p1.NOMBRE AND p1.ID = r.ORIGEN_ID AND m.[Ruta_Ciudad_Destino] = p2.NOMBRE 
-AND p2.ID = r.DESTINO_ID AND a.MATRICULA = m.[Aeronave_Matricula]
+FROM [GD2C2015].[gd_esquema].[Maestra] m, LAS_PELOTAS.aeronaves a, LAS_PELOTAS.rutas r, LAS_PELOTAS.ciudades c1, LAS_PELOTAS.ciudades c2
+WHERE m.[Ruta_Codigo] = r.CODIGO AND m.[Ruta_Ciudad_Origen] = c1.NOMBRE AND c1.ID = r.ORIGEN_ID AND m.[Ruta_Ciudad_Destino] = c2.NOMBRE 
+AND c2.ID = r.DESTINO_ID AND a.MATRICULA = m.[Aeronave_Matricula]
 GROUP BY m.[FechaSalida], m.[Fecha_LLegada_Estimada], m.[FechaLLegada], a.ID, r.ID
 
 EXEC LAS_PELOTAS.migracionButacasPorVuelo
-
-insert into LAS_PELOTAS.boletos_de_compra (CLIENTE_ID, FECHA_COMPRA, MILLAS, TIPO_COMPRA, VUELO_ID)
-SELECT distinct C.ID as cliente, CASE WHEN Paquete_Codigo != 0 THEN Paquete_FechaCompra ELSE Pasaje_FechaCompra END AS FechaCompra, 0 as Millas, 'EFECTIVO' as tipoCompra, v.ID as vuelo
+--INGRESO DE FORMA DE PAGO EFECTIVO CON ID=1
+INSERT INTO LAS_PELOTAS.formas_de_pago VALUES(NULL,NULL)
+insert into LAS_PELOTAS.boletos_de_compra (CLIENTE_ID, FECHA_COMPRA, MILLAS, FORMA_DE_PAGO_ID, VUELO_ID)
+SELECT distinct C.ID as cliente, CASE WHEN Paquete_Codigo != 0 THEN Paquete_FechaCompra ELSE Pasaje_FechaCompra END AS FechaCompra, 0 as Millas, 
+1 as FORMA_DE_PAGO_ID, v.ID as vuelo
 FROM GD2C2015.gd_esquema.Maestra M
 join LAS_PELOTAS.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
 and C.NOMBRE = SUBSTRING(UPPER (m.Cli_Nombre), 1, 1) + SUBSTRING (LOWER (m.Cli_Nombre), 2,LEN(m.Cli_Nombre))
@@ -1854,6 +1877,8 @@ join LAS_PELOTAS.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID =
 	where m.[Ruta_Codigo] = r.CODIGO and m.FechaSalida = v.FECHA_SALIDA and m.Fecha_LLegada_Estimada = v.FECHA_LLEGADA_ESTIMADA and
 	m.FechaLLegada = v.FECHA_LLEGADA) and v.ID=bc.VUELO_ID 
 where M.Paquete_Codigo != 0
+update LAS_PELOTAS.boletos_de_compra 
+set millas= FLOOR(LAS_PELOTAS.precioTotal(ID)/10)
 
 EXEC LAS_PELOTAS.addFuncionalidad @rol='Administrador', @func ='Consultar Millas';
 EXEC LAS_PELOTAS.addFuncionalidad @rol='Administrador', @func ='Alta de Cliente';
