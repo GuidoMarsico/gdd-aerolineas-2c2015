@@ -22,6 +22,11 @@ BEGIN
     DROP TABLE DIVIDIDOS.butacas_por_vuelo;
 END;
 
+IF OBJECT_ID('DIVIDIDOS.pagos') IS NOT NULL
+BEGIN
+    DROP TABLE DIVIDIDOS.pagos;
+END;
+
 IF OBJECT_ID('DIVIDIDOS.roles_por_usuario') IS NOT NULL
 BEGIN
     DROP TABLE DIVIDIDOS.roles_por_usuario;
@@ -181,11 +186,11 @@ CREATE TABLE DIVIDIDOS.butacas (
 )
 
 CREATE TABLE DIVIDIDOS.butacas_por_vuelo (
-VUELO_ID INT NOT NULL,
-BUTACA_ID INT NOT NULL,
-ESTADO        NVARCHAR(255) DEFAULT 'LIBRE',
-CONSTRAINT butacas_por_vuelo_CK001 CHECK (ESTADO IN ('LIBRE', 'COMPRADO')),
-PRIMARY KEY(VUELO_ID,BUTACA_ID)
+	VUELO_ID INT NOT NULL,
+	BUTACA_ID INT NOT NULL,
+	ESTADO        NVARCHAR(255) DEFAULT 'LIBRE',
+	CONSTRAINT butacas_por_vuelo_CK001 CHECK (ESTADO IN ('LIBRE', 'COMPRADO')),
+	PRIMARY KEY(VUELO_ID,BUTACA_ID)
 )
 
 CREATE TABLE DIVIDIDOS.pasajes (
@@ -215,12 +220,19 @@ CREATE TABLE DIVIDIDOS.clientes (
 CREATE TABLE DIVIDIDOS.boletos_de_compra (
     ID INT IDENTITY(100000,1)    PRIMARY KEY,
     FECHA_COMPRA    DATETIME          NOT NULL,
-    TIPO_COMPRA    VARCHAR(255),
     CLIENTE_ID        INT            NOT NULL,
 	MILLAS 			  INT,
 	VUELO_ID         INT		NOT NULL,
-	INVALIDO INT DEFAULT 0,
-    CONSTRAINT boletos_de_compra_CK001 CHECK (TIPO_COMPRA IN ('EFECTIVO', 'TARJETA'))
+	INVALIDO INT DEFAULT 0
+)
+
+CREATE TABLE DIVIDIDOS.pagos (
+	ID INT IDENTITY(1,1) PRIMARY KEY,
+	TARJETA_ID INT,
+	BOLETO_COMPRA_ID INT NOT NULL,
+	TIPO_COMPRA VARCHAR(255),
+	CUOTAS_SELECCIONADAS INT,
+	CONSTRAINT pagos_CK001 CHECK (TIPO_COMPRA IN ('EFECTIVO', 'TARJETA'))
 )
 
 CREATE TABLE DIVIDIDOS.roles (
@@ -583,6 +595,24 @@ ADD CONSTRAINT paquetes_FK02 FOREIGN KEY
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_PAQ_CANC' AND object_id = OBJECT_ID('DIVIDIDOS.paquetes'))
     BEGIN
        CREATE INDEX FKI_PAQ_CANC ON DIVIDIDOS.paquetes (CANCELACION_ID);
+    END
+
+ALTER TABLE DIVIDIDOS.pagos
+ADD CONSTRAINT pagos_FK01 FOREIGN KEY
+(TARJETA_ID) REFERENCES DIVIDIDOS.tarjetas_de_credito (ID)
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_PAGO_TARJ' AND object_id = OBJECT_ID('DIVIDIDOS.pagos'))
+    BEGIN
+       CREATE INDEX FKI_PAGO_TARJ ON DIVIDIDOS.pagos (TARJETA_ID);
+    END
+
+ALTER TABLE DIVIDIDOS.pagos
+ADD CONSTRAINT pagos_FK02 FOREIGN KEY
+(BOLETO_COMPRA_ID) REFERENCES DIVIDIDOS.boletos_de_compra (ID)
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_PAGO_COMP' AND object_id = OBJECT_ID('DIVIDIDOS.pagos'))
+    BEGIN
+       CREATE INDEX FKI_PAGO_COMP ON DIVIDIDOS.pagos (BOLETO_COMPRA_ID);
     END
 
 ALTER TABLE DIVIDIDOS.canjes
@@ -1035,9 +1065,9 @@ AS BEGIN
 	DECLARE @totPas numeric(18,2);
 	DECLARE @totPaq numeric(18,2);
 	SET @totPas=(SELECT SUM(pas.PRECIO) from DIVIDIDOS.pasajes pas 
-	where @id=pas.BOLETO_COMPRA_ID)
+	where @id=pas.BOLETO_COMPRA_ID and pas.CANCELACION_ID IS NULL and pas.INVALIDO = 0)
 	SET @totPaq=(SELECT SUM(paq.PRECIO) from DIVIDIDOS.paquetes paq 
-	where @id=paq.BOLETO_COMPRA_ID)
+	where @id=paq.BOLETO_COMPRA_ID and paq.CANCELACION_ID IS NULL and paq.INVALIDO = 0)
 	IF(@totPas IS NULL)
 	set @totPas= 0
 	IF(@totPaq IS NULL)
@@ -1642,10 +1672,18 @@ END
 GO
 
 -- COMPRAS
-CREATE PROCEDURE DIVIDIDOS.altaBoletoDeCompra (@tipo nvarchar(255), @idCliente int, @idVuelo int, @fecha varchar(50))
+CREATE PROCEDURE DIVIDIDOS.altaBoletoDeCompra (@tipo nvarchar(255), @idCliente int, @idVuelo int, @fecha varchar(50), @idTarjeta int,
+@cuotas int)
 AS BEGIN
-INSERT INTO DIVIDIDOS.boletos_de_compra (TIPO_COMPRA, CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
-VALUES (UPPER(@tipo), @idCliente, @idVuelo, CONVERT(datetime,@fecha,109), 0)
+INSERT INTO DIVIDIDOS.boletos_de_compra (CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
+VALUES (@idCliente, @idVuelo, CONVERT(datetime,@fecha,109), 0)
+IF(UPPER(@tipo)= 'EFECTIVO')
+	begin
+	SET @idTarjeta = NULL
+	SET @cuotas = NULL
+end
+INSERT INTO DIVIDIDOS.pagos (BOLETO_COMPRA_ID, TARJETA_ID, CUOTAS_SELECCIONADAS, TIPO_COMPRA)
+VALUES (SCOPE_IDENTITY(), @idTarjeta, @cuotas, UPPER(@tipo))
 END
 GO
 
@@ -1828,8 +1866,8 @@ GROUP BY m.[FechaSalida], m.[Fecha_LLegada_Estimada], m.[FechaLLegada], a.ID, r.
 EXEC DIVIDIDOS.migracionButacasPorVuelo
 
 /*migracion de boletos de compra, con precio y millas en 0 (despues se actualizan)*/
-insert into DIVIDIDOS.boletos_de_compra (CLIENTE_ID, FECHA_COMPRA, MILLAS, TIPO_COMPRA, VUELO_ID)
-SELECT distinct C.ID as cliente, CASE WHEN Paquete_Codigo != 0 THEN Paquete_FechaCompra ELSE Pasaje_FechaCompra END AS FechaCompra, 0 as Millas, 'EFECTIVO' as tipoCompra, v.ID as vuelo
+insert into DIVIDIDOS.boletos_de_compra (CLIENTE_ID, FECHA_COMPRA, MILLAS, VUELO_ID)
+SELECT distinct C.ID as cliente, CASE WHEN Paquete_Codigo != 0 THEN Paquete_FechaCompra ELSE Pasaje_FechaCompra END AS FechaCompra, 0 as Millas, v.ID as vuelo
 FROM GD2C2015.gd_esquema.Maestra M
 join DIVIDIDOS.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
 and C.NOMBRE = SUBSTRING(UPPER (m.Cli_Nombre), 1, 1) + SUBSTRING (LOWER (m.Cli_Nombre), 2,LEN(m.Cli_Nombre))
@@ -1841,6 +1879,9 @@ join DIVIDIDOS.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID =
 	join DIVIDIDOS.ciudades c2 on m.[Ruta_Ciudad_Destino] = c2.NOMBRE AND c2.ID = r.DESTINO_ID
 	where m.[Ruta_Codigo] = r.CODIGO and m.FechaSalida = v.FECHA_SALIDA and m.Fecha_LLegada_Estimada = v.FECHA_LLEGADA_ESTIMADA and
 	m.FechaLLegada = v.FECHA_LLEGADA)
+
+INSERT INTO DIVIDIDOS.pagos (BOLETO_COMPRA_ID, CUOTAS_SELECCIONADAS, TARJETA_ID, TIPO_COMPRA)
+SELECT ID, NULL, NULL, 'EFECTIVO' FROM DIVIDIDOS.boletos_de_compra
 
 /*migracion de pasajes*/
 INSERT INTO DIVIDIDOS.pasajes (CODIGO, CLIENTE_ID, BUTACA_ID, CANCELACION_ID, BOLETO_COMPRA_ID, PRECIO)

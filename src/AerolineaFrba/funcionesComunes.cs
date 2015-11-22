@@ -333,11 +333,12 @@ namespace AerolineaFrba
             return Double.Parse(pasaje.Cells[6].Value.ToString());
         }
 
-        public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, string tipoCompra, Int32 idCliente, Int32 idVuelo)
+        public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, string tipoCompra, 
+            Int32 idCliente, Int32 idVuelo, Int32 idTarjeta, Int32 cuotas)
         {
             SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaBoletoDeCompra",
-                funcionesComunes.generarListaParaProcedure("@tipo", "@idCliente", "@idVuelo", "@fecha"),
-                tipoCompra, idCliente, idVuelo, funcionesComunes.getFecha());
+                funcionesComunes.generarListaParaProcedure("@tipo", "@idCliente", "@idVuelo", "@fecha", "@idTarjeta", "@cuotas"),
+                tipoCompra, idCliente, idVuelo, funcionesComunes.getFecha(), idTarjeta, cuotas);
 
             Int32 idBoleto = funcionesComunes.obtenerBoleto();
             if (pasajes.RowCount != 0)
