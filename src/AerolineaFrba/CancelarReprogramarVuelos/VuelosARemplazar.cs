@@ -113,7 +113,10 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
                 fechaLlegadaEstimada + @"',109)) or v.INVALIDO = 1 or naves.BAJA IS NOT NULL or 
                 naves.TIPO_SERVICIO_ID != " + 
                 Int32.Parse(this.dataGridListadoVuelos.SelectedCells[8].Value.ToString()) +
-                ") group by a.ID, a.MATRICULA, a.MODELO order by a.ID, a.MATRICULA, a.MODELO");
+                @") or (a.ID not in (select distinct AERONAVE_ID from DIVIDIDOS.vuelos) and 
+                a.TIPO_SERVICIO_ID = " + 
+                Int32.Parse(this.dataGridListadoVuelos.SelectedCells[8].Value.ToString()) + 
+                @") group by a.ID, a.MATRICULA, a.MODELO order by a.ID, a.MATRICULA, a.MODELO");
         }
         private DataTable vuelosVinculados()
         {

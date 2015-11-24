@@ -1537,7 +1537,7 @@ AS BEGIN
 	join DIVIDIDOS.servicios_por_rutas sxr on sxr.RUTA_ID = r.ID
 	join DIVIDIDOS.tipos_de_servicio t on t.ID = a.TIPO_SERVICIO_ID and t.ID = sxr.TIPO_SERVICIO_ID
 	where (v.INVALIDO = 0) AND (v.FECHA_SALIDA > convert(datetime, @fecha,109)) 
-	AND( (DIVIDIDOS.cantButacasLibres(v.ID)  != 0 ) OR (DIVIDIDOS.kgLibres(v.ID) !=0 ))
+	AND( (DIVIDIDOS.cantButacasLibres(v.ID)  != 0 ) OR (DIVIDIDOS.kgLibres(v.ID) !=0 )) and v.FECHA_LLEGADA IS NULL
 	order by 2
 END
 GO

@@ -97,35 +97,41 @@ namespace AerolineaFrba.Registro_de_Usuario
 
         private void botonModificacion_Click(object sender, EventArgs e)
         {
-            Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-            int valor = 3;
-            ((Label)modificarCliente.Controls["campoRequeridoApellido"]).Visible= false;
-            ((Label)modificarCliente.Controls["campoRequeridoNombre"]).Visible = false;
-            ((Label)modificarCliente.Controls["campoRequeridoDNI"]).Visible = false;
-            ((Label)modificarCliente.Controls["campoRequeridoNacimiento"]).Visible = false;
-            ((TextBox)modificarCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxId"]).Text = dataGridListadoClientes.SelectedCells[0].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxNombre"]).Text = dataGridListadoClientes.SelectedCells[1].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxApellido"]).Text = dataGridListadoClientes.SelectedCells[2].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxDni"]).Text = dataGridListadoClientes.SelectedCells[3].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxDireccion"]).Text = dataGridListadoClientes.SelectedCells[4].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxTelefono"]).Text = dataGridListadoClientes.SelectedCells[5].Value.ToString();
-            ((TextBox)modificarCliente.Controls["textBoxMail"]).Text = dataGridListadoClientes.SelectedCells[6].Value.ToString();
-            ((DateTimePicker)modificarCliente.Controls["TimePickerNacimiento"]).Value = Convert.ToDateTime(dataGridListadoClientes.SelectedCells[7].Value.ToString());
-            modificarCliente.Text = "Modificación de Cliente";
-            funcionesComunes.deshabilitarVentanaYAbrirNueva(modificarCliente);
+            if (dataGridListadoClientes.Rows.Count > 0)
+            {
+                Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente();
+                int valor = 3;
+                ((Label)modificarCliente.Controls["campoRequeridoApellido"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoNombre"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoDNI"]).Visible = false;
+                ((Label)modificarCliente.Controls["campoRequeridoNacimiento"]).Visible = false;
+                ((TextBox)modificarCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
+                ((TextBox)modificarCliente.Controls["textBoxId"]).Text = dataGridListadoClientes.SelectedCells[0].Value.ToString();
+                ((TextBox)modificarCliente.Controls["textBoxNombre"]).Text = dataGridListadoClientes.SelectedCells[1].Value.ToString();
+                ((TextBox)modificarCliente.Controls["textBoxApellido"]).Text = dataGridListadoClientes.SelectedCells[2].Value.ToString();
+                ((TextBox)modificarCliente.Controls["textBoxDni"]).Text = dataGridListadoClientes.SelectedCells[3].Value.ToString();
+                ((TextBox)modificarCliente.Controls["textBoxDireccion"]).Text = dataGridListadoClientes.SelectedCells[4].Value.ToString();
+                ((TextBox)modificarCliente.Controls["textBoxTelefono"]).Text = dataGridListadoClientes.SelectedCells[5].Value.ToString();
+                ((TextBox)modificarCliente.Controls["textBoxMail"]).Text = dataGridListadoClientes.SelectedCells[6].Value.ToString();
+                ((DateTimePicker)modificarCliente.Controls["TimePickerNacimiento"]).Value = Convert.ToDateTime(dataGridListadoClientes.SelectedCells[7].Value.ToString());
+                modificarCliente.Text = "Modificación de Cliente";
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(modificarCliente);
+            }
         }
 
         private void botonBaja_Click(object sender, EventArgs e)
         {
-            bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".bajaCliente",
-                funcionesComunes.generarListaParaProcedure("@id"), 
-                dataGridListadoClientes.SelectedCells[0].Value.ToString());
-            if (resultado)
+            if (dataGridListadoClientes.Rows.Count > 0)
             {
-                MessageBox.Show("El cliente se dio de baja exitosamente");
+                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".bajaCliente",
+                    funcionesComunes.generarListaParaProcedure("@id"),
+                    dataGridListadoClientes.SelectedCells[0].Value.ToString());
+                if (resultado)
+                {
+                    MessageBox.Show("El cliente se dio de baja exitosamente");
+                }
+                listado = funcionesComunes.consultarClientes(dataGridListadoClientes);
             }
-               listado = funcionesComunes.consultarClientes(dataGridListadoClientes);
         }
 
         private void bajaModificacionDeCliente_Enter(object sender, EventArgs e)

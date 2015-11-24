@@ -103,23 +103,28 @@ namespace AerolineaFrba.Abm_Vuelos
 
         private void botonGuardar_Click(object sender, EventArgs e)
         {
-            if (this.validar())
+            if (this.dataGridListadoAeronaves.Rows.Count > 0 && this.dataGridListadoRutas.Rows.Count > 0)
             {
-                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".generarViaje",
-                    funcionesComunes.generarListaParaProcedure("@fechaSalida", "@fechaLlegadaEstimada",
-                    "@idAeronave","@idRuta"), 
-                    String.Format("{0:yyyyMMdd HH:mm:ss}",this.timePickerSalida.Value),
-                    String.Format("{0:yyyyMMdd HH:mm:ss}", this.timePickerLlegadaEstimada.Value),
-                    dataGridListadoAeronaves.SelectedCells[0].Value,
-                    dataGridListadoRutas.SelectedCells[0].Value);
-                if (resultado == true){
-                    MessageBox.Show("Se genero el viaje exitosamente");
-                    funcionesComunes.habilitarAnterior();
-                }else{
-                    MessageBox.Show("Ocurrió un error generando el viaje");
+                if (this.validar())
+                {
+                    bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".generarViaje",
+                        funcionesComunes.generarListaParaProcedure("@fechaSalida", "@fechaLlegadaEstimada",
+                        "@idAeronave", "@idRuta"),
+                        String.Format("{0:yyyyMMdd HH:mm:ss}", this.timePickerSalida.Value),
+                        String.Format("{0:yyyyMMdd HH:mm:ss}", this.timePickerLlegadaEstimada.Value),
+                        dataGridListadoAeronaves.SelectedCells[0].Value,
+                        dataGridListadoRutas.SelectedCells[0].Value);
+                    if (resultado == true)
+                    {
+                        MessageBox.Show("Se genero el viaje exitosamente");
+                        funcionesComunes.habilitarAnterior();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ocurrió un error generando el viaje");
+                    }
                 }
-            }
-            
+            }            
         }
 
         private bool validar() 
