@@ -200,6 +200,7 @@ CREATE TABLE DIVIDIDOS.pasajes (
     BUTACA_ID        INT            NOT NULL,
     CLIENTE_ID        INT            NOT NULL,
     BOLETO_COMPRA_ID INT             NOT NULL,
+	VUELO_ID INT NOT NULL,
 	INVALIDO INT DEFAULT 0,
     CANCELACION_ID INT DEFAULT NULL
 )
@@ -222,7 +223,7 @@ CREATE TABLE DIVIDIDOS.boletos_de_compra (
     FECHA_COMPRA    DATETIME          NOT NULL,
     CLIENTE_ID        INT            NOT NULL,
 	MILLAS 			  INT,
-	VUELO_ID         INT		NOT NULL,
+	VUELO_ID INT,
 	INVALIDO INT DEFAULT 0
 )
 
@@ -327,6 +328,7 @@ CREATE TABLE DIVIDIDOS.paquetes(
     PRECIO         NUMERIC(18,2)	NOT NULL,
     KG             NUMERIC(18,2)	NOT NULL,
     BOLETO_COMPRA_ID     INT		NOT NULL,
+	VUELO_ID INT NOT NULL,
 	INVALIDO INT DEFAULT 0,
     CANCELACION_ID INT DEFAULT NULL
 )
@@ -462,6 +464,15 @@ IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'PASAJ_CANC' AND object_id 
        CREATE INDEX PASAJ_CANC ON DIVIDIDOS.pasajes (CANCELACION_ID);
     END
 
+ALTER TABLE DIVIDIDOS.pasajes
+ADD CONSTRAINT PASAJES_FK05 FOREIGN KEY
+(VUELO_ID) REFERENCES DIVIDIDOS.vuelos (ID)
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'PASAJ_VUE' AND object_id = OBJECT_ID('DIVIDIDOS.pasajes'))
+    BEGIN
+       CREATE INDEX PASAJ_VUE ON DIVIDIDOS.pasajes (VUELO_ID);
+    END
+
 ALTER TABLE DIVIDIDOS.clientes
 ADD CONSTRAINT CLIENTES_FK01 FOREIGN KEY
 (ROL_ID) REFERENCES DIVIDIDOS.roles (ID)
@@ -478,15 +489,6 @@ ADD CONSTRAINT BOLETOS_DE_COMPRA_FK01 FOREIGN KEY
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_BOL_COMP_CLIENT' AND object_id = OBJECT_ID('DIVIDIDOS.boletos_de_compra'))
     BEGIN
        CREATE INDEX FKI_BOL_COMP_CLIENT ON DIVIDIDOS.boletos_de_compra (CLIENTE_ID);
-    END
-
-ALTER TABLE DIVIDIDOS.boletos_de_compra
-ADD CONSTRAINT boletos_FK02 FOREIGN KEY
-(VUELO_ID) REFERENCES DIVIDIDOS.vuelos (ID)
-
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_BOLETO_VUEL' AND object_id = OBJECT_ID('DIVIDIDOS.boletos_de_compra'))
-    BEGIN
-       CREATE INDEX FKI_BOLETO_VUEL ON DIVIDIDOS.boletos_de_compra (VUELO_ID);
     END
 
 ALTER TABLE DIVIDIDOS.funcionalidades_por_rol
@@ -595,6 +597,15 @@ ADD CONSTRAINT paquetes_FK02 FOREIGN KEY
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_PAQ_CANC' AND object_id = OBJECT_ID('DIVIDIDOS.paquetes'))
     BEGIN
        CREATE INDEX FKI_PAQ_CANC ON DIVIDIDOS.paquetes (CANCELACION_ID);
+    END
+
+ALTER TABLE DIVIDIDOS.paquetes
+ADD CONSTRAINT paquetes_FK03 FOREIGN KEY
+(VUELO_ID) REFERENCES DIVIDIDOS.vuelos (ID)
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'FKI_PAQ_VUE' AND object_id = OBJECT_ID('DIVIDIDOS.paquetes'))
+    BEGIN
+       CREATE INDEX FKI_PAQ_VUE ON DIVIDIDOS.paquetes (VUELO_ID);
     END
 
 ALTER TABLE DIVIDIDOS.pagos
@@ -1047,9 +1058,8 @@ RETURNS INT
 AS BEGIN
 	DECLARE @kgOcupados INT;
 	DECLARE @KgTot INT
-	SET @kgOcupados=(SELECT SUM(p.KG) from DIVIDIDOS.boletos_de_compra b 
-	join DIVIDIDOS.paquetes p on p.BOLETO_COMPRA_ID = b.ID
-	where b.VUELO_ID = @vuelo and p.CANCELACION_ID IS NULL)
+	SET @kgOcupados=(SELECT SUM(p.KG) from DIVIDIDOS.paquetes p
+	where p.VUELO_ID = @vuelo and p.CANCELACION_ID IS NULL AND p.INVALIDO = 0)
 	SET @KgTot=(SELECT a.KG_DISPONIBLES from DIVIDIDOS.vuelos v join
 	DIVIDIDOS.aeronaves a on a.ID = v.AERONAVE_ID
 	where v.ID = @vuelo )
@@ -1059,15 +1069,15 @@ AS BEGIN
 END
 GO
 
-CREATE FUNCTION DIVIDIDOS.precioTotal(@id int)
+CREATE FUNCTION DIVIDIDOS.precioTotal(@id int, @idVuelo int)
 RETURNS numeric(18,2)
 AS BEGIN
 	DECLARE @totPas numeric(18,2);
 	DECLARE @totPaq numeric(18,2);
 	SET @totPas=(SELECT SUM(pas.PRECIO) from DIVIDIDOS.pasajes pas 
-	where @id=pas.BOLETO_COMPRA_ID and pas.CANCELACION_ID IS NULL and pas.INVALIDO = 0)
+	where @id=pas.BOLETO_COMPRA_ID and pas.CANCELACION_ID IS NULL and pas.INVALIDO = 0 and pas.VUELO_ID = @idVuelo)
 	SET @totPaq=(SELECT SUM(paq.PRECIO) from DIVIDIDOS.paquetes paq 
-	where @id=paq.BOLETO_COMPRA_ID and paq.CANCELACION_ID IS NULL and paq.INVALIDO = 0)
+	where @id=paq.BOLETO_COMPRA_ID and paq.CANCELACION_ID IS NULL and paq.INVALIDO = 0 and paq.VUELO_ID = @idVuelo)
 	IF(@totPas IS NULL)
 	set @totPas= 0
 	IF(@totPaq IS NULL)
@@ -1140,7 +1150,6 @@ DELETE FROM DIVIDIDOS.funcionalidades_por_rol
 WHERE ROL_ID = @idRol and FUNCIONALIDAD_ID = @idFunc
 END
 GO
-
 
 CREATE PROCEDURE DIVIDIDOS.cambiarNombreRol(@idRol int, @nombre nvarchar(255))
 AS BEGIN
@@ -1337,8 +1346,15 @@ SET INVALIDO = 1
 WHERE ID = @id AND FECHA_LLEGADA IS NULL AND FECHA_SALIDA > CONVERT(datetime,@fecha,109)
 INSERT INTO DIVIDIDOS.cancelaciones (FECHA_DEVOLUCION, MOTIVO)
 VALUES(CONVERT(datetime,@fecha,109), 'BAJA VUELO')
-SELECT BC.ID Into #Temp FROM DIVIDIDOS.boletos_de_compra BC, DIVIDIDOS.vuelos v WHERE BC.VUELO_ID = @id and
-v.ID = bc.VUELO_ID and v.INVALIDO = 1 and bc.INVALIDO = 0
+CREATE TABLE #temp (
+ID int
+)
+INSERT INTO #Temp(ID)
+SELECT p.BOLETO_COMPRA_ID as ID FROM DIVIDIDOS.pasajes p, DIVIDIDOS.vuelos v WHERE p.VUELO_ID = @id and
+v.ID = p.VUELO_ID and v.INVALIDO = 1 and p.INVALIDO = 0
+INSERT INTO #Temp(ID)
+SELECT p.BOLETO_COMPRA_ID as ID FROM DIVIDIDOS.paquetes p, DIVIDIDOS.vuelos v WHERE p.VUELO_ID = @id and
+v.ID = p.VUELO_ID and v.INVALIDO = 1 and p.INVALIDO = 0
 Declare @idBoleto int
 	While (Select Count(*) From #Temp) > 0
 	Begin
@@ -1347,6 +1363,7 @@ Declare @idBoleto int
 		EXEC DIVIDIDOS.cancelarPaquete @idBoletoCompra = @idBoleto, @fecha = @fecha
 		Delete #Temp Where Id = @idBoleto
 	End
+drop table #temp
 END
 GO
 
@@ -1380,7 +1397,7 @@ AS BEGIN
 select top 5 c.NOMBRE as Destino, count(p.ID) as 'Cantidad de Pasajes' 
 from DIVIDIDOS.pasajes p 
 join DIVIDIDOS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID
-join DIVIDIDOS.vuelos v on bc.VUELO_ID=v.ID 
+join DIVIDIDOS.vuelos v on p.VUELO_ID=v.ID 
 join DIVIDIDOS.rutas r on v.RUTA_ID=r.ID
 join DIVIDIDOS.ciudades c on r.DESTINO_ID=c.ID
 where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND 
@@ -1393,9 +1410,10 @@ GO
 --TOP 5 de los destinos con más pasajes cancelados 
 CREATE PROCEDURE DIVIDIDOS.top5DestinosCancelados(@fechaFrom varchar(50), @fechaTo varchar(50))
 AS BEGIN
-select top 5 c.NOMBRE as Destino, count(p.ID) as Cancelaciones from DIVIDIDOS.pasajes p
+select top 5 c.NOMBRE as Destino, count(p.ID) as Cancelaciones 
+from DIVIDIDOS.pasajes p
 join DIVIDIDOS.boletos_de_compra bc on p.BOLETO_COMPRA_ID = bc.ID
-join DIVIDIDOS.vuelos v on bc.VUELO_ID = v.ID
+join DIVIDIDOS.vuelos v on p.VUELO_ID = v.ID
 join DIVIDIDOS.rutas r on v.RUTA_ID=r.ID
 join DIVIDIDOS.ciudades c on r.DESTINO_ID=c.ID
 where p.CANCELACION_ID IS NOT NULL AND
@@ -1409,8 +1427,7 @@ GO
 CREATE PROCEDURE DIVIDIDOS.top5DestinosAeronavesVacias(@fechaFrom varchar(50), @fechaTo varchar(50))
 AS BEGIN
 select top 5 c.NOMBRE as Destino, count(buV.VUELO_ID) as 'Butacas Vacias' 
-from DIVIDIDOS.butacas_por_vuelo buV 
---join DIVIDIDOS.butacas b on naves.ID = b.Aeronave_id 
+from DIVIDIDOS.butacas_por_vuelo buV
 join DIVIDIDOS.vuelos v on buV.VUELO_ID=v.ID 
 join DIVIDIDOS.rutas r on v.RUTA_ID=r.ID 
 join DIVIDIDOS.ciudades c on r.DESTINO_ID=c.ID 
@@ -1431,9 +1448,9 @@ Cliente varchar(255),
 Millas int
 )
 
-/*inserto en la tabla temporal los pasajes*/
+/*inserto en la tabla temporal los pasajes del cliente*/
 insert into #tablaMillas 
-select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
+select c.NOMBRE+' '+c.APELLIDO, floor(sum(p.PRECIO)/10)
 from DIVIDIDOS.clientes c
 join DIVIDIDOS.pasajes p on c.ID=p.CLIENTE_ID
 join DIVIDIDOS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
@@ -1443,11 +1460,23 @@ bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 group by c.nombre, c.APELLIDO
 
-/*inserto en la tabla temporal los paquetes*/
+/*inserto en la tabla temporal los pasajes comprados*/
+insert into #tablaMillas 
+select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
+from DIVIDIDOS.clientes c
+join DIVIDIDOS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID 
+join DIVIDIDOS.pasajes p on bc.ID=p.BOLETO_COMPRA_ID
+where P.CANCELACION_ID IS NULL AND
+p.INVALIDO=0 AND
+bc.INVALIDO=0 AND
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
+group by c.nombre, c.APELLIDO
+
+/*inserto en la tabla temporal los paquetes comprados*/
 insert into #tablaMillas 
 select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
 from DIVIDIDOS.Clientes c  
-join DIVIDIDOS.boletos_de_compra bc on bc.Cliente_ID=c.ID
+join DIVIDIDOS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join DIVIDIDOS.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
 where P.CANCELACION_ID IS NULL AND
 p.INVALIDO=0 AND
@@ -1455,7 +1484,7 @@ bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 group by c.nombre, c.APELLIDO
 
-select top 5 * from #tablaMillas
+select top 5 Cliente, Millas from #tablaMillas
 order by 2 desc
 
 drop table #tablaMillas
@@ -1492,8 +1521,7 @@ UPDATE DIVIDIDOS.vuelos
 SET FECHA_LLEGADA = convert(datetime, @fechaLlegada,109)
 WHERE ID = @idVuelo
 UPDATE DIVIDIDOS.boletos_de_compra
-SET MILLAS = FLOOR(DIVIDIDOS.precioTotal(ID)/10)
-WHERE VUELO_ID = @idVuelo and INVALIDO = 0
+SET MILLAS = FLOOR(DIVIDIDOS.precioTotal(ID, @idVuelo)/10)
 END
 GO
 
@@ -1577,17 +1605,28 @@ Motivo varchar(255),
 Millas int
 )
 
-/*inserto en la tabla temporal los pasajes*/
+/*inserto en la tabla temporal los pasajes del cliente*/
 insert into #tablaMillas 
-select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, bc.millas as Millas
+select bc.FECHA_COMPRA as Fecha, 'Pasajero' as Motivo, floor(sum(p.PRECIO)/10) as Millas
 from DIVIDIDOS.clientes c
-join DIVIDIDOS.pasajes p on c.ID=p.CLIENTE_ID 
+join DIVIDIDOS.pasajes p on c.ID=p.CLIENTE_ID
 join DIVIDIDOS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
 where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 and c.DNI = @dni
+group by bc.FECHA_COMPRA
 
-/*inserto en la tabla temporal los paquetes*/
+/*inserto en la tabla temporal los pasajes comprados*/
+insert into #tablaMillas 
+select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, bc.millas as Millas
+from DIVIDIDOS.clientes c  
+join DIVIDIDOS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
+join DIVIDIDOS.pasajes p on bc.ID = p.BOLETO_COMPRA_ID
+where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
+and c.DNI = @dni
+
+/*inserto en la tabla temporal los paquetes comprados*/
 insert into #tablaMillas 
 select bc.FECHA_COMPRA as Fecha, 'Paquete' as Motivo, bc.millas as Millas
 from DIVIDIDOS.clientes c  
@@ -1597,7 +1636,7 @@ where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 and c.DNI = @dni
 
-/*inserto en la tabla temporal los canjes*/
+/*inserto en la tabla temporal los canjes realizados*/
 insert into #tablaMillas 
 select cj.FECHA_CANJE as Fecha, 'Canje por '+CONVERT(varchar(10), cj.CANTIDAD)+' unidades de '+LOWER(p.NOMBRE) as Motivo, 
 -p.MILLAS_REQUERIDAS*cj.CANTIDAD as Millas
@@ -1652,7 +1691,6 @@ END
 GO
 
 -- CIUDADES
-/*Hago baja logica de todo porque sino rompe*/
 CREATE PROCEDURE DIVIDIDOS.bajaCiudad (@idCiudad int, @fecha varchar(50))
 AS BEGIN
 UPDATE DIVIDIDOS.ciudades
@@ -1672,11 +1710,10 @@ END
 GO
 
 -- COMPRAS
-CREATE PROCEDURE DIVIDIDOS.altaBoletoDeCompra (@tipo nvarchar(255), @idCliente int, @idVuelo int, @fecha varchar(50), @idTarjeta int,
-@cuotas int)
+CREATE PROCEDURE DIVIDIDOS.altaBoletoDeCompra (@tipo nvarchar(255), @idCliente int, @fecha varchar(50), @idTarjeta int, @cuotas int)
 AS BEGIN
-INSERT INTO DIVIDIDOS.boletos_de_compra (CLIENTE_ID, VUELO_ID, FECHA_COMPRA, MILLAS)
-VALUES (@idCliente, @idVuelo, CONVERT(datetime,@fecha,109), 0)
+INSERT INTO DIVIDIDOS.boletos_de_compra (CLIENTE_ID, FECHA_COMPRA, MILLAS)
+VALUES (@idCliente, CONVERT(datetime,@fecha,109), 0)
 IF(UPPER(@tipo)= 'EFECTIVO')
 	begin
 	SET @idTarjeta = NULL
@@ -1687,26 +1724,26 @@ VALUES (SCOPE_IDENTITY(), @idTarjeta, @cuotas, UPPER(@tipo))
 END
 GO
 
-CREATE PROCEDURE DIVIDIDOS.altaPasaje (@idCliente int, @idButaca int, @idBoletoCompra int, @precio numeric(18,2))
+CREATE PROCEDURE DIVIDIDOS.altaPasaje (@idCliente int, @idButaca int, @idBoletoCompra int, @precio numeric(18,2), @idVuelo int)
 AS BEGIN
 DECLARE @codigo numeric(18,0)
 select top 1 @codigo = CODIGO from DIVIDIDOS.pasajes
 order by CODIGO desc
-INSERT INTO DIVIDIDOS.pasajes (CLIENTE_ID, BUTACA_ID, BOLETO_COMPRA_ID, PRECIO, CODIGO, CANCELACION_ID)
-VALUES (@idCliente, @idButaca, @idBoletoCompra, @precio, @codigo+1, NULL)
+INSERT INTO DIVIDIDOS.pasajes (CLIENTE_ID, BUTACA_ID, BOLETO_COMPRA_ID, PRECIO, CODIGO, CANCELACION_ID, VUELO_ID)
+VALUES (@idCliente, @idButaca, @idBoletoCompra, @precio, @codigo+1, NULL, @idVuelo)
 UPDATE DIVIDIDOS.butacas_por_vuelo
 SET ESTADO = 'COMPRADO'
-WHERE BUTACA_ID = @idButaca AND VUELO_ID = (SELECT bc.VUELO_ID FROM DIVIDIDOS.boletos_de_compra bc WHERE bc.ID = @idBoletoCompra)
+WHERE BUTACA_ID = @idButaca AND VUELO_ID = @idVuelo
 END
 GO
 
-CREATE PROCEDURE DIVIDIDOS.altaPaquete (@idBoletoCompra int, @kg numeric(18,2), @precio numeric(18,2))
+CREATE PROCEDURE DIVIDIDOS.altaPaquete (@idBoletoCompra int, @kg numeric(18,2), @precio numeric(18,2), @idVuelo int)
 AS BEGIN
 DECLARE @codigo numeric(18,0)
 select top 1 @codigo = CODIGO from DIVIDIDOS.paquetes
 order by CODIGO desc
-INSERT INTO DIVIDIDOS.paquetes (BOLETO_COMPRA_ID, KG, PRECIO, CODIGO, CANCELACION_ID)
-VALUES (@idBoletoCompra, @kg, @precio, @codigo+1, NULL)
+INSERT INTO DIVIDIDOS.paquetes (BOLETO_COMPRA_ID, KG, PRECIO, CODIGO, CANCELACION_ID, VUELO_ID)
+VALUES (@idBoletoCompra, @kg, @precio, @codigo+1, NULL, @idVuelo)
 END
 GO
 
@@ -1884,8 +1921,8 @@ INSERT INTO DIVIDIDOS.pagos (BOLETO_COMPRA_ID, CUOTAS_SELECCIONADAS, TARJETA_ID,
 SELECT ID, NULL, NULL, 'EFECTIVO' FROM DIVIDIDOS.boletos_de_compra
 
 /*migracion de pasajes*/
-INSERT INTO DIVIDIDOS.pasajes (CODIGO, CLIENTE_ID, BUTACA_ID, CANCELACION_ID, BOLETO_COMPRA_ID, PRECIO)
-SELECT M.Pasaje_Codigo, C.ID, B.ID, NULL, bc.ID, M.Pasaje_Precio FROM GD2C2015.gd_esquema.Maestra M
+INSERT INTO DIVIDIDOS.pasajes (CODIGO, CLIENTE_ID, BUTACA_ID, CANCELACION_ID, BOLETO_COMPRA_ID, PRECIO, VUELO_ID)
+SELECT M.Pasaje_Codigo, C.ID, B.ID, NULL, bc.ID, M.Pasaje_Precio, v.ID FROM GD2C2015.gd_esquema.Maestra M
 join DIVIDIDOS.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
 and C.NOMBRE = SUBSTRING(UPPER (m.Cli_Nombre), 1, 1) + SUBSTRING (LOWER (m.Cli_Nombre), 2,LEN(m.Cli_Nombre))
 and C.DNI = M.Cli_Dni
@@ -1901,8 +1938,8 @@ join DIVIDIDOS.vuelos v on v.AERONAVE_ID = a.ID and v.RUTA_ID =
 where M.Pasaje_Codigo != 0
 
 /*migracion de paquetes*/
-INSERT INTO DIVIDIDOS.paquetes (CODIGO, KG, BOLETO_COMPRA_ID, CANCELACION_ID, PRECIO)
-SELECT M.Paquete_Codigo, M.Paquete_KG, bc.ID, NULL, M.Paquete_Precio FROM GD2C2015.gd_esquema.Maestra M
+INSERT INTO DIVIDIDOS.paquetes (CODIGO, KG, BOLETO_COMPRA_ID, CANCELACION_ID, PRECIO, VUELO_ID)
+SELECT M.Paquete_Codigo, M.Paquete_KG, bc.ID, NULL, M.Paquete_Precio, v.ID FROM GD2C2015.gd_esquema.Maestra M
 join DIVIDIDOS.clientes C on C.APELLIDO = SUBSTRING(UPPER (m.Cli_Apellido), 1, 1) + SUBSTRING (LOWER (m.Cli_Apellido), 2,LEN(m.Cli_Apellido))
 and C.NOMBRE = SUBSTRING(UPPER (m.Cli_Nombre), 1, 1) + SUBSTRING (LOWER (m.Cli_Nombre), 2,LEN(m.Cli_Nombre))
 and C.DNI = M.Cli_Dni
@@ -1918,8 +1955,34 @@ where M.Paquete_Codigo != 0
 
 /*actualizamos las millas del boleto de compra segun la cantidad de pasajes y paquetes que los referencien*/
 update DIVIDIDOS.boletos_de_compra 
-set millas= FLOOR(DIVIDIDOS.precioTotal(ID)/10)
+set millas= FLOOR(DIVIDIDOS.precioTotal(ID, VUELO_ID)/10)
 
+ALTER TABLE DIVIDIDOS.boletos_de_compra
+DROP COLUMN VUELO_ID
+
+IF OBJECT_ID('DIVIDIDOS.insertVuelos') IS NOT NULL
+BEGIN
+   DROP TRIGGER DIVIDIDOS.insertVuelos;
+END;
+GO
+
+IF OBJECT_ID('DIVIDIDOS.insertBoletosCompra') IS NOT NULL
+BEGIN
+   DROP TRIGGER DIVIDIDOS.insertBoletosCompra;
+END;
+GO
+
+IF OBJECT_ID('DIVIDIDOS.insertPasajes') IS NOT NULL
+BEGIN
+   DROP TRIGGER DIVIDIDOS.insertPasajes;
+END;
+GO
+
+IF OBJECT_ID('DIVIDIDOS.insertPaquetes') IS NOT NULL
+BEGIN
+   DROP TRIGGER DIVIDIDOS.insertPaquetes;
+END;
+GO
 -----------------------------------------------------------------------
 -- EJECUCION DE PROCEDURES
 
