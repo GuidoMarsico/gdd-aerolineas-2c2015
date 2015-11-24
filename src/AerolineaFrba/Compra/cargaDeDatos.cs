@@ -365,7 +365,9 @@ namespace AerolineaFrba.Compra
         private bool viajaEnOtroVuelo()
         {
             DataTable otrosVuelosEnMismoHorario = new DataTable();
-            otrosVuelosEnMismoHorario = SqlConnector.obtenerTablaSegunConsultaString(@"select * from " + SqlConnector.getSchema() + @".pasajes p inner join " + SqlConnector.getSchema() + @".boletos_de_compra bc on p.BOLETO_COMPRA_ID = bc.ID inner join " + SqlConnector.getSchema() + @".vuelos v on bc.VUELO_ID = v.ID where 
+            otrosVuelosEnMismoHorario = SqlConnector.obtenerTablaSegunConsultaString(@"select * from " + SqlConnector.getSchema() + 
+            @".pasajes p inner join " + SqlConnector.getSchema() + @".boletos_de_compra bc on p.BOLETO_COMPRA_ID = bc.ID 
+            inner join " + SqlConnector.getSchema() + @".vuelos v on p.VUELO_ID = v.ID where 
             p.INVALIDO = 0 and (p.CANCELACION_ID IS NULL) and bc.CLIENTE_ID =" + Int32.Parse(this.textBoxIdCliente.Text) + @" and 
             (v.FECHA_SALIDA  > convert(datetime, '" + fechaSalida + @"',109) and (v.FECHA_SALIDA <
                 convert(datetime, '" + fechaLlegada + @"',109)) or v.FECHA_LLEGADA < 

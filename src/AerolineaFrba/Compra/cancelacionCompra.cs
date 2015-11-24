@@ -104,7 +104,7 @@ namespace AerolineaFrba.Compra
                 p.PRECIO as Precio, b.NUMERO as Butaca, bc.FECHA_COMPRA as 'Fecha de Compra', a1.NOMBRE as Origen, a2.NOMBRE as Destino
                 from " + SqlConnector.getSchema() + @".pasajes p, " + SqlConnector.getSchema() + @".butacas b, " + SqlConnector.getSchema() + @".boletos_de_compra bc, " + SqlConnector.getSchema() + @".vuelos v, " + SqlConnector.getSchema() + @".rutas r, " + SqlConnector.getSchema() + @".ciudades a1, 
                 " + SqlConnector.getSchema() + @".ciudades a2 where p.BOLETO_COMPRA_ID = " + this.textBoxCodigoCompra.Text + @" and bc.ID = p.BOLETO_COMPRA_ID 
-                and b.ID = p.BUTACA_ID and p.INVALIDO = 0 and v.ID = bc.VUELO_ID and v.RUTA_ID = r.ID and r.ORIGEN_ID = a1.ID and 
+                and b.ID = p.BUTACA_ID and p.INVALIDO = 0 and v.ID = p.VUELO_ID and v.RUTA_ID = r.ID and r.ORIGEN_ID = a1.ID and 
                 r.DESTINO_ID = a2.ID and bc.INVALIDO = 0 and v.FECHA_SALIDA > convert(datetime,'"+funcionesComunes.getFecha()+"',109) and v.FECHA_LLEGADA IS NULL and p.CANCELACION_ID IS NULL");
                         this.dataGridPasaje.DataSource = tabla;
                         this.dataGridPasaje.Columns[0].Visible = false;
@@ -112,7 +112,7 @@ namespace AerolineaFrba.Compra
                         DataTable tablaPaq = SqlConnector.obtenerTablaSegunConsultaString(@"select p.ID as Id, p.CODIGO as Codigo, 
                 p.PRECIO as Precio, p.KG as Peso, bc.FECHA_COMPRA as 'Fecha de Compra' from " + SqlConnector.getSchema() + @".paquetes p, " + SqlConnector.getSchema() + @".boletos_de_compra bc, 
                 " + SqlConnector.getSchema() + @".vuelos v where p.BOLETO_COMPRA_ID = " + this.textBoxCodigoCompra.Text + @" and bc.ID = p.BOLETO_COMPRA_ID 
-                and p.INVALIDO = 0 and bc.INVALIDO = 0 and v.ID = bc.VUELO_ID and v.FECHA_SALIDA > convert(datetime,'"+funcionesComunes.getFecha()+@"',109) and v.FECHA_LLEGADA IS NULL
+                and p.INVALIDO = 0 and bc.INVALIDO = 0 and v.ID = p.VUELO_ID and v.FECHA_SALIDA > convert(datetime,'"+funcionesComunes.getFecha()+@"',109) and v.FECHA_LLEGADA IS NULL
                 and p.CANCELACION_ID IS NULL");
                         this.dataGridEnco.DataSource = tablaPaq;
                         this.dataGridEnco.Columns[0].Visible = false;
@@ -146,7 +146,7 @@ namespace AerolineaFrba.Compra
                 p.PRECIO as Precio, b.NUMERO as Butaca, bc.FECHA_COMPRA as 'Fecha de Compra', a1.NOMBRE as Origen, a2.NOMBRE as Destino
                 from " + SqlConnector.getSchema() + @".pasajes p, " + SqlConnector.getSchema() + @".butacas b, " + SqlConnector.getSchema() + @".boletos_de_compra bc, " + SqlConnector.getSchema() + @".vuelos v, " + SqlConnector.getSchema() + @".rutas r, " + SqlConnector.getSchema() + @".ciudades a1, 
                 " + SqlConnector.getSchema() + @".ciudades a2 where p.BOLETO_COMPRA_ID = " + this.textBoxCodigoCompra.Text + @" and bc.ID = p.BOLETO_COMPRA_ID 
-                and b.ID = p.BUTACA_ID and p.INVALIDO = 0 and v.ID = bc.VUELO_ID and v.RUTA_ID = r.ID and r.ORIGEN_ID = a1.ID and 
+                and b.ID = p.BUTACA_ID and p.INVALIDO = 0 and v.ID = p.VUELO_ID and v.RUTA_ID = r.ID and r.ORIGEN_ID = a1.ID and 
                 r.DESTINO_ID = a2.ID and bc.INVALIDO = 0 and v.FECHA_SALIDA > convert(datetime,'" + funcionesComunes.getFecha() + "',109) and v.FECHA_LLEGADA IS NULL and p.CANCELACION_ID IS NULL");
                     this.dataGridPasaje.DataSource = tabla;
                     this.dataGridPasaje.Columns[0].Visible = false;
@@ -170,7 +170,7 @@ namespace AerolineaFrba.Compra
                     DataTable tablaPaq = SqlConnector.obtenerTablaSegunConsultaString(@"select p.ID as Id, p.CODIGO as Codigo, 
                      p.PRECIO as Precio, p.KG as Peso, bc.FECHA_COMPRA as 'Fecha de Compra' from " + SqlConnector.getSchema() + @".paquetes p, " + SqlConnector.getSchema() + @".boletos_de_compra bc, 
                     " + SqlConnector.getSchema() + @".vuelos v where p.BOLETO_COMPRA_ID = " + this.textBoxCodigoCompra.Text + @" and bc.ID = p.BOLETO_COMPRA_ID 
-                    and p.INVALIDO = 0 and bc.INVALIDO = 0 and v.ID = bc.VUELO_ID and v.FECHA_SALIDA > convert(datetime,'"+funcionesComunes.getFecha()+@"',109) and v.FECHA_LLEGADA IS NULL
+                    and p.INVALIDO = 0 and bc.INVALIDO = 0 and v.ID = p.VUELO_ID and v.FECHA_SALIDA > convert(datetime,'"+funcionesComunes.getFecha()+@"',109) and v.FECHA_LLEGADA IS NULL
                      and p.CANCELACION_ID IS NULL");
                     this.dataGridEnco.DataSource = tablaPaq;
                     this.dataGridEnco.Columns[0].Visible = false;
