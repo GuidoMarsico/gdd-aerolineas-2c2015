@@ -124,7 +124,7 @@ namespace AerolineaFrba.Compra
                             textBoxDireccion.Text = row["Dirección"].ToString();
                             textBoxTelefono.Text = row["Teléfono"].ToString();
                             textBoxMail.Text = row["Mail"].ToString();
-                            timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+                            timePickerNacimiento.Text = ((DateTime)row["Fecha de Nacimiento"]).ToShortDateString();
                             textBoxImporte.Enabled = true;
                             textBoxImporte.Focus();
                             this.textBoxDni.Enabled = false;
@@ -165,7 +165,7 @@ namespace AerolineaFrba.Compra
             textBoxDireccion.Text = row["Dirección"].ToString();
             textBoxTelefono.Text = row["Teléfono"].ToString();
             textBoxMail.Text = row["Mail"].ToString();
-            timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+            timePickerNacimiento.Text = ((DateTime)row["Fecha de Nacimiento"]).ToShortDateString();
             textBoxImporte.Enabled = true;
             textBoxImporte.Focus();
             this.textBoxDni.Enabled = false;
@@ -174,13 +174,13 @@ namespace AerolineaFrba.Compra
         private void botonLimpiar_Click(object sender, EventArgs e)
         {
             textBoxIdCliente.Clear();
-            textBoxNombre.Clear();
-            textBoxApellido.Clear();
+            textBoxNombre.Text = "";
+            textBoxApellido.Text = "";
             textBoxDni.Clear();
-            textBoxDireccion.Clear();
-            textBoxTelefono.Clear();
-            textBoxMail.Clear();
-            textBoxMail.Clear();
+            textBoxDireccion.Text = "";
+            textBoxTelefono.Text = "";
+            textBoxMail.Text = "";
+            textBoxMail.Text = "";
             textBoxImporte.Enabled = false;
             textBoxDni.Focus();
             this.textBoxDni.Enabled = true;
@@ -213,7 +213,7 @@ namespace AerolineaFrba.Compra
                 string direccion = this.textBoxDireccion.Text;
                 string telefono = this.textBoxTelefono.Text;
                 string mail = this.textBoxMail.Text;
-                DateTime fecha = this.timePickerNacimiento.Value;
+                DateTime fecha = Convert.ToDateTime(this.timePickerNacimiento.Text);
                 Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente(3, "Modificación de Cliente", id, nombre, apellido, dni, direccion, telefono, mail, fecha);
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(modificarCliente);
             }

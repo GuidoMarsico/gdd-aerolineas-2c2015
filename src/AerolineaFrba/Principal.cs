@@ -21,6 +21,7 @@ namespace AerolineaFrba
         {
             InitializeComponent();
             funcionesComunes.setFecha(String.Format("{0:yyyyMMdd HH:mm:ss}", DateTime.Parse(@System.Configuration.ConfigurationSettings.AppSettings["Fecha"])));
+            toolstripfecha.Text = String.Format("{0:dd-MM-yyyy}", DateTime.Parse(@System.Configuration.ConfigurationSettings.AppSettings["Fecha"]));
             
         }
 
