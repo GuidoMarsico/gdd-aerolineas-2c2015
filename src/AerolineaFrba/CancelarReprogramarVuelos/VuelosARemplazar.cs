@@ -96,34 +96,38 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 
         private DataTable obtenerAeronavesDisponibles()
         {
-            String fechaSalida = String.Format("{0:yyyyMMdd HH:mm:ss}", 
+            String fechaSalida = String.Format("{0:yyyyMMdd HH:mm:ss}",
                 Convert.ToDateTime(this.dataGridListadoVuelos.SelectedCells[1].Value).AddHours(-1));
-            String fechaLlegadaEstimada = String.Format("{0:yyyyMMdd HH:mm:ss}", 
+            String fechaLlegadaEstimada = String.Format("{0:yyyyMMdd HH:mm:ss}",
                 Convert.ToDateTime(this.dataGridListadoVuelos.SelectedCells[3].Value).AddHours(1));
 
             return SqlConnector.obtenerTablaSegunConsultaString(@"SELECT a.ID, a.MATRICULA, a.MODELO FROM " + SqlConnector.getSchema() + @".vuelos v, 
-                " + SqlConnector.getSchema() + @".aeronaves a where v.AERONAVE_ID = a.ID and a.ID != " + 
+                " + SqlConnector.getSchema() + @".aeronaves a where v.AERONAVE_ID = a.ID and a.ID != " +
                 Int32.Parse(this.textBoxTipoIdAero.Text) + @" and a.ID not in (select naves.ID 
                 from " + SqlConnector.getSchema() + @".aeronaves naves, " + SqlConnector.getSchema() + @".vuelos vu where vu.AERONAVE_ID = naves.ID and 
                 (vu.FECHA_SALIDA > convert(datetime, '" + fechaSalida + @"',109) and 
                 vu.FECHA_SALIDA < convert(datetime, '" + fechaLlegadaEstimada + @"',109) and vu.FECHA_LLEGADA > 
-                convert(datetime, '" + fechaSalida + @"',109) and vu.FECHA_LLEGADA < convert(datetime, '" + 
+                convert(datetime, '" + fechaSalida + @"',109) and vu.FECHA_LLEGADA < convert(datetime, '" +
                 fechaLlegadaEstimada + @"',109) and vu.FECHA_LLEGADA_ESTIMADA >
-                convert(datetime, '" + fechaSalida + @"',109) and vu.FECHA_LLEGADA_ESTIMADA  <convert(datetime, '" + 
+                convert(datetime, '" + fechaSalida + @"',109) and vu.FECHA_LLEGADA_ESTIMADA  <convert(datetime, '" +
                 fechaLlegadaEstimada + @"',109)) or v.INVALIDO = 1 or naves.BAJA IS NOT NULL or 
-                naves.TIPO_SERVICIO_ID != " + 
+                naves.TIPO_SERVICIO_ID != " +
                 Int32.Parse(this.dataGridListadoVuelos.SelectedCells[8].Value.ToString()) +
-                ") group by a.ID, a.MATRICULA, a.MODELO order by a.ID, a.MATRICULA, a.MODELO");
+                @") or (a.ID not in (select distinct AERONAVE_ID from DIVIDIDOS.vuelos) and 
+                a.TIPO_SERVICIO_ID = " +
+                Int32.Parse(this.dataGridListadoVuelos.SelectedCells[8].Value.ToString()) +
+                @") group by a.ID, a.MATRICULA, a.MODELO order by a.ID, a.MATRICULA, a.MODELO");
         }
         private DataTable vuelosVinculados()
         {
             String id = this.textBoxTipoIdAero.Text;
             return SqlConnector.obtenerTablaSegunConsultaString(@"SELECT v.ID as Id,v.FECHA_SALIDA as 'Fecha Salida',v.FECHA_LLEGADA as 'Fecha Llegada'
                         ,v.FECHA_LLEGADA_ESTIMADA as 'Fecha Estimada',r.CODIGO as 'Codigo Ruta',t.NOMBRE as Servicio, v.AERONAVE_ID as Aeronave,v.RUTA_ID as RutaID,
-                        r.TIPO_SERVICIO_ID as IdServicio
+                        servxruta.TIPOS_DE_SERVICIO_ID as IdServicio
                         FROM " + SqlConnector.getSchema() + @".vuelos v
                         join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.Ruta_ID
-                        join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
+                        join " + SqlConnector.getSchema() + @".servicios_Por_Ruta servxruta on servxruta.RUTAS_ID = r.ID
+                        join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = servxruta.TIPOS_DE_SERVICIO_ID
                         where v.AERONAVE_ID =" + id + " AND v.INVALIDO = 0 AND v.FECHA_SALIDA > convert(datetime,'" + funcionesComunes.getFecha() + "',109) order by 2");
         }
 
@@ -132,10 +136,11 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
 
            DataTable vuelosEnElPeriodo = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT v.ID as Id,v.FECHA_SALIDA as 'Fecha Salida',v.FECHA_LLEGADA as 'Fecha Llegada'
                         ,v.FECHA_LLEGADA_ESTIMADA as 'Fecha Estimada',r.CODIGO as 'Codigo Ruta',t.NOMBRE as Servicio, v.AERONAVE_ID as Aeronave,v.RUTA_ID as RutaID,
-                        r.TIPO_SERVICIO_ID as IdServicio
+                        servxruta.TIPOS_DE_SERVICIO_ID as IdServicio
                         FROM " + SqlConnector.getSchema() + @".vuelos v
                         join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.Ruta_ID
-                        join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
+                        join " + SqlConnector.getSchema() + @".servicios_Por_Ruta servxruta on servxruta.RUTAS_ID = r.ID
+                        join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = servxruta.TIPOS_DE_SERVICIO_ID
                         where v.AERONAVE_ID = " + textBoxTipoIdAero.Text + @" AND (v.FECHA_SALIDA 
                 > convert(datetime, '" + inicioInactividad + @"',109) and (v.FECHA_SALIDA <
                 convert(datetime, '" + finInactividad + @"',109)) or v.FECHA_LLEGADA > 

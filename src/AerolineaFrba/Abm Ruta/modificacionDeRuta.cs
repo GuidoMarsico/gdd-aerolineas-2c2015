@@ -62,12 +62,19 @@ namespace AerolineaFrba.Abm_Ruta
         {
             Double precioKg = Math.Round(Double.Parse(textBoxPrecioKg.Text), 2);
             Double precioPasaje = Math.Round(Double.Parse(textBoxPrecioPasaje.Text), 2);
-            Int32 servicio = (Int32)comboBoxServicios.SelectedValue;
-            if (this.validarPrecios(precioKg,precioPasaje)) {
+            Int32 servicio = -1;
+            if (this.comboBoxServicios.Enabled == true)
+                servicio = (Int32)comboBoxServicios.SelectedValue;
+            if (this.validarPrecios(precioKg, precioPasaje))
+            {
                 bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".updateRuta",
-                    funcionesComunes.generarListaParaProcedure("@id","@precioKg","@precioPasaje",
-                    "@servicio"), this.textBoxId.Text, precioKg, precioPasaje, servicio);
-                if (resultado)
+                    funcionesComunes.generarListaParaProcedure("@id", "@precioKg", "@precioPasaje"), this.textBoxId.Text, precioKg,
+                    precioPasaje);
+                bool resultado2 = true;
+                if (this.comboBoxServicios.Enabled == true)
+                    resultado2 = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".agregarServicioARuta",
+                        funcionesComunes.generarListaParaProcedure("@idRuta", "@idServicio"), this.textBoxId.Text, servicio);
+                if (resultado && resultado2)
                 {
                     MessageBox.Show("La ruta se actualizo exitosamente");
                     funcionesComunes.habilitarAnterior();
@@ -95,6 +102,15 @@ namespace AerolineaFrba.Abm_Ruta
                 }
             }
             return true;
+        }
+
+        private void buttonAgregarServicio_Click(object sender, EventArgs e)
+        {
+            this.comboBoxServicios.DataSource = null;
+            funcionesComunes.llenarCombobox(this.comboBoxServicios, "NOMBRE", @"select ID, NOMBRE 
+            from " + SqlConnector.getSchema() + ".tipos_de_servicio where ID not in (select TIPOS_DE_SERVICIO_ID from " + SqlConnector.getSchema() +
+            ".servicios_por_ruta where RUTAS_ID = " + this.textBoxId.Text + ")");
+            this.comboBoxServicios.Enabled = true;
         }
     }
 }

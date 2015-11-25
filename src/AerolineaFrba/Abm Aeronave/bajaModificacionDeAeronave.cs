@@ -26,17 +26,19 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private void botonModificacion_Click(object sender, EventArgs e)
         {
-            
-            string id = dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
-            string matricula = dataGridListadoAeronaves.SelectedCells[1].Value.ToString();
-            string modelo = dataGridListadoAeronaves.SelectedCells[2].Value.ToString();
-            string kg = dataGridListadoAeronaves.SelectedCells[3].Value.ToString();
-            string fabricante = dataGridListadoAeronaves.SelectedCells[4].Value.ToString();
-            string servicio = dataGridListadoAeronaves.SelectedCells[5].Value.ToString();
-            DateTime alta = Convert.ToDateTime(dataGridListadoAeronaves.SelectedCells[6].Value.ToString());
-            string butacas = dataGridListadoAeronaves.SelectedCells[7].Value.ToString();
-            Form modificacionAeronave = new Abm_Aeronave.modificacionDeAeronave(id,matricula,modelo,kg,fabricante,servicio,alta,butacas);
-            funcionesComunes.deshabilitarVentanaYAbrirNueva(modificacionAeronave);
+            if (dataGridListadoAeronaves.Rows.Count > 0)
+            {
+             string id = dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
+             string matricula = dataGridListadoAeronaves.SelectedCells[1].Value.ToString();
+             string modelo = dataGridListadoAeronaves.SelectedCells[2].Value.ToString();
+             string kg = dataGridListadoAeronaves.SelectedCells[3].Value.ToString();
+             string fabricante = dataGridListadoAeronaves.SelectedCells[4].Value.ToString();
+             string servicio = dataGridListadoAeronaves.SelectedCells[5].Value.ToString();
+             DateTime alta = Convert.ToDateTime(dataGridListadoAeronaves.SelectedCells[6].Value.ToString());
+             string butacas = dataGridListadoAeronaves.SelectedCells[7].Value.ToString();
+             Form modificacionAeronave = new Abm_Aeronave.modificacionDeAeronave(id,matricula,modelo,kg,fabricante,servicio,alta,butacas);
+             funcionesComunes.deshabilitarVentanaYAbrirNueva(modificacionAeronave);
+            }
         }
 
         private void bajaModificacionDeAeronave_Load(object sender, EventArgs e)
@@ -117,10 +119,11 @@ namespace AerolineaFrba.Abm_Aeronave
             String id= dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
             return SqlConnector.obtenerTablaSegunConsultaString(@"SELECT v.ID as Id,v.FECHA_SALIDA as 'Fecha Salida',v.FECHA_LLEGADA as 'Fecha Llegada'
                         ,v.FECHA_LLEGADA_ESTIMADA as 'Fecha Estimada',r.CODIGO as 'Codigo Ruta',t.NOMBRE as Servicio, v.AERONAVE_ID as Aeronave,v.RUTA_ID as RutaID,
-                        r.TIPO_SERVICIO_ID as IdServicio
+                        servxruta.TIPOS_DE_SERVICIO_ID as IdServicio
                         FROM " + SqlConnector.getSchema() + @".vuelos v
                         join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.Ruta_ID
-                        join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
+                        join " + SqlConnector.getSchema() + @".servicios_Por_Ruta servxruta on servxruta.RUTAS_ID = r.ID
+                        join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = servxruta.TIPOS_DE_SERVICIO_ID
                         where v.AERONAVE_ID =" + id + " AND v.INVALIDO = 0 AND v.FECHA_SALIDA > convert(datetime,'" + funcionesComunes.getFecha() + "',109) order by 2");
         }
 

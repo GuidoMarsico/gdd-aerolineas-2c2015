@@ -90,18 +90,23 @@ namespace AerolineaFrba.Registro_Llegada_Destino
         }
 
         private bool validarRegistro()
-        {        DateTime fechaSalida=Convert.ToDateTime (dataGridListadoVuelos.SelectedCells[5].Value.ToString());
-             if (this.timePickerLlegada.Value < fechaSalida)
-                 {
+        {
+            if (dataGridListadoVuelos.Rows.Count > 0)
+            {
+                DateTime fechaSalida = Convert.ToDateTime(dataGridListadoVuelos.SelectedCells[5].Value.ToString());
+                if (this.timePickerLlegada.Value < fechaSalida)
+                {
                     MessageBox.Show("No puede haber una fecha de llega antes de la de salida");
                     return false;
-                 }
-            if (fechaSalida.AddDays((double)1) < timePickerLlegada.Value)
-                {
-                     MessageBox.Show("La fecha de llegada no puede ser mayor a 24hs de la de salida");
-                     return false;
                 }
-            return true;
+                if (fechaSalida.AddDays((double)1) < timePickerLlegada.Value)
+                {
+                    MessageBox.Show("La fecha de llegada no puede ser mayor a 24hs de la de salida");
+                    return false;
+                }
+                return true;
+            }
+            return false;
         }
 
         private void validar(object sender, KeyPressEventArgs e)

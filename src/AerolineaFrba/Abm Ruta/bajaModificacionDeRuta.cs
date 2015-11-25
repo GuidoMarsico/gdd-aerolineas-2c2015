@@ -21,11 +21,14 @@ namespace AerolineaFrba.Abm_Ruta
 
         private void botonModificacion_Click(object sender, EventArgs e)
         {
-            Form modificacionRuta = new Abm_Ruta.modificacionDeRuta(dataGridListadoRutas.SelectedCells[0].Value.ToString(),
+            if (dataGridListadoRutas.Rows.Count > 0)
+            {
+                 Form modificacionRuta = new Abm_Ruta.modificacionDeRuta(dataGridListadoRutas.SelectedCells[0].Value.ToString(),
                 dataGridListadoRutas.SelectedCells[1].Value.ToString(),dataGridListadoRutas.SelectedCells[2].Value.ToString(),
                 dataGridListadoRutas.SelectedCells[3].Value.ToString(),dataGridListadoRutas.SelectedCells[4].Value.ToString(),
                 dataGridListadoRutas.SelectedCells[5].Value.ToString(),  dataGridListadoRutas.SelectedCells[6].Value.ToString());
-            funcionesComunes.deshabilitarVentanaYAbrirNueva(modificacionRuta);
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(modificacionRuta);
+            }
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -80,24 +83,27 @@ namespace AerolineaFrba.Abm_Ruta
 
         private void botonBaja_Click(object sender, EventArgs e)
         {
-            this.botonBaja.Enabled = false;
-            this.botonBuscar.Enabled = false;
-            this.botonLimpiar.Enabled = false;
-            this.botonModificacion.Enabled = false;
-            this.botonVolver.Enabled = false;
-            MessageBox.Show("Realizando la operacion, aguarde un momento ... ");
-            bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".bajaRuta",
-                funcionesComunes.generarListaParaProcedure("@id","@fecha"),
-                dataGridListadoRutas.SelectedCells[0].Value.ToString(),funcionesComunes.getFecha());
-            this.botonBaja.Enabled = true;
-            this.botonBuscar.Enabled = true;
-            this.botonLimpiar.Enabled = true;
-            this.botonModificacion.Enabled = true;
-            this.botonVolver.Enabled = true;
-            if(resultado){
+            if (dataGridListadoRutas.Rows.Count > 0)
+            {
+             this.botonBaja.Enabled = false;
+             this.botonBuscar.Enabled = false;
+             this.botonLimpiar.Enabled = false;
+             this.botonModificacion.Enabled = false;
+             this.botonVolver.Enabled = false;
+             MessageBox.Show("Realizando la operacion, aguarde un momento ... ");
+             bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + @".bajaRuta",
+                 funcionesComunes.generarListaParaProcedure("@id","@fecha"),
+                 dataGridListadoRutas.SelectedCells[0].Value.ToString(),funcionesComunes.getFecha());
+             this.botonBaja.Enabled = true;
+             this.botonBuscar.Enabled = true;
+             this.botonLimpiar.Enabled = true;
+             this.botonModificacion.Enabled = true;
+             this.botonVolver.Enabled = true;
+             if(resultado){
                 MessageBox.Show("La ruta se dio de baja exitosamente");
+             }
+             this.botonLimpiar.PerformClick();
             }
-            this.botonLimpiar.PerformClick();
         }
 
         private void bajaModificacionDeRuta_Enter(object sender, EventArgs e)

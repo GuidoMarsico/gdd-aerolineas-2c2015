@@ -103,18 +103,21 @@ namespace AerolineaFrba.Tarjeta
 
         private void botonGuardar_Click(object sender, EventArgs e)
         {
-            if (validarDatos())
+            if (dataGridCliente.Rows.Count > 0)
             {
-                bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaTarjeta",
-                    funcionesComunes.generarListaParaProcedure("@idCliente","@nroTarjeta","@idTipo","@fechaVto"), 
-                    long.Parse(dataGridCliente.SelectedCells[0].Value.ToString()), 
-                    long.Parse(this.textBoxNumero.Text),
-                    this.comboBoxTipoTarjeta.SelectedValue, 
-                    String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechavencimiento.Value));
-                if (resultado)
+                if (validarDatos())
                 {
-                    MessageBox.Show("Se dio de alta la tarjeta exitosamente");
-                    funcionesComunes.habilitarAnterior();
+                    bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaTarjeta",
+                        funcionesComunes.generarListaParaProcedure("@idCliente","@nroTarjeta","@idTipo","@fechaVto"), 
+                        long.Parse(dataGridCliente.SelectedCells[0].Value.ToString()), 
+                        long.Parse(this.textBoxNumero.Text),
+                        this.comboBoxTipoTarjeta.SelectedValue, 
+                        String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechavencimiento.Value));
+                    if (resultado)
+                    {
+                        MessageBox.Show("Se dio de alta la tarjeta exitosamente");
+                        funcionesComunes.habilitarAnterior();
+                    }
                 }
             }
         }

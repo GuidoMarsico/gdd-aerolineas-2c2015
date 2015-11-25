@@ -43,10 +43,11 @@ namespace AerolineaFrba.Abm_Aeronave
 
                 DataTable vuelosEnElPeriodo = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT v.ID as Id,v.FECHA_SALIDA as 'Fecha Salida',v.FECHA_LLEGADA as 'Fecha Llegada'
                         ,v.FECHA_LLEGADA_ESTIMADA as 'Fecha Estimada',r.CODIGO as 'Codigo Ruta',t.NOMBRE as Servicio, v.AERONAVE_ID as Aeronave,v.RUTA_ID as RutaID,
-                        r.TIPO_SERVICIO_ID as IdServicio
+                        servxruta.TIPOS_DE_SERVICIO_ID as IdServicio
                         FROM " + SqlConnector.getSchema() + @".vuelos v
                         join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.Ruta_ID
-                        join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = r.TIPO_SERVICIO_ID
+                        join " + SqlConnector.getSchema() + @".servicios_Por_Ruta servxruta on servxruta.RUTAS_ID = r.ID
+                        join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = servxruta.TIPOS_DE_SERVICIO_ID
                         where v.AERONAVE_ID = " + textBoxId.Text + @" AND (v.FECHA_SALIDA 
                 > convert(datetime, '" + inicioInactividad + @"',109) and (v.FECHA_SALIDA <
                 convert(datetime, '" + finInactividad + @"',109)) or v.FECHA_LLEGADA < 
