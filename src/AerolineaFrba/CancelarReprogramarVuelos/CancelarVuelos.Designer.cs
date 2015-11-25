@@ -37,32 +37,38 @@
             // botonBajaTodos
             // 
             this.botonBajaTodos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.botonBajaTodos.BackColor = System.Drawing.Color.Maroon;
+            this.botonBajaTodos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.botonBajaTodos.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonBajaTodos.Location = new System.Drawing.Point(22, 40);
+            this.botonBajaTodos.ForeColor = System.Drawing.Color.White;
+            this.botonBajaTodos.Location = new System.Drawing.Point(21, 27);
             this.botonBajaTodos.Name = "botonBajaTodos";
             this.botonBajaTodos.Size = new System.Drawing.Size(189, 66);
             this.botonBajaTodos.TabIndex = 62;
             this.botonBajaTodos.Text = "Cancelar Vuelos";
-            this.botonBajaTodos.UseVisualStyleBackColor = true;
+            this.botonBajaTodos.UseVisualStyleBackColor = false;
             this.botonBajaTodos.Click += new System.EventHandler(this.botonBajaTodos_Click);
             // 
             // buttonReprogramar
             // 
             this.buttonReprogramar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonReprogramar.BackColor = System.Drawing.Color.Maroon;
+            this.buttonReprogramar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonReprogramar.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonReprogramar.Location = new System.Drawing.Point(254, 40);
+            this.buttonReprogramar.ForeColor = System.Drawing.Color.White;
+            this.buttonReprogramar.Location = new System.Drawing.Point(253, 27);
             this.buttonReprogramar.Name = "buttonReprogramar";
             this.buttonReprogramar.Size = new System.Drawing.Size(183, 66);
             this.buttonReprogramar.TabIndex = 63;
             this.buttonReprogramar.Text = "Remplazar Aeronave";
-            this.buttonReprogramar.UseVisualStyleBackColor = true;
+            this.buttonReprogramar.UseVisualStyleBackColor = false;
             this.buttonReprogramar.Click += new System.EventHandler(this.buttonReprogramar_Click);
             // 
             // textBoxTipoIdAero
             // 
             this.textBoxTipoIdAero.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxTipoIdAero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTipoIdAero.Location = new System.Drawing.Point(155, 8);
+            this.textBoxTipoIdAero.Location = new System.Drawing.Point(214, 49);
             this.textBoxTipoIdAero.Name = "textBoxTipoIdAero";
             this.textBoxTipoIdAero.Size = new System.Drawing.Size(33, 26);
             this.textBoxTipoIdAero.TabIndex = 78;
@@ -72,7 +78,7 @@
             // 
             this.textBoxTipo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxTipo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTipo.Location = new System.Drawing.Point(254, 8);
+            this.textBoxTipo.Location = new System.Drawing.Point(214, 8);
             this.textBoxTipo.Name = "textBoxTipo";
             this.textBoxTipo.Size = new System.Drawing.Size(33, 26);
             this.textBoxTipo.TabIndex = 79;
@@ -91,7 +97,6 @@
             this.Controls.Add(this.botonBajaTodos);
             this.Name = "CancelarVuelos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Cancelar / Reprogramar";
             this.ResumeLayout(false);
             this.PerformLayout();
 
