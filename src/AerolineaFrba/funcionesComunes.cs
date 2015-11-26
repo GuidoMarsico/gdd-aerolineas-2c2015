@@ -331,19 +331,19 @@ namespace AerolineaFrba
             return Double.Parse(pasaje.Cells[6].Value.ToString());
         }
 
-        public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, string tipoCompra, Int32 idCliente,Int32 idVuelo )
+        public static string crearBoleto(DataGridView pasajes, DataGridView encomiendas, double precioCompra, Int32 idTarjeta, int cuotas, Int32 idCliente,Int32 idVuelo )
         {
 
 
             SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaBoletoDeCompra",
-            funcionesComunes.generarListaParaProcedure("@tipo", "@idCliente", "@idVuelo", "@fecha"),
-                tipoCompra, idCliente, idVuelo, funcionesComunes.getFecha());
+            funcionesComunes.generarListaParaProcedure("@idCliente", "@fecha","@id_tarj","@cant_cuotas"),
+                 idCliente, funcionesComunes.getFecha(),idTarjeta,cuotas);
 
             Int32 idBoleto = funcionesComunes.obtenerBoleto();
             if (pasajes.RowCount != 0)
-                funcionesComunes.darAltaPasajes(pasajes,idBoleto);
+                funcionesComunes.darAltaPasajes(pasajes,idBoleto,idVuelo);
             if (encomiendas.RowCount != 0)
-                funcionesComunes.darAltaEncomiendas(encomiendas,idBoleto);
+                funcionesComunes.darAltaEncomiendas(encomiendas,idBoleto,idVuelo);
          
             return idBoleto.ToString();
         }
@@ -356,23 +356,19 @@ namespace AerolineaFrba
             return Convert.ToInt32(tabla.Rows[0].ItemArray[0]);
         }
 
-        private static void darAltaEncomiendas(DataGridView encomiendas,Int32 idBoleto)
+        private static void darAltaEncomiendas(DataGridView encomiendas,Int32 idBoleto,Int32 idVuelo)
         {
             foreach (DataGridViewRow encomienda in encomiendas.Rows) 
             { 
-                /*Aca por cada encomienda que me ahora veo que le decimos paquete
-                 le mandamos al procedure el precio , los kg, id boleto de compra
-                 */ 
                 double kg = Convert.ToDouble(encomienda.Cells[4].Value);
                 double precio = Convert.ToDouble(encomienda.Cells[5].Value);
                 SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaPaquete",
-                    funcionesComunes.generarListaParaProcedure("@idBoletoCompra", "@kg", "@precio"),
-                    idBoleto,kg,precio);
-                //Ahora le mando un 1 al codigo pero hay que ver como generar
+                    funcionesComunes.generarListaParaProcedure("@idBoletoCompra", "@kg", "@precio","@idVuelo"),
+                    idBoleto,kg,precio,idVuelo);
             }
         }
 
-        private static void darAltaPasajes(DataGridView pasajes,Int32 idBoleto)
+        private static void darAltaPasajes(DataGridView pasajes,Int32 idBoleto,Int32 idVuelo)
         {
             foreach (DataGridViewRow pasaje in pasajes.Rows) 
             {
@@ -384,8 +380,8 @@ namespace AerolineaFrba
                     idPasajero = funcionesComunes.darAltaCliente(pasaje);
                 }
                 SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaPasaje",
-                funcionesComunes.generarListaParaProcedure("@idCliente","@idButaca","@idBoletoCompra","@precio"),
-                idPasajero,idButaca,idBoleto,precio);
+                funcionesComunes.generarListaParaProcedure("@idCliente","@idButaca","@idBoletoCompra","@precio","@idVuelo"),
+                idPasajero,idButaca,idBoleto,precio,idVuelo);
                 //Aca hacemos el insert del pasaje usando el idBoleto , el idPasajero, el precio , el id de la butaca y el codigo que hay que ver como generar
             }
         }

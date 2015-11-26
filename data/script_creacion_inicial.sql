@@ -1596,7 +1596,7 @@ CREATE PROCEDURE LAS_PELOTAS.altaBoletoDeCompra (@idCliente int, @fecha varchar(
 AS BEGIN
 DECLARE @ID_FORMA_DE_PAGO INT
 SET @ID_FORMA_DE_PAGO= 1
-if @id_tarj is not Null 
+if @id_tarj != 0 
 BEGIN
 	insert into formas_de_pago values(@id_tarj,@cant_cuotas)
 	SET @ID_FORMA_DE_PAGO= SCOPE_IDENTITY()

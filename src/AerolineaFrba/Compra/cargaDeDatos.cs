@@ -360,7 +360,9 @@ namespace AerolineaFrba.Compra
         private bool viajaEnOtroVuelo()
         {
             DataTable otrosVuelosEnMismoHorario = new DataTable();
-            otrosVuelosEnMismoHorario = SqlConnector.obtenerTablaSegunConsultaString(@"select * from " + SqlConnector.getSchema() + @".pasajes p inner join " + SqlConnector.getSchema() + @".boletos_de_compra bc on p.BOLETO_COMPRA_ID = bc.ID inner join " + SqlConnector.getSchema() + @".vuelos v on bc.VUELO_ID = v.ID where 
+            otrosVuelosEnMismoHorario = SqlConnector.obtenerTablaSegunConsultaString(@"select * from " + SqlConnector.getSchema() +
+            @".pasajes p inner join " + SqlConnector.getSchema() + @".boletos_de_compra bc on p.BOLETO_COMPRA_ID = bc.ID 
+            inner join " + SqlConnector.getSchema() + @".vuelos v on p.VUELO_ID = v.ID where 
             p.INVALIDO = 0 and (p.CANCELACION_ID IS NULL) and bc.CLIENTE_ID =" + Int32.Parse(this.textBoxIdCliente.Text) + @" and 
             (v.FECHA_SALIDA  > convert(datetime, '" + fechaSalida + @"',109) and (v.FECHA_SALIDA <
                 convert(datetime, '" + fechaLlegada + @"',109)) or v.FECHA_LLEGADA < 
@@ -400,8 +402,11 @@ namespace AerolineaFrba.Compra
         {
             DataTable tabla = new DataTable();
             tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT r.PRECIO_BASE_KG, 
-                r.PRECIO_BASE_PASAJE,t.PORCENTAJE FROM " + SqlConnector.getSchema() + @".vuelos v join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.RUTA_ID
-                 join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID= r.TIPO_SERVICIO_ID   WHERE v.ID = " + this.textBoxIDVuelo.Text);
+                 r.PRECIO_BASE_PASAJE,t.PORCENTAJE FROM " + SqlConnector.getSchema() + @".vuelos v 
+                join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.RUTA_ID
+                join " + SqlConnector.getSchema() + @".servicios_por_ruta servxruta on servxruta.RUTAS_ID = r.ID 
+                join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID= servxruta.TIPOS_DE_SERVICIO_ID
+                WHERE v.ID = " + this.textBoxIDVuelo.Text);
             Double porcentaje = Double.Parse(tabla.Rows[0].ItemArray[2].ToString());
             precioBaseKg = Double.Parse(tabla.Rows[0].ItemArray[0].ToString());
             precioBaseKg = precioBaseKg + (precioBaseKg * porcentaje);

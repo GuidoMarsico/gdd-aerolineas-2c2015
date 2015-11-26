@@ -74,7 +74,9 @@ namespace AerolineaFrba.Compra
                 /* Si guarda bien en boleto de compra el pago entonces muestra el procesocompraexitoso */
                 Int32 idCliente = Int32.Parse(this.textBoxIdCliente.Text);
                 Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
-                String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas, this.importeApagar, "TARJETA", idCliente,idVuelo);
+                Int32 idtarjeta = Int32.Parse(this.textBoxIdTarj.Text);
+                int cantCuotas= int.Parse(comboBoxCuotas.SelectedValue.ToString());
+                String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas, this.importeApagar,idtarjeta,cantCuotas ,idCliente,idVuelo);
                 // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso(idBoleto,pasajes,encomiendas,this.fechaSalida,this.origen,this.destino));
             }

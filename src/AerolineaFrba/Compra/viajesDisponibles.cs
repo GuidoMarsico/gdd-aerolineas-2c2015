@@ -28,17 +28,20 @@ namespace AerolineaFrba.Compra
 
         private void botonComprar_Click(object sender, EventArgs e)
         {
-            if (compraValida())
+            if (this.dataGridViajes.Rows.Count > 0)
             {
-                string fechaSalida = String.Format("{0:yyyyMMdd HH:mm:ss}", Convert.ToDateTime(this.dataGridViajes.SelectedCells[1].Value.ToString()));
-                string fechaLlegada = String.Format("{0:yyyyMMdd HH:mm:ss}", Convert.ToDateTime(this.dataGridViajes.SelectedCells[2].Value.ToString()));
-                string origen = this.dataGridViajes.SelectedCells[3].Value.ToString();
-                string destino = this.dataGridViajes.SelectedCells[4].Value.ToString();
-                Form frmCargaDeDatos = new Compra.cargaDeDatos(fechaSalida,fechaLlegada,origen,destino);
-                ((TextBox)frmCargaDeDatos.Controls["textBoxCantPasajes"]).Text = this.numericUpDownPasajes.Value.ToString();
-                ((TextBox)frmCargaDeDatos.Controls["textBoxIDVuelo"]).Text = this.dataGridViajes.SelectedCells[0].Value.ToString();
-                ((TextBox)frmCargaDeDatos.Controls["textBoxKgEncomiendas"]).Text = this.textBoxKgEncomienda.Text;
-                funcionesComunes.deshabilitarVentanaYAbrirNueva(frmCargaDeDatos);
+                if (compraValida())
+                {
+                    string fechaSalida = String.Format("{0:yyyyMMdd HH:mm:ss}", Convert.ToDateTime(this.dataGridViajes.SelectedCells[1].Value.ToString()));
+                    string fechaLlegada = String.Format("{0:yyyyMMdd HH:mm:ss}", Convert.ToDateTime(this.dataGridViajes.SelectedCells[2].Value.ToString()));
+                    string origen = this.dataGridViajes.SelectedCells[3].Value.ToString();
+                    string destino = this.dataGridViajes.SelectedCells[4].Value.ToString();
+                    Form frmCargaDeDatos = new Compra.cargaDeDatos(fechaSalida, fechaLlegada, origen, destino);
+                    ((TextBox)frmCargaDeDatos.Controls["textBoxCantPasajes"]).Text = this.numericUpDownPasajes.Value.ToString();
+                    ((TextBox)frmCargaDeDatos.Controls["textBoxIDVuelo"]).Text = this.dataGridViajes.SelectedCells[0].Value.ToString();
+                    ((TextBox)frmCargaDeDatos.Controls["textBoxKgEncomiendas"]).Text = this.textBoxKgEncomienda.Text;
+                    funcionesComunes.deshabilitarVentanaYAbrirNueva(frmCargaDeDatos);
+                }
             }
         }
 
