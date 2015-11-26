@@ -28,16 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.botonLimpiar = new System.Windows.Forms.Button();
             this.dataGridListadoClientes = new System.Windows.Forms.DataGridView();
             this.botonModificacion = new System.Windows.Forms.Button();
             this.botonVolver = new System.Windows.Forms.Button();
             this.botonBaja = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxDniCompra = new System.Windows.Forms.TextBox();
             this.textDireccion = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.textBoxTipoForm = new System.Windows.Forms.TextBox();
             this.botonBuscar = new System.Windows.Forms.Button();
             this.textTelefono = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -49,8 +51,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textNombre = new System.Windows.Forms.TextBox();
             this.lblApellido = new System.Windows.Forms.Label();
-            this.textBoxTipoForm = new System.Windows.Forms.TextBox();
-            this.textBoxDniCompra = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridListadoClientes)).BeginInit();
@@ -80,14 +80,14 @@
             this.dataGridListadoClientes.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.dataGridListadoClientes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridListadoClientes.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.RoyalBlue;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridListadoClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridListadoClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridListadoClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridListadoClientes.GridColor = System.Drawing.Color.White;
             this.dataGridListadoClientes.Location = new System.Drawing.Point(7, 19);
@@ -95,9 +95,9 @@
             this.dataGridListadoClientes.Name = "dataGridListadoClientes";
             this.dataGridListadoClientes.ReadOnly = true;
             this.dataGridListadoClientes.RowHeadersVisible = false;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            this.dataGridListadoClientes.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dataGridListadoClientes.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridListadoClientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridListadoClientes.Size = new System.Drawing.Size(1080, 195);
             this.dataGridListadoClientes.TabIndex = 22;
@@ -149,10 +149,8 @@
             // groupBox1
             // 
             this.groupBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.groupBox1.Controls.Add(this.textBoxDniCompra);
             this.groupBox1.Controls.Add(this.textDireccion);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.textBoxTipoForm);
             this.groupBox1.Controls.Add(this.botonBuscar);
             this.groupBox1.Controls.Add(this.textTelefono);
             this.groupBox1.Controls.Add(this.label4);
@@ -170,6 +168,16 @@
             this.groupBox1.Size = new System.Drawing.Size(1093, 103);
             this.groupBox1.TabIndex = 24;
             this.groupBox1.TabStop = false;
+            // 
+            // textBoxDniCompra
+            // 
+            this.textBoxDniCompra.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.textBoxDniCompra.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDniCompra.Location = new System.Drawing.Point(78, 433);
+            this.textBoxDniCompra.Name = "textBoxDniCompra";
+            this.textBoxDniCompra.Size = new System.Drawing.Size(33, 26);
+            this.textBoxDniCompra.TabIndex = 79;
+            this.textBoxDniCompra.Visible = false;
             // 
             // textDireccion
             // 
@@ -190,6 +198,16 @@
             this.label5.Size = new System.Drawing.Size(65, 16);
             this.label5.TabIndex = 20;
             this.label5.Text = "Dirección";
+            // 
+            // textBoxTipoForm
+            // 
+            this.textBoxTipoForm.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.textBoxTipoForm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxTipoForm.Location = new System.Drawing.Point(28, 433);
+            this.textBoxTipoForm.Name = "textBoxTipoForm";
+            this.textBoxTipoForm.Size = new System.Drawing.Size(33, 26);
+            this.textBoxTipoForm.TabIndex = 78;
+            this.textBoxTipoForm.Visible = false;
             // 
             // botonBuscar
             // 
@@ -306,26 +324,6 @@
             this.lblApellido.TabIndex = 6;
             this.lblApellido.Text = "Nombre";
             // 
-            // textBoxTipoForm
-            // 
-            this.textBoxTipoForm.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBoxTipoForm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTipoForm.Location = new System.Drawing.Point(7, 71);
-            this.textBoxTipoForm.Name = "textBoxTipoForm";
-            this.textBoxTipoForm.Size = new System.Drawing.Size(33, 26);
-            this.textBoxTipoForm.TabIndex = 78;
-            this.textBoxTipoForm.Visible = false;
-            // 
-            // textBoxDniCompra
-            // 
-            this.textBoxDniCompra.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBoxDniCompra.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDniCompra.Location = new System.Drawing.Point(44, 71);
-            this.textBoxDniCompra.Name = "textBoxDniCompra";
-            this.textBoxDniCompra.Size = new System.Drawing.Size(33, 26);
-            this.textBoxDniCompra.TabIndex = 79;
-            this.textBoxDniCompra.Visible = false;
-            // 
             // label16
             // 
             this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -358,9 +356,11 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1102, 498);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxDniCompra);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.botonVolver);
             this.Controls.Add(this.label16);
+            this.Controls.Add(this.textBoxTipoForm);
             this.Controls.Add(this.groupBox1);
             this.Name = "bajaModificacionDeCliente";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -371,6 +371,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

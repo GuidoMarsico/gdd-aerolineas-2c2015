@@ -113,7 +113,7 @@ namespace AerolineaFrba.Registro_de_Usuario
                     if (TimePickerNacimiento.Value < DateTime.Today)
                     {
                         bool resultado = true;
-                        if (this.textBoxTipoForm.Text == "1" || this.textBoxTipoForm.Text == "0")
+                        if (this.textBoxTipoForm.Text == "2" || this.textBoxTipoForm.Text == "0")
                         {
 
                             resultado = this.persistirCliente();
