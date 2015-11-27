@@ -93,8 +93,8 @@
             this.botonLimpiarEnco = new System.Windows.Forms.Button();
             this.botonEliminarEnco = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBoxIdCliente = new System.Windows.Forms.TextBox();
             this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
+            this.textBoxIdCliente = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -811,16 +811,6 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Pasajes";
             // 
-            // textBoxIdCliente
-            // 
-            this.textBoxIdCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIdCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIdCliente.Location = new System.Drawing.Point(144, 596);
-            this.textBoxIdCliente.Name = "textBoxIdCliente";
-            this.textBoxIdCliente.Size = new System.Drawing.Size(45, 26);
-            this.textBoxIdCliente.TabIndex = 81;
-            this.textBoxIdCliente.Visible = false;
-            // 
             // textBoxIDVuelo
             // 
             this.textBoxIDVuelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -830,6 +820,16 @@
             this.textBoxIDVuelo.Size = new System.Drawing.Size(45, 26);
             this.textBoxIDVuelo.TabIndex = 80;
             this.textBoxIDVuelo.Visible = false;
+            // 
+            // textBoxIdCliente
+            // 
+            this.textBoxIdCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIdCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIdCliente.Location = new System.Drawing.Point(144, 596);
+            this.textBoxIdCliente.Name = "textBoxIdCliente";
+            this.textBoxIdCliente.Size = new System.Drawing.Size(45, 26);
+            this.textBoxIdCliente.TabIndex = 81;
+            this.textBoxIdCliente.Visible = false;
             // 
             // groupBox2
             // 

@@ -248,7 +248,7 @@ namespace AerolineaFrba.Compra
             {
                 DataTable tablaTarjetas = SqlConnector.obtenerTablaSegunConsultaString(@"select tc.ID as Id, tc.NUMERO as Número, tc.FECHA_VTO as Vencimiento, t.NOMBRE as Nombre, t.CUOTAS as cuotas
                 from " + SqlConnector.getSchema() + @".tarjetas_de_credito tc inner join " + SqlConnector.getSchema() + 
-                @".tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text) +" and tc.NUMERO ="+ Convert.ToInt32(textBoxNumero.Text));
+                @".tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text) +" and tc.NUMERO ="+ long.Parse(textBoxNumero.Text));
                 if (tablaTarjetas.Rows.Count > 0)
                 {
                     DataRow rowTarj = tablaTarjetas.Rows[0];

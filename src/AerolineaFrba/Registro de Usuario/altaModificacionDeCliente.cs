@@ -175,18 +175,14 @@ namespace AerolineaFrba.Registro_de_Usuario
                 {
                     if (gb.Name == "groupBox1")
                     {
-                        foreach (Control subgb in gb.Controls)
-                        {
-                            if (subgb.Name == "groupBox2")
-                            {
-                                ((TextBox)subgb.Controls["textBoxApellido"]).Text = this.textBoxApellido.Text;
-                                ((TextBox)subgb.Controls["textBoxNombre"]).Text = this.textBoxNombre.Text;
-                                ((TextBox)subgb.Controls["textBoxDireccion"]).Text = this.textBoxDireccion.Text;
-                                ((TextBox)subgb.Controls["textBoxMail"]).Text = this.textBoxMail.Text;
-                                ((TextBox)subgb.Controls["textBoxTelefono"]).Text = this.textBoxTelefono.Text;
-                                ((DateTimePicker)subgb.Controls["timePickerNacimiento"]).Value = this.TimePickerNacimiento.Value;
-                            }
-                        }
+                       
+                                ((Label)gb.Controls["textBoxApellido"]).Text = this.textBoxApellido.Text;
+                                ((Label)gb.Controls["textBoxNombre"]).Text = this.textBoxNombre.Text;
+                                ((Label)gb.Controls["textBoxDireccion"]).Text = this.textBoxDireccion.Text;
+                                ((Label)gb.Controls["textBoxMail"]).Text = this.textBoxMail.Text;
+                                ((Label)gb.Controls["textBoxTelefono"]).Text = this.textBoxTelefono.Text;
+                                ((Label)gb.Controls["timePickerNacimiento"]).Text = this.TimePickerNacimiento.Value.ToShortDateString();
+                        
                     }
                 }
             }
