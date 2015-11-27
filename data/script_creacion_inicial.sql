@@ -712,7 +712,7 @@ INSERT INTO DIVIDIDOS.tipos_tarjeta (NOMBRE, CUOTAS)
 VALUES ('VISA', 6),
 ('MASTERCARD', 12),
 ('AMEX', 3),
-('DINERS', 0);
+('DINERS', 1);
 
 -----------------------------------------------------------------------
 -- PROCEDURES && FUNCTIONS
