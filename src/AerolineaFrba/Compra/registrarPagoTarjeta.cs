@@ -75,7 +75,7 @@ namespace AerolineaFrba.Compra
                 Int32 idCliente = Int32.Parse(this.textBoxIdCliente.Text);
                 Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
                 String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas, this.importeApagar, "TARJETA", idCliente,
-                    idVuelo, Int32.Parse(this.textBoxIdTarj.Text), Int32.Parse(this.comboBoxCuotas.SelectedValue.ToString()));
+                    idVuelo, Int32.Parse(this.textBoxIdTarj.Text), Int32.Parse(this.comboBoxCuotas.SelectedItem.ToString()));
                 // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso(idBoleto,pasajes,encomiendas,this.fechaSalida,this.origen,this.destino));
             }
@@ -91,8 +91,6 @@ namespace AerolineaFrba.Compra
             funcionesComunes.soloNumeros(e);
         }
 
-        
-
         private void botonLimpiarTitular_Click(object sender, EventArgs e)
         {
             textBoxApellido.Clear();
@@ -102,6 +100,7 @@ namespace AerolineaFrba.Compra
             textBoxIdCliente.Clear();
             textBoxMail.Clear();
             textBoxTelefono.Clear();
+            textBoxDni.Enabled = true;
             timePickerNacimiento.Value = DateTime.Today;
             timePickerVencimiento.Value = DateTime.Today;
             textBoxNumero.Clear();
@@ -148,28 +147,7 @@ namespace AerolineaFrba.Compra
                             textBoxMail.Text = row["Mail"].ToString();
                             timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
                             this.textBoxDni.Enabled = false;
-
-                            DataTable tablaTarjetas = SqlConnector.obtenerTablaSegunConsultaString(@"select tc.ID as Id, tc.NUMERO as Número, tc.FECHA_VTO as Vencimiento, t.NOMBRE as Nombre, t.CUOTAS as cuotas
-                             from " + SqlConnector.getSchema() + @".tarjetas_de_credito tc inner join " + SqlConnector.getSchema() + @".tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text));
-                            if (tablaTarjetas.Rows.Count > 0)
-                            {
-                                DataRow rowTarj = tablaTarjetas.Rows[0];
-                                textBoxIdTarj.Text = rowTarj["Id"].ToString();
-                                textBoxNumero.Text = rowTarj["Número"].ToString();
-                                textBoxTipo.Text = rowTarj["Nombre"].ToString();
-                                timePickerVencimiento.Value = (DateTime)rowTarj["Vencimiento"];
-                                int cantCuotas = Convert.ToInt32(rowTarj["Cuotas"]);
-                                for (int i = 1; i <= cantCuotas; i++)
-                                {
-                                    comboBoxCuotas.Items.Add(i.ToString());
-                                }
-                            }
-                            else
-                            {
-                                MessageBox.Show("No se puede encontrar una tarjeta de crédito valida para el cliente seleccionado, haga un alta de tarjeta para ese cliente");
-                            }
                         }
-
                     }
                     else
                     {
@@ -226,28 +204,6 @@ namespace AerolineaFrba.Compra
             textBoxMail.Text = row["Mail"].ToString();
             timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
             this.textBoxDni.Enabled = false;
-
-            DataTable tablaTarjetas = SqlConnector.obtenerTablaSegunConsultaString(@"select tc.ID as Id, tc.NUMERO as Número, tc.FECHA_VTO as Vencimiento, t.NOMBRE as Nombre, t.CUOTAS as cuotas
-                             from " + SqlConnector.getSchema() + @".tarjetas_de_credito tc inner join " + SqlConnector.getSchema() + @".tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text));
-            if (tablaTarjetas.Rows.Count > 0)
-            {
-                DataRow rowTarj = tablaTarjetas.Rows[0];
-                textBoxIdTarj.Text = rowTarj["Id"].ToString();
-                textBoxNumero.Text = rowTarj["Número"].ToString();
-                textBoxTipo.Text = rowTarj["Nombre"].ToString();
-                timePickerVencimiento.Value = (DateTime)rowTarj["Vencimiento"];
-                int cantCuotas = Convert.ToInt32(rowTarj["Cuotas"]);
-                for (int i = 1; i <= cantCuotas; i++)
-                {
-                    comboBoxCuotas.Items.Add(i.ToString());
-                }
-            }
-            else
-            {
-                MessageBox.Show("No se puede encontrar una tarjeta de crédito valida para el cliente seleccionado, haga un alta de tarjeta para ese cliente");
-            }
-           
-
         }
 
         private void botonLimpiar_Click(object sender, EventArgs e)
@@ -295,6 +251,46 @@ namespace AerolineaFrba.Compra
                 MessageBox.Show("Debe tener un cliente dado de alta para modificar");
             }
         }
-       
+
+        private bool validarIngresoTarjeta()
+        {
+            if (this.textBoxIdCliente.Text == "") {
+                MessageBox.Show("Debe tener un cliente seleccionado para ingresar una tarjeta");
+                return false;
+            }
+            if (this.textBoxNumero.Text == "") {
+                MessageBox.Show("Debe ingresar un numero de tarjeta para buscar");
+                return false;
+            }
+            return true;
+        }
+
+        private void botonIngresar_Click(object sender, EventArgs e)
+        {
+            if (validarIngresoTarjeta())
+            {
+                DataTable tablaTarjetas = SqlConnector.obtenerTablaSegunConsultaString(@"select tc.ID as Id, tc.NUMERO as Número, tc.FECHA_VTO as Vencimiento, t.NOMBRE as Nombre, t.CUOTAS as cuotas
+                from " + SqlConnector.getSchema() + @".tarjetas_de_credito tc inner join " + SqlConnector.getSchema() +
+                @".tipos_tarjeta t on tc.TIPO_TARJETA_ID = t.ID where tc.CLIENTE_ID =" + Convert.ToInt32(textBoxIdCliente.Text) + " and tc.NUMERO =" + long.Parse(textBoxNumero.Text));
+                if (tablaTarjetas.Rows.Count > 0)
+                {
+                    DataRow rowTarj = tablaTarjetas.Rows[0];
+                    textBoxIdTarj.Text = rowTarj["Id"].ToString();
+                    textBoxNumero.Text = rowTarj["Número"].ToString();
+                    textBoxTipo.Text = rowTarj["Nombre"].ToString();
+                    timePickerVencimiento.Value = (DateTime)rowTarj["Vencimiento"];
+                    int cantCuotas = Convert.ToInt32(rowTarj["Cuotas"]);
+                    for (int i = 1; i <= cantCuotas; i++)
+                    {
+                        comboBoxCuotas.Items.Add(i.ToString());
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No se puede encontrar una tarjeta de crédito valida para el cliente seleccionado, haga un alta de tarjeta para ese cliente");
+                    this.textBoxNumero.Clear();
+                }
+            }
+        }
     }
 }
