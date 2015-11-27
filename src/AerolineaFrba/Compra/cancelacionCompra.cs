@@ -168,7 +168,7 @@ namespace AerolineaFrba.Compra
                 if (this.dataGridEnco.Rows.Count > 0)
                 {
                     SqlConnector.executeProcedure(SqlConnector.getSchema() + @".cancelarPaquete", funcionesComunes.generarListaParaProcedure("@idBoletoCompra","@fecha"),
-                        Int32.Parse(this.textBoxCodigoCompra.Text));
+                        Int32.Parse(this.textBoxCodigoCompra.Text),funcionesComunes.getFecha());
                     DataTable tablaPaq = SqlConnector.obtenerTablaSegunConsultaString(@"select p.ID as Id, p.CODIGO as Codigo, 
                      p.PRECIO as Precio, p.KG as Peso, bc.FECHA_COMPRA as 'Fecha de Compra' from " + SqlConnector.getSchema() + @".paquetes p, " + SqlConnector.getSchema() + @".boletos_de_compra bc, 
                     " + SqlConnector.getSchema() + @".vuelos v where p.BOLETO_COMPRA_ID = " + this.textBoxCodigoCompra.Text + @" and bc.ID = p.BOLETO_COMPRA_ID 
