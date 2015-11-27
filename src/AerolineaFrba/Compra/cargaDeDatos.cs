@@ -327,7 +327,9 @@ namespace AerolineaFrba.Compra
         {
             foreach (DataGridViewRow row in this.dataGridPasaje.Rows)
             {
-                if (this.textBoxIdCliente.Text.Equals(row.Cells[0].Value.ToString()))
+                if ((this.textBoxNombre.Text.Equals(row.Cells[1].Value.ToString())) && 
+                    (this.textBoxApellido.Text.Equals(row.Cells[2].Value.ToString())) && 
+                    (this.textBoxDniPas.Text.Equals(row.Cells[3].Value.ToString())))
                 {
                     return true;
                 }
