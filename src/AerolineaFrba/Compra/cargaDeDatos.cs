@@ -23,13 +23,16 @@ namespace AerolineaFrba.Compra
         string origen;
         string destino;
 
-        public cargaDeDatos(string fechaS,string fechaL,string origen,string destino)
+        public cargaDeDatos(string fechaS,string fechaL,string origen,string destino,string cantPas, string idVuelo, string kgEncom)
         {
             InitializeComponent();
             this.origen = origen;
             this.fechaSalida = fechaS;
             this.fechaLlegada = fechaL;
             this.destino = destino;
+            textBoxCantPasajes.Text = cantPas;
+            textBoxIDVuelo.Text = idVuelo;
+            textBoxKgEncomiendas.Text = kgEncom;
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -130,7 +133,7 @@ namespace AerolineaFrba.Compra
 
                             this.textBoxTelefono.Text = row["Teléfono"].ToString();
                             this.textBoxMail.Text = row["Mail"].ToString();
-                            this.timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+                            this.timePickerNacimiento.Text = ((DateTime)row["Fecha de Nacimiento"]).ToShortDateString();
                             this.textBoxDniPas.Enabled = false;
 
                             if (viajaEnOtroVuelo())
@@ -202,7 +205,7 @@ namespace AerolineaFrba.Compra
 
             this.textBoxTelefono.Text = row["Teléfono"].ToString();
             this.textBoxMail.Text = row["Mail"].ToString();
-            this.timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+            this.timePickerNacimiento.Text = ((DateTime)row["Fecha de Nacimiento"]).ToShortDateString();
             this.textBoxDniPas.Enabled = false;
         }
 
@@ -221,7 +224,7 @@ namespace AerolineaFrba.Compra
 
             this.textBoxTelefono.Text = row["Teléfono"].ToString();
             this.textBoxMail.Text = row["Mail"].ToString();
-            this.timePickerNacimiento.Value = (DateTime)row["Fecha de Nacimiento"];
+            this.timePickerNacimiento.Text = ((DateTime)row["Fecha de Nacimiento"]).ToShortDateString();
             this.textBoxDniPas.Enabled = false;
         }
 
@@ -236,12 +239,12 @@ namespace AerolineaFrba.Compra
             this.textBoxDniPas.Clear();
             this.textBoxIdCliente.Clear();
             this.textBoxDniPas.Enabled = true;
-            this.textBoxApellido.Clear();
-            this.textBoxDireccion.Clear();
-            this.textBoxMail.Clear();
-            this.textBoxNombre.Clear();
-            this.textBoxTelefono.Clear();
-            this.timePickerNacimiento.ResetText();
+            this.textBoxApellido.Text = "";
+            this.textBoxDireccion.Text = "";
+            this.textBoxMail.Text = "";
+            this.textBoxNombre.Text = "";
+            this.textBoxTelefono.Text = "";
+            this.timePickerNacimiento.Text = "";
         }
 
         private void settearUbicacion(object sender, EventArgs e)
@@ -283,7 +286,7 @@ namespace AerolineaFrba.Compra
                         this.dataGridPasaje.SelectedCells[7].Value = this.textBoxTelefono.Text;
                         this.dataGridPasaje.SelectedCells[8].Value = this.textBoxDireccion.Text;
                         this.dataGridPasaje.SelectedCells[9].Value = this.textBoxMail.Text;
-                        this.dataGridPasaje.SelectedCells[10].Value = this.timePickerNacimiento.Value.ToString();
+                        this.dataGridPasaje.SelectedCells[10].Value = this.timePickerNacimiento.Text;
                         this.dataGridPasaje.SelectedCells[11].Value = this.comboBoxNumeroButaca.SelectedValue;
                         MessageBox.Show("Cantidad de pasajes restantes " + (Int32.Parse(this.textBoxCantPasajes.Text) - this.dataGridPasaje.Rows.Count));
                         this.limpiarPasaje();
@@ -507,7 +510,7 @@ namespace AerolineaFrba.Compra
                 string direccion = this.textBoxDireccion.Text;
                 string telefono = this.textBoxTelefono.Text;
                 string mail = this.textBoxMail.Text;
-                DateTime fecha = this.timePickerNacimiento.Value;
+                DateTime fecha = Convert.ToDateTime(timePickerNacimiento.Text);
                 Form modificarCliente = new Registro_de_Usuario.altaModificacionDeCliente(3, "Modificación de Cliente", id, nombre, apellido, dni, direccion, telefono, mail, fecha);
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(modificarCliente);
             }

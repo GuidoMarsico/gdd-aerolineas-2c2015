@@ -86,7 +86,7 @@
             this.botonInvitado.ForeColor = System.Drawing.Color.DarkRed;
             this.botonInvitado.Location = new System.Drawing.Point(175, 213);
             this.botonInvitado.Name = "botonInvitado";
-            this.botonInvitado.Size = new System.Drawing.Size(196, 64);
+            this.botonInvitado.Size = new System.Drawing.Size(195, 64);
             this.botonInvitado.TabIndex = 5;
             this.botonInvitado.Text = "Acceso Clientes";
             this.botonInvitado.UseVisualStyleBackColor = false;
@@ -154,7 +154,7 @@
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(0, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(513, 44);
+            this.label3.Size = new System.Drawing.Size(512, 44);
             this.label3.TabIndex = 7;
             this.label3.Text = "Aerolíneas FRBA";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -163,7 +163,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(504, 280);
+            this.ClientSize = new System.Drawing.Size(503, 280);
             this.ControlBox = false;
             this.Controls.Add(this.label3);
             this.Controls.Add(this.groupBox1);

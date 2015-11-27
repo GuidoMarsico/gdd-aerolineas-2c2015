@@ -50,9 +50,9 @@
             this.textBoxIdCliente = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.textBoxImporte = new System.Windows.Forms.Label();
-            this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.botonConfirmar = new System.Windows.Forms.Button();
+            this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
             this.botonVolver = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
@@ -70,7 +70,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(4, 42);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(638, 218);
+            this.groupBox1.Size = new System.Drawing.Size(707, 218);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             // 
@@ -81,9 +81,9 @@
             this.botonBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.botonBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.botonBuscar.ForeColor = System.Drawing.Color.White;
-            this.botonBuscar.Location = new System.Drawing.Point(38, 95);
+            this.botonBuscar.Location = new System.Drawing.Point(77, 90);
             this.botonBuscar.Name = "botonBuscar";
-            this.botonBuscar.Size = new System.Drawing.Size(174, 27);
+            this.botonBuscar.Size = new System.Drawing.Size(126, 27);
             this.botonBuscar.TabIndex = 25;
             this.botonBuscar.Text = "Buscar";
             this.botonBuscar.UseVisualStyleBackColor = false;
@@ -107,7 +107,7 @@
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(275, 11);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(343, 192);
+            this.groupBox2.Size = new System.Drawing.Size(426, 192);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
             // 
@@ -118,9 +118,9 @@
             this.buttonModificar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.buttonModificar.ForeColor = System.Drawing.Color.White;
-            this.buttonModificar.Location = new System.Drawing.Point(46, 160);
+            this.buttonModificar.Location = new System.Drawing.Point(285, 160);
             this.buttonModificar.Name = "buttonModificar";
-            this.buttonModificar.Size = new System.Drawing.Size(255, 26);
+            this.buttonModificar.Size = new System.Drawing.Size(135, 26);
             this.buttonModificar.TabIndex = 46;
             this.buttonModificar.Text = "Modificar Datos";
             this.buttonModificar.UseVisualStyleBackColor = false;
@@ -131,73 +131,67 @@
             this.timePickerNacimiento.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.timePickerNacimiento.AutoSize = true;
             this.timePickerNacimiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.timePickerNacimiento.Location = new System.Drawing.Point(212, 118);
+            this.timePickerNacimiento.Location = new System.Drawing.Point(290, 117);
             this.timePickerNacimiento.Name = "timePickerNacimiento";
-            this.timePickerNacimiento.Size = new System.Drawing.Size(32, 18);
+            this.timePickerNacimiento.Size = new System.Drawing.Size(0, 18);
             this.timePickerNacimiento.TabIndex = 47;
-            this.timePickerNacimiento.Text = "xxx";
             // 
             // textBoxTelefono
             // 
             this.textBoxTelefono.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBoxTelefono.AutoSize = true;
             this.textBoxTelefono.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTelefono.Location = new System.Drawing.Point(210, 73);
+            this.textBoxTelefono.Location = new System.Drawing.Point(290, 69);
             this.textBoxTelefono.Name = "textBoxTelefono";
-            this.textBoxTelefono.Size = new System.Drawing.Size(32, 18);
+            this.textBoxTelefono.Size = new System.Drawing.Size(0, 18);
             this.textBoxTelefono.TabIndex = 46;
-            this.textBoxTelefono.Text = "xxx";
             // 
             // textBoxMail
             // 
             this.textBoxMail.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBoxMail.AutoSize = true;
             this.textBoxMail.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMail.Location = new System.Drawing.Point(208, 29);
+            this.textBoxMail.Location = new System.Drawing.Point(290, 24);
             this.textBoxMail.Name = "textBoxMail";
-            this.textBoxMail.Size = new System.Drawing.Size(32, 18);
+            this.textBoxMail.Size = new System.Drawing.Size(0, 18);
             this.textBoxMail.TabIndex = 45;
-            this.textBoxMail.Text = "xxx";
             // 
             // textBoxDireccion
             // 
             this.textBoxDireccion.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBoxDireccion.AutoSize = true;
             this.textBoxDireccion.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDireccion.Location = new System.Drawing.Point(43, 118);
+            this.textBoxDireccion.Location = new System.Drawing.Point(105, 117);
             this.textBoxDireccion.Name = "textBoxDireccion";
-            this.textBoxDireccion.Size = new System.Drawing.Size(32, 18);
+            this.textBoxDireccion.Size = new System.Drawing.Size(0, 18);
             this.textBoxDireccion.TabIndex = 44;
-            this.textBoxDireccion.Text = "xxx";
             // 
             // textBoxNombre
             // 
             this.textBoxNombre.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBoxNombre.AutoSize = true;
             this.textBoxNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxNombre.Location = new System.Drawing.Point(43, 73);
+            this.textBoxNombre.Location = new System.Drawing.Point(105, 69);
             this.textBoxNombre.Name = "textBoxNombre";
-            this.textBoxNombre.Size = new System.Drawing.Size(32, 18);
+            this.textBoxNombre.Size = new System.Drawing.Size(0, 18);
             this.textBoxNombre.TabIndex = 43;
-            this.textBoxNombre.Text = "xxx";
             // 
             // textBoxApellido
             // 
             this.textBoxApellido.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBoxApellido.AutoSize = true;
             this.textBoxApellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxApellido.Location = new System.Drawing.Point(43, 29);
+            this.textBoxApellido.Location = new System.Drawing.Point(105, 24);
             this.textBoxApellido.Name = "textBoxApellido";
-            this.textBoxApellido.Size = new System.Drawing.Size(32, 18);
+            this.textBoxApellido.Size = new System.Drawing.Size(0, 18);
             this.textBoxApellido.TabIndex = 42;
-            this.textBoxApellido.Text = "xxx";
             // 
             // label7
             // 
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(208, 105);
+            this.label7.Location = new System.Drawing.Point(199, 121);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(93, 13);
             this.label7.TabIndex = 41;
@@ -208,7 +202,7 @@
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(208, 16);
+            this.label6.Location = new System.Drawing.Point(199, 29);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(26, 13);
             this.label6.TabIndex = 39;
@@ -219,7 +213,7 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(208, 60);
+            this.label5.Location = new System.Drawing.Point(199, 74);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(49, 13);
             this.label5.TabIndex = 37;
@@ -230,7 +224,7 @@
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(43, 105);
+            this.label4.Location = new System.Drawing.Point(47, 121);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 13);
             this.label4.TabIndex = 35;
@@ -241,7 +235,7 @@
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(43, 60);
+            this.label3.Location = new System.Drawing.Point(55, 73);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 13);
             this.label3.TabIndex = 33;
@@ -252,7 +246,7 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(43, 16);
+            this.label2.Location = new System.Drawing.Point(55, 29);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 31;
@@ -276,7 +270,7 @@
             this.textBoxDni.Location = new System.Drawing.Point(77, 58);
             this.textBoxDni.MaxLength = 8;
             this.textBoxDni.Name = "textBoxDni";
-            this.textBoxDni.Size = new System.Drawing.Size(135, 26);
+            this.textBoxDni.Size = new System.Drawing.Size(126, 26);
             this.textBoxDni.TabIndex = 29;
             // 
             // botonLimpiar
@@ -286,9 +280,9 @@
             this.botonLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.botonLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.botonLimpiar.ForeColor = System.Drawing.Color.White;
-            this.botonLimpiar.Location = new System.Drawing.Point(38, 128);
+            this.botonLimpiar.Location = new System.Drawing.Point(77, 120);
             this.botonLimpiar.Name = "botonLimpiar";
-            this.botonLimpiar.Size = new System.Drawing.Size(174, 26);
+            this.botonLimpiar.Size = new System.Drawing.Size(126, 26);
             this.botonLimpiar.TabIndex = 45;
             this.botonLimpiar.Text = "Limpiar";
             this.botonLimpiar.UseVisualStyleBackColor = false;
@@ -299,7 +293,7 @@
             this.textBoxIdCliente.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBoxIdCliente.BackColor = System.Drawing.Color.White;
             this.textBoxIdCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIdCliente.Location = new System.Drawing.Point(505, 393);
+            this.textBoxIdCliente.Location = new System.Drawing.Point(104, 388);
             this.textBoxIdCliente.Name = "textBoxIdCliente";
             this.textBoxIdCliente.ReadOnly = true;
             this.textBoxIdCliente.Size = new System.Drawing.Size(54, 20);
@@ -314,7 +308,7 @@
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(4, 266);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(638, 110);
+            this.groupBox3.Size = new System.Drawing.Size(707, 110);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             // 
@@ -324,21 +318,10 @@
             this.textBoxImporte.AutoSize = true;
             this.textBoxImporte.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxImporte.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.textBoxImporte.Location = new System.Drawing.Point(356, 18);
+            this.textBoxImporte.Location = new System.Drawing.Point(408, 18);
             this.textBoxImporte.Name = "textBoxImporte";
-            this.textBoxImporte.Size = new System.Drawing.Size(36, 25);
+            this.textBoxImporte.Size = new System.Drawing.Size(0, 25);
             this.textBoxImporte.TabIndex = 31;
-            this.textBoxImporte.Text = "xx";
-            // 
-            // textBoxIDVuelo
-            // 
-            this.textBoxIDVuelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIDVuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIDVuelo.Location = new System.Drawing.Point(568, 389);
-            this.textBoxIDVuelo.Name = "textBoxIDVuelo";
-            this.textBoxIDVuelo.Size = new System.Drawing.Size(54, 26);
-            this.textBoxIDVuelo.TabIndex = 81;
-            this.textBoxIDVuelo.Visible = false;
             // 
             // label14
             // 
@@ -346,7 +329,7 @@
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label14.Location = new System.Drawing.Point(224, 18);
+            this.label14.Location = new System.Drawing.Point(276, 18);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(126, 25);
             this.label14.TabIndex = 30;
@@ -359,13 +342,23 @@
             this.botonConfirmar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.botonConfirmar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.botonConfirmar.ForeColor = System.Drawing.Color.White;
-            this.botonConfirmar.Location = new System.Drawing.Point(240, 62);
+            this.botonConfirmar.Location = new System.Drawing.Point(252, 62);
             this.botonConfirmar.Name = "botonConfirmar";
-            this.botonConfirmar.Size = new System.Drawing.Size(158, 42);
+            this.botonConfirmar.Size = new System.Drawing.Size(227, 42);
             this.botonConfirmar.TabIndex = 31;
             this.botonConfirmar.Text = "Confirmar";
             this.botonConfirmar.UseVisualStyleBackColor = false;
             this.botonConfirmar.Click += new System.EventHandler(this.botonConfirmar_Click);
+            // 
+            // textBoxIDVuelo
+            // 
+            this.textBoxIDVuelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIDVuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIDVuelo.Location = new System.Drawing.Point(33, 388);
+            this.textBoxIDVuelo.Name = "textBoxIDVuelo";
+            this.textBoxIDVuelo.Size = new System.Drawing.Size(30, 26);
+            this.textBoxIDVuelo.TabIndex = 81;
+            this.textBoxIDVuelo.Visible = false;
             // 
             // botonVolver
             // 
@@ -373,9 +366,9 @@
             this.botonVolver.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.botonVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.botonVolver.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.botonVolver.Location = new System.Drawing.Point(245, 382);
+            this.botonVolver.Location = new System.Drawing.Point(256, 381);
             this.botonVolver.Name = "botonVolver";
-            this.botonVolver.Size = new System.Drawing.Size(158, 42);
+            this.botonVolver.Size = new System.Drawing.Size(227, 42);
             this.botonVolver.TabIndex = 32;
             this.botonVolver.Text = "Volver";
             this.botonVolver.UseVisualStyleBackColor = true;
@@ -390,7 +383,7 @@
             this.label16.ForeColor = System.Drawing.Color.White;
             this.label16.Location = new System.Drawing.Point(-2, -5);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(662, 44);
+            this.label16.Size = new System.Drawing.Size(731, 44);
             this.label16.TabIndex = 103;
             this.label16.Text = "Pago en Efectivo";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -399,7 +392,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(654, 425);
+            this.ClientSize = new System.Drawing.Size(723, 425);
             this.ControlBox = false;
             this.Controls.Add(this.label16);
             this.Controls.Add(this.textBoxIDVuelo);
