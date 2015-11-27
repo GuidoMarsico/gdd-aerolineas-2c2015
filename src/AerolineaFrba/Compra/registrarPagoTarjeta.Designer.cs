@@ -29,22 +29,29 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxTelefono = new System.Windows.Forms.Label();
+            this.textBoxDireccion = new System.Windows.Forms.Label();
+            this.textBoxMail = new System.Windows.Forms.Label();
+            this.timePickerNacimiento = new System.Windows.Forms.Label();
+            this.textBoxNombre = new System.Windows.Forms.Label();
+            this.textBoxApellido = new System.Windows.Forms.Label();
             this.buttonModificar = new System.Windows.Forms.Button();
             this.botonLimpiar = new System.Windows.Forms.Button();
-            this.botonGuardar = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
+            this.botonGuardar = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxDni = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.textBoxIdCliente = new System.Windows.Forms.TextBox();
             this.botonLimpiarTitular = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
             this.botonNuevaTarj = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.comboBoxCuotas = new System.Windows.Forms.ComboBox();
@@ -55,19 +62,14 @@
             this.timePickerVencimiento = new System.Windows.Forms.DateTimePicker();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBoxNumero = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.botonVolver = new System.Windows.Forms.Button();
             this.botonConfirmar = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
             this.textBoxIDVuelo = new System.Windows.Forms.TextBox();
-            this.textBoxApellido = new System.Windows.Forms.Label();
-            this.textBoxNombre = new System.Windows.Forms.Label();
-            this.timePickerNacimiento = new System.Windows.Forms.Label();
-            this.textBoxMail = new System.Windows.Forms.Label();
-            this.textBoxDireccion = new System.Windows.Forms.Label();
-            this.textBoxTelefono = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
+            this.ingresarTarjeta = new System.Windows.Forms.Button();
+            this.textBoxNumero = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
@@ -97,6 +99,66 @@
             this.groupBox1.Size = new System.Drawing.Size(772, 157);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
+            // 
+            // textBoxTelefono
+            // 
+            this.textBoxTelefono.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.textBoxTelefono.AutoSize = true;
+            this.textBoxTelefono.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxTelefono.Location = new System.Drawing.Point(606, 99);
+            this.textBoxTelefono.Name = "textBoxTelefono";
+            this.textBoxTelefono.Size = new System.Drawing.Size(0, 16);
+            this.textBoxTelefono.TabIndex = 65;
+            // 
+            // textBoxDireccion
+            // 
+            this.textBoxDireccion.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.textBoxDireccion.AutoSize = true;
+            this.textBoxDireccion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDireccion.Location = new System.Drawing.Point(606, 62);
+            this.textBoxDireccion.Name = "textBoxDireccion";
+            this.textBoxDireccion.Size = new System.Drawing.Size(0, 16);
+            this.textBoxDireccion.TabIndex = 64;
+            // 
+            // textBoxMail
+            // 
+            this.textBoxMail.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.textBoxMail.AutoSize = true;
+            this.textBoxMail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxMail.Location = new System.Drawing.Point(606, 26);
+            this.textBoxMail.Name = "textBoxMail";
+            this.textBoxMail.Size = new System.Drawing.Size(0, 16);
+            this.textBoxMail.TabIndex = 63;
+            // 
+            // timePickerNacimiento
+            // 
+            this.timePickerNacimiento.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.timePickerNacimiento.AutoSize = true;
+            this.timePickerNacimiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timePickerNacimiento.Location = new System.Drawing.Point(366, 96);
+            this.timePickerNacimiento.Name = "timePickerNacimiento";
+            this.timePickerNacimiento.Size = new System.Drawing.Size(0, 16);
+            this.timePickerNacimiento.TabIndex = 62;
+            // 
+            // textBoxNombre
+            // 
+            this.textBoxNombre.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.textBoxNombre.AutoSize = true;
+            this.textBoxNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxNombre.Location = new System.Drawing.Point(366, 64);
+            this.textBoxNombre.Name = "textBoxNombre";
+            this.textBoxNombre.Size = new System.Drawing.Size(0, 16);
+            this.textBoxNombre.TabIndex = 61;
+            // 
+            // textBoxApellido
+            // 
+            this.textBoxApellido.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.textBoxApellido.AutoSize = true;
+            this.textBoxApellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxApellido.Location = new System.Drawing.Point(366, 26);
+            this.textBoxApellido.Name = "textBoxApellido";
+            this.textBoxApellido.Size = new System.Drawing.Size(0, 16);
+            this.textBoxApellido.TabIndex = 60;
             // 
             // buttonModificar
             // 
@@ -128,6 +190,17 @@
             this.botonLimpiar.UseVisualStyleBackColor = false;
             this.botonLimpiar.Click += new System.EventHandler(this.botonLimpiar_Click);
             // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(241, 99);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(93, 13);
+            this.label7.TabIndex = 59;
+            this.label7.Text = "Fecha Nacimiento";
+            // 
             // botonGuardar
             // 
             this.botonGuardar.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -142,17 +215,6 @@
             this.botonGuardar.Text = "Buscar";
             this.botonGuardar.UseVisualStyleBackColor = false;
             this.botonGuardar.Click += new System.EventHandler(this.botonGuardar_Click);
-            // 
-            // label7
-            // 
-            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(241, 99);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(93, 13);
-            this.label7.TabIndex = 59;
-            this.label7.Text = "Fecha Nacimiento";
             // 
             // label6
             // 
@@ -176,39 +238,6 @@
             this.label5.TabIndex = 57;
             this.label5.Text = "Teléfono";
             // 
-            // label4
-            // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(516, 64);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 13);
-            this.label4.TabIndex = 55;
-            this.label4.Text = "Dirección";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(290, 66);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 13);
-            this.label3.TabIndex = 52;
-            this.label3.Text = "Nombre";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(290, 28);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 13);
-            this.label2.TabIndex = 49;
-            this.label2.Text = "Apellido";
-            // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -230,6 +259,39 @@
             this.textBoxDni.Size = new System.Drawing.Size(114, 26);
             this.textBoxDni.TabIndex = 29;
             this.textBoxDni.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxDni_KeyPress);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(516, 64);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(52, 13);
+            this.label4.TabIndex = 55;
+            this.label4.Text = "Dirección";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(290, 28);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.TabIndex = 49;
+            this.label2.Text = "Apellido";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(290, 66);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 13);
+            this.label3.TabIndex = 52;
+            this.label3.Text = "Nombre";
             // 
             // textBoxIdCliente
             // 
@@ -260,6 +322,9 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.textBoxNumero);
+            this.groupBox3.Controls.Add(this.ingresarTarjeta);
             this.groupBox3.Controls.Add(this.label16);
             this.groupBox3.Controls.Add(this.botonNuevaTarj);
             this.groupBox3.Controls.Add(this.label14);
@@ -274,7 +339,6 @@
             this.groupBox3.Controls.Add(this.timePickerVencimiento);
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Controls.Add(this.textBoxNumero);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(12, 208);
@@ -310,6 +374,17 @@
             this.botonNuevaTarj.Text = "Nueva Tarjeta";
             this.botonNuevaTarj.UseVisualStyleBackColor = false;
             this.botonNuevaTarj.Click += new System.EventHandler(this.botonNuevaTarj_Click);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label14.Location = new System.Drawing.Point(8, 140);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(138, 16);
+            this.label14.TabIndex = 79;
+            this.label14.Text = "(*) Ingreso Obligatorio";
             // 
             // label15
             // 
@@ -424,19 +499,6 @@
             this.label8.TabIndex = 55;
             this.label8.Text = "Número";
             // 
-            // textBoxNumero
-            // 
-            this.textBoxNumero.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBoxNumero.BackColor = System.Drawing.Color.White;
-            this.textBoxNumero.Enabled = false;
-            this.textBoxNumero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxNumero.Location = new System.Drawing.Point(85, 34);
-            this.textBoxNumero.MaxLength = 16;
-            this.textBoxNumero.Name = "textBoxNumero";
-            this.textBoxNumero.ReadOnly = true;
-            this.textBoxNumero.Size = new System.Drawing.Size(158, 26);
-            this.textBoxNumero.TabIndex = 54;
-            // 
             // label10
             // 
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -478,17 +540,6 @@
             this.botonConfirmar.UseVisualStyleBackColor = false;
             this.botonConfirmar.Click += new System.EventHandler(this.botonConfirmar_Click);
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label14.Location = new System.Drawing.Point(8, 140);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(138, 16);
-            this.label14.TabIndex = 79;
-            this.label14.Text = "(*) Ingreso Obligatorio";
-            // 
             // textBoxIDVuelo
             // 
             this.textBoxIDVuelo.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -498,66 +549,6 @@
             this.textBoxIDVuelo.Size = new System.Drawing.Size(32, 26);
             this.textBoxIDVuelo.TabIndex = 81;
             this.textBoxIDVuelo.Visible = false;
-            // 
-            // textBoxApellido
-            // 
-            this.textBoxApellido.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBoxApellido.AutoSize = true;
-            this.textBoxApellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxApellido.Location = new System.Drawing.Point(366, 26);
-            this.textBoxApellido.Name = "textBoxApellido";
-            this.textBoxApellido.Size = new System.Drawing.Size(0, 16);
-            this.textBoxApellido.TabIndex = 60;
-            // 
-            // textBoxNombre
-            // 
-            this.textBoxNombre.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBoxNombre.AutoSize = true;
-            this.textBoxNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxNombre.Location = new System.Drawing.Point(366, 64);
-            this.textBoxNombre.Name = "textBoxNombre";
-            this.textBoxNombre.Size = new System.Drawing.Size(0, 16);
-            this.textBoxNombre.TabIndex = 61;
-            // 
-            // timePickerNacimiento
-            // 
-            this.timePickerNacimiento.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.timePickerNacimiento.AutoSize = true;
-            this.timePickerNacimiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.timePickerNacimiento.Location = new System.Drawing.Point(366, 96);
-            this.timePickerNacimiento.Name = "timePickerNacimiento";
-            this.timePickerNacimiento.Size = new System.Drawing.Size(0, 16);
-            this.timePickerNacimiento.TabIndex = 62;
-            // 
-            // textBoxMail
-            // 
-            this.textBoxMail.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBoxMail.AutoSize = true;
-            this.textBoxMail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMail.Location = new System.Drawing.Point(606, 26);
-            this.textBoxMail.Name = "textBoxMail";
-            this.textBoxMail.Size = new System.Drawing.Size(0, 16);
-            this.textBoxMail.TabIndex = 63;
-            // 
-            // textBoxDireccion
-            // 
-            this.textBoxDireccion.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBoxDireccion.AutoSize = true;
-            this.textBoxDireccion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDireccion.Location = new System.Drawing.Point(606, 62);
-            this.textBoxDireccion.Name = "textBoxDireccion";
-            this.textBoxDireccion.Size = new System.Drawing.Size(0, 16);
-            this.textBoxDireccion.TabIndex = 64;
-            // 
-            // textBoxTelefono
-            // 
-            this.textBoxTelefono.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBoxTelefono.AutoSize = true;
-            this.textBoxTelefono.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTelefono.Location = new System.Drawing.Point(606, 99);
-            this.textBoxTelefono.Name = "textBoxTelefono";
-            this.textBoxTelefono.Size = new System.Drawing.Size(0, 16);
-            this.textBoxTelefono.TabIndex = 65;
             // 
             // label22
             // 
@@ -572,6 +563,44 @@
             this.label22.TabIndex = 103;
             this.label22.Text = "Pagar con Tarjeta de Crédito";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ingresarTarjeta
+            // 
+            this.ingresarTarjeta.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.ingresarTarjeta.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ingresarTarjeta.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ingresarTarjeta.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ingresarTarjeta.ForeColor = System.Drawing.Color.White;
+            this.ingresarTarjeta.Location = new System.Drawing.Point(385, 119);
+            this.ingresarTarjeta.Name = "ingresarTarjeta";
+            this.ingresarTarjeta.Size = new System.Drawing.Size(124, 26);
+            this.ingresarTarjeta.TabIndex = 80;
+            this.ingresarTarjeta.Text = "Ingresar Tarjeta";
+            this.ingresarTarjeta.UseVisualStyleBackColor = false;
+            this.ingresarTarjeta.Click += new System.EventHandler(this.ingresarTarjeta_Click);
+            // 
+            // textBoxNumero
+            // 
+            this.textBoxNumero.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.textBoxNumero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxNumero.Location = new System.Drawing.Point(85, 36);
+            this.textBoxNumero.MaxLength = 16;
+            this.textBoxNumero.Name = "textBoxNumero";
+            this.textBoxNumero.Size = new System.Drawing.Size(158, 26);
+            this.textBoxNumero.TabIndex = 81;
+            this.textBoxNumero.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCodigo_KeyPress);
+            // 
+            // label12
+            // 
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label12.Location = new System.Drawing.Point(243, 34);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(15, 20);
+            this.label12.TabIndex = 82;
+            this.label12.Text = "*";
             // 
             // registrarPagoTarjeta
             // 
@@ -615,7 +644,6 @@
         private System.Windows.Forms.DateTimePicker timePickerVencimiento;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBoxNumero;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBoxIdCliente;
         private System.Windows.Forms.Label label7;
@@ -640,5 +668,8 @@
         private System.Windows.Forms.Label textBoxNombre;
         private System.Windows.Forms.Label textBoxApellido;
         private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button ingresarTarjeta;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textBoxNumero;
     }
 }
