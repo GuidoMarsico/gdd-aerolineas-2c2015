@@ -1510,22 +1510,24 @@ and c.DNI = @dni
 group by bc.FECHA_COMPRA
 
 insert into #tablaMillas 
-select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, bc.millas as Millas
+select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, floor(sum(p.PRECIO)/10) as Millas
 from LAS_PELOTAS.clientes c  
 join LAS_PELOTAS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join LAS_PELOTAS.pasajes p on bc.ID = p.BOLETO_COMPRA_ID
 where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-and c.DNI = @dni
+and c.DNI = @dni and @dni not in (select c2.DNI from LAS_PELOTAS.clientes c2 where c2.ID = p.CLIENTE_ID)
+group by bc.FECHA_COMPRA
 
 insert into #tablaMillas 
-select bc.FECHA_COMPRA as Fecha, 'Paquete' as Motivo, bc.millas as Millas
+select bc.FECHA_COMPRA as Fecha, 'Paquete' as Motivo, floor(sum(p.PRECIO)/10) as Millas
 from LAS_PELOTAS.clientes c  
 join LAS_PELOTAS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join LAS_PELOTAS.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
 where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1,  CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 and c.DNI = @dni
+group by bc.FECHA_COMPRA
 
 insert into #tablaMillas 
 select cj.FECHA_CANJE as Fecha, 'Canje por '+CONVERT(varchar(10), cj.CANTIDAD)+' unidades de '+LOWER(p.NOMBRE) as Motivo, 
