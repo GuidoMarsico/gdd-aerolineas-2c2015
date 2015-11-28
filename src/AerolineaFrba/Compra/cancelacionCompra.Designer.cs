@@ -124,7 +124,6 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.textBoxMail);
-            this.groupBox1.Controls.Add(this.textBoxIdCliente);
             this.groupBox1.Controls.Add(this.textBoxNacimiento);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.textBoxTelefono);
@@ -163,7 +162,7 @@
             // 
             this.textBoxIdCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxIdCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIdCliente.Location = new System.Drawing.Point(181, 15);
+            this.textBoxIdCliente.Location = new System.Drawing.Point(161, 490);
             this.textBoxIdCliente.Name = "textBoxIdCliente";
             this.textBoxIdCliente.Size = new System.Drawing.Size(33, 26);
             this.textBoxIdCliente.TabIndex = 82;
@@ -473,6 +472,7 @@
             this.ClientSize = new System.Drawing.Size(824, 535);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.textBoxIdCliente);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.botonVolver);
@@ -486,6 +486,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

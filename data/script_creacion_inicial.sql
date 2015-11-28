@@ -1420,6 +1420,7 @@ SET FECHA_LLEGADA = convert(datetime, @fechaLlegada,109)
 WHERE ID = @idVuelo
 UPDATE LAS_PELOTAS.boletos_de_compra
 SET MILLAS = FLOOR(LAS_PELOTAS.precioTotal(ID, @idVuelo)/10)
+WHERE ID in (select p.BOLETO_COMPRA_ID from LAS_PELOTAS.pasajes p where p.VUELO_ID = @idVuelo) OR ID in (select p.BOLETO_COMPRA_ID from LAS_PELOTAS.paquetes p where p.VUELO_ID = @idVuelo)
 END
 GO
 
