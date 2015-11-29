@@ -1242,7 +1242,7 @@ WHERE BUTACA_ID = (SELECT BUTACA_ID FROM LAS_PELOTAS.pasajes WHERE ID = @idPasaj
 END
 GO
 
-/*CANCELACION DE TODOS LOS PAQUETES DE UN BOLETO DE COMPRA*/
+
 CREATE PROCEDURE LAS_PELOTAS.cancelarPaquete(@idBoletoCompra int, @fecha varchar(50))
 AS BEGIN
 INSERT INTO LAS_PELOTAS.cancelaciones (FECHA_DEVOLUCION, MOTIVO)
@@ -1343,34 +1343,64 @@ GO
 --TOP 5 de los clientes con mas puntos acumulados a la fecha
 CREATE PROCEDURE LAS_PELOTAS.top5ClientesMillas(@fechaFrom varchar(50), @fechaTo varchar(50), @fecha varchar(50))
 AS BEGIN
+
 create table #tablaMillas(
 Cliente varchar(255),
-Millas int
+Millas int,
+BC_ID int
 )
+
+
 insert into #tablaMillas 
-select c.NOMBRE+' '+c.APELLIDO, floor(sum(p.PRECIO)/10)
+select c.NOMBRE+' '+c.APELLIDO, floor(sum(p.PRECIO)/10), bc.ID as BC_ID
+from LAS_PELOTAS.clientes c
+join LAS_PELOTAS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID 
+join LAS_PELOTAS.pasajes p on bc.ID=p.BOLETO_COMPRA_ID
+where P.CANCELACION_ID IS NULL AND p.INVALIDO=0 AND bc.INVALIDO=0 AND
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
+and bc.MILLAS != 0
+group by c.nombre, c.APELLIDO, bc.ID
+
+
+insert into #tablaMillas 
+select c.NOMBRE+' '+c.APELLIDO, floor(sum(p.PRECIO)/10), bc.ID as BC_ID
 from LAS_PELOTAS.clientes c
 join LAS_PELOTAS.pasajes p on c.ID=p.CLIENTE_ID
 join LAS_PELOTAS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
-where P.CANCELACION_ID IS NULL AND
-p.INVALIDO=0 AND
-bc.INVALIDO=0 AND
+where P.CANCELACION_ID IS NULL AND p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-group by c.nombre, c.APELLIDO
-insert into #tablaMillas 
-select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
-from LAS_PELOTAS.Clientes c  
-join LAS_PELOTAS.boletos_de_compra bc on bc.Cliente_ID=c.ID
-join LAS_PELOTAS.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
-where P.CANCELACION_ID IS NULL AND
-p.INVALIDO=0 AND
-bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-group by c.nombre, c.APELLIDO
+and bc.ID not in (select BC_ID from #tablaMillas t where t.Cliente = c.NOMBRE+' '+c.APELLIDO)
+and bc.MILLAS != 0
+group by c.nombre, c.APELLIDO, bc.ID
 
-select top 5 Cliente,Millas from #tablaMillas
+
+insert into #tablaMillas 
+select c.NOMBRE+' '+c.APELLIDO, floor(sum(p.PRECIO)/10), bc.ID as BC_ID
+from LAS_PELOTAS.Clientes c  
+join LAS_PELOTAS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
+join LAS_PELOTAS.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
+where P.CANCELACION_ID IS NULL AND p.INVALIDO=0 AND bc.INVALIDO=0 AND
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
+and bc.MILLAS != 0
+group by c.nombre, c.APELLIDO, bc.ID
+
+alter table #tablaMillas
+drop column BC_ID
+
+create table #temp(
+Cliente varchar(255),
+Millas int
+)
+
+insert into #temp
+select Cliente, sum(Millas) from #tablaMillas
+group by Cliente
+
+select top 5 Cliente, Millas from #temp
 order by 2 desc
+
 drop table #tablaMillas
+drop table #temp
 END
 GO
 
@@ -1494,51 +1524,62 @@ GO
 
 CREATE PROCEDURE LAS_PELOTAS.consultarMillas (@dni numeric(18,0), @fecha varchar(50))
 AS BEGIN
+
 create table #tablaMillas(
 Fecha datetime,
 Motivo varchar(255),
-Millas int
+Millas int,
+BC_ID int
 )
-insert into #tablaMillas 
-select bc.FECHA_COMPRA as Fecha, 'Pasajero' as Motivo, floor(sum(p.PRECIO)/10) as Millas
-from LAS_PELOTAS.clientes c
-join LAS_PELOTAS.pasajes p on c.ID=p.CLIENTE_ID 
-join LAS_PELOTAS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
-where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1,  CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-and c.DNI = @dni
-group by bc.FECHA_COMPRA
 
 insert into #tablaMillas 
-select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, floor(sum(p.PRECIO)/10) as Millas
+select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, floor(sum(p.PRECIO)/10) as Millas, bc.ID as BC_ID
 from LAS_PELOTAS.clientes c  
 join LAS_PELOTAS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join LAS_PELOTAS.pasajes p on bc.ID = p.BOLETO_COMPRA_ID
 where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-and c.DNI = @dni and @dni not in (select c2.DNI from LAS_PELOTAS.clientes c2 where c2.ID = p.CLIENTE_ID)
-group by bc.FECHA_COMPRA
+and c.DNI = @dni and bc.MILLAS != 0
+group by bc.FECHA_COMPRA, bc.ID
+
 
 insert into #tablaMillas 
-select bc.FECHA_COMPRA as Fecha, 'Paquete' as Motivo, floor(sum(p.PRECIO)/10) as Millas
+select bc.FECHA_COMPRA as Fecha, 'Pasajero' as Motivo, floor(sum(p.PRECIO)/10) as Millas, bc.ID as BC_ID
+from LAS_PELOTAS.clientes c
+join LAS_PELOTAS.pasajes p on c.ID=p.CLIENTE_ID
+join LAS_PELOTAS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
+where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
+and c.DNI = @dni and bc.ID not in (select BC_ID from #tablaMillas) and bc.MILLAS != 0
+group by bc.FECHA_COMPRA, bc.ID
+
+
+insert into #tablaMillas 
+select bc.FECHA_COMPRA as Fecha, 'Paquete' as Motivo, floor(sum(p.PRECIO)/10) as Millas, bc.ID as BC_ID
 from LAS_PELOTAS.clientes c  
 join LAS_PELOTAS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join LAS_PELOTAS.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
 where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1,  CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-and c.DNI = @dni
-group by bc.FECHA_COMPRA
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
+and c.DNI = @dni and bc.MILLAS != 0
+group by bc.FECHA_COMPRA, bc.ID
+
 
 insert into #tablaMillas 
 select cj.FECHA_CANJE as Fecha, 'Canje por '+CONVERT(varchar(10), cj.CANTIDAD)+' unidades de '+LOWER(p.NOMBRE) as Motivo, 
--p.MILLAS_REQUERIDAS*cj.CANTIDAD as Millas
+-p.MILLAS_REQUERIDAS*cj.CANTIDAD as Millas, 0 as BC_ID
 from LAS_PELOTAS.clientes c
 join LAS_PELOTAS.canjes cj on cj.CLIENTE_ID=c.ID
 join LAS_PELOTAS.productos p on p.ID = cj.PRODUCTO_ID
-where cj.FECHA_CANJE between DATEADD(YYYY, -1,  CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
+where cj.FECHA_CANJE between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 and c.DNI = @dni
 
+alter table #tablaMillas
+drop column BC_ID
+
+
 select * from #tablaMillas
+
 drop table #tablaMillas
 END
 GO
