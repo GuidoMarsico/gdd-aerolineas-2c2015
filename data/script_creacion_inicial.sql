@@ -1445,49 +1445,61 @@ AS BEGIN
 /*creo tabla temporal, para poder insertar de ambas queries*/
 create table #tablaMillas(
 Cliente varchar(255),
-Millas int
+Millas int,
+BC_ID int
 )
-
-/*inserto en la tabla temporal los pasajes del cliente*/
-insert into #tablaMillas 
-select c.NOMBRE+' '+c.APELLIDO, floor(sum(p.PRECIO)/10)
-from DIVIDIDOS.clientes c
-join DIVIDIDOS.pasajes p on c.ID=p.CLIENTE_ID
-join DIVIDIDOS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
-where P.CANCELACION_ID IS NULL AND
-p.INVALIDO=0 AND
-bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-group by c.nombre, c.APELLIDO
 
 /*inserto en la tabla temporal los pasajes comprados*/
 insert into #tablaMillas 
-select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
+select c.NOMBRE+' '+c.APELLIDO, floor(sum(p.PRECIO)/10), bc.ID as BC_ID
 from DIVIDIDOS.clientes c
 join DIVIDIDOS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID 
 join DIVIDIDOS.pasajes p on bc.ID=p.BOLETO_COMPRA_ID
-where P.CANCELACION_ID IS NULL AND
-p.INVALIDO=0 AND
-bc.INVALIDO=0 AND
+where P.CANCELACION_ID IS NULL AND p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-group by c.nombre, c.APELLIDO
+and bc.MILLAS != 0
+group by c.nombre, c.APELLIDO, bc.ID
+
+/*inserto en la tabla temporal los pasajes del cliente*/
+insert into #tablaMillas 
+select c.NOMBRE+' '+c.APELLIDO, floor(sum(p.PRECIO)/10), bc.ID as BC_ID
+from DIVIDIDOS.clientes c
+join DIVIDIDOS.pasajes p on c.ID=p.CLIENTE_ID
+join DIVIDIDOS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
+where P.CANCELACION_ID IS NULL AND p.INVALIDO=0 AND bc.INVALIDO=0 AND
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
+and bc.ID not in (select BC_ID from #tablaMillas t where t.Cliente = c.NOMBRE+' '+c.APELLIDO)
+and bc.MILLAS != 0
+group by c.nombre, c.APELLIDO, bc.ID
 
 /*inserto en la tabla temporal los paquetes comprados*/
 insert into #tablaMillas 
-select c.NOMBRE+' '+c.APELLIDO, sum(bc.millas)
+select c.NOMBRE+' '+c.APELLIDO, floor(sum(p.PRECIO)/10), bc.ID as BC_ID
 from DIVIDIDOS.Clientes c  
 join DIVIDIDOS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join DIVIDIDOS.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
-where P.CANCELACION_ID IS NULL AND
-p.INVALIDO=0 AND
-bc.INVALIDO=0 AND
+where P.CANCELACION_ID IS NULL AND p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-group by c.nombre, c.APELLIDO
+and bc.MILLAS != 0
+group by c.nombre, c.APELLIDO, bc.ID
 
-select top 5 Cliente, Millas from #tablaMillas
+alter table #tablaMillas
+drop column BC_ID
+
+create table #temp(
+Cliente varchar(255),
+Millas int
+)
+
+insert into #temp
+select Cliente, sum(Millas) from #tablaMillas
+group by Cliente
+
+select top 5 Cliente, Millas from #temp
 order by 2 desc
 
 drop table #tablaMillas
+drop table #temp
 END
 GO
 
@@ -1522,6 +1534,8 @@ SET FECHA_LLEGADA = convert(datetime, @fechaLlegada,109)
 WHERE ID = @idVuelo
 UPDATE DIVIDIDOS.boletos_de_compra
 SET MILLAS = FLOOR(DIVIDIDOS.precioTotal(ID, @idVuelo)/10)
+WHERE ID in (select p.BOLETO_COMPRA_ID from DIVIDIDOS.pasajes p where p.VUELO_ID = @idVuelo) 
+OR ID in (select p.BOLETO_COMPRA_ID from DIVIDIDOS.paquetes p where p.VUELO_ID = @idVuelo)
 END
 GO
 
@@ -1602,49 +1616,55 @@ AS BEGIN
 create table #tablaMillas(
 Fecha datetime,
 Motivo varchar(255),
-Millas int
+Millas int,
+BC_ID int
 )
-
-/*inserto en la tabla temporal los pasajes del cliente*/
-insert into #tablaMillas 
-select bc.FECHA_COMPRA as Fecha, 'Pasajero' as Motivo, floor(sum(p.PRECIO)/10) as Millas
-from DIVIDIDOS.clientes c
-join DIVIDIDOS.pasajes p on c.ID=p.CLIENTE_ID
-join DIVIDIDOS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
-where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
-bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-and c.DNI = @dni
-group by bc.FECHA_COMPRA
 
 /*inserto en la tabla temporal los pasajes comprados*/
 insert into #tablaMillas 
-select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, bc.millas as Millas
+select bc.FECHA_COMPRA as Fecha, 'Pasaje' as Motivo, floor(sum(p.PRECIO)/10) as Millas, bc.ID as BC_ID
 from DIVIDIDOS.clientes c  
 join DIVIDIDOS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join DIVIDIDOS.pasajes p on bc.ID = p.BOLETO_COMPRA_ID
 where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-and c.DNI = @dni
+and c.DNI = @dni and bc.MILLAS != 0
+group by bc.FECHA_COMPRA, bc.ID
+
+/*inserto en la tabla temporal los pasajes del cliente*/
+insert into #tablaMillas 
+select bc.FECHA_COMPRA as Fecha, 'Pasajero' as Motivo, floor(sum(p.PRECIO)/10) as Millas, bc.ID as BC_ID
+from DIVIDIDOS.clientes c
+join DIVIDIDOS.pasajes p on c.ID=p.CLIENTE_ID
+join DIVIDIDOS.boletos_de_compra bc on p.BOLETO_COMPRA_ID=bc.ID 
+where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
+bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
+and c.DNI = @dni and bc.ID not in (select BC_ID from #tablaMillas) and bc.MILLAS != 0
+group by bc.FECHA_COMPRA, bc.ID
 
 /*inserto en la tabla temporal los paquetes comprados*/
 insert into #tablaMillas 
-select bc.FECHA_COMPRA as Fecha, 'Paquete' as Motivo, bc.millas as Millas
+select bc.FECHA_COMPRA as Fecha, 'Paquete' as Motivo, floor(sum(p.PRECIO)/10) as Millas, bc.ID as BC_ID
 from DIVIDIDOS.clientes c  
 join DIVIDIDOS.boletos_de_compra bc on bc.CLIENTE_ID=c.ID
 join DIVIDIDOS.paquetes p on bc.ID = p.BOLETO_COMPRA_ID
 where p.CANCELACION_ID IS NULL and p.INVALIDO=0 AND bc.INVALIDO=0 AND
 bc.FECHA_COMPRA between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
-and c.DNI = @dni
+and c.DNI = @dni and bc.MILLAS != 0
+group by bc.FECHA_COMPRA, bc.ID
 
 /*inserto en la tabla temporal los canjes realizados*/
 insert into #tablaMillas 
 select cj.FECHA_CANJE as Fecha, 'Canje por '+CONVERT(varchar(10), cj.CANTIDAD)+' unidades de '+LOWER(p.NOMBRE) as Motivo, 
--p.MILLAS_REQUERIDAS*cj.CANTIDAD as Millas
+-p.MILLAS_REQUERIDAS*cj.CANTIDAD as Millas, 0 as BC_ID
 from DIVIDIDOS.clientes c
 join DIVIDIDOS.canjes cj on cj.CLIENTE_ID=c.ID
 join DIVIDIDOS.productos p on p.ID = cj.PRODUCTO_ID
 where cj.FECHA_CANJE between DATEADD(YYYY, -1, CONVERT(datetime,@fecha,109)) and CONVERT(datetime,@fecha,109)
 and c.DNI = @dni
+
+alter table #tablaMillas
+drop column BC_ID
 
 /*hago el select que me va a devolver toda la tabla para el dataGridView*/
 select * from #tablaMillas
