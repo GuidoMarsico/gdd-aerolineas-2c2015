@@ -17,7 +17,6 @@ namespace AerolineaFrba.Compra
         Double kgAcumulados=0;
         Double precioBasePasaje;
         Double precioBaseKg;
-        Boolean modificarDatos = false;
         string fechaSalida;
         string fechaLlegada;
         string origen;
@@ -146,7 +145,7 @@ namespace AerolineaFrba.Compra
                     }else{
                         DialogResult dialogResult = MessageBox.Show("Debe dar de alta el cliente con ese DNI, ¿esta seguro?", "Dni de Cliente Inexistente", MessageBoxButtons.YesNo);
                         if (dialogResult == DialogResult.Yes){
-                            Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente(1,"Alta de Cliente",dni);
+                            Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente(2,"Alta de Cliente",dni);
                             funcionesComunes.deshabilitarVentanaYAbrirNueva(altaDeCliente);
                         }
                     }
@@ -180,43 +179,15 @@ namespace AerolineaFrba.Compra
                 this.dataGridEnco.Enabled = false;
                 
             }
-            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
-                this.cargarDatosPasajero();
-            if (this.textBoxIdCliente.Text == "0")
-                this.textBoxDniPas.Enabled = false;
-            if (this.modificarDatos)
-            {
+            if (this.textBoxIdCliente.Text != "")
                 this.setCliente();
-                this.modificarDatos = false;
-            }
-             
             this.cantidadKg = Double.Parse(this.textBoxKgEncomiendas.Text);
             this.resetearComboBox();
         }
 
         private void setCliente()
         {
-
             DataRow row = funcionesComunes.getcliente(this.textBoxIdCliente.Text);
-            this.textBoxIdCliente.Text = row["Id"].ToString();
-            this.textBoxNombre.Text = row["Nombre"].ToString();
-            this.textBoxApellido.Text = row["Apellido"].ToString();
-            this.textBoxDireccion.Text = row["Dirección"].ToString();
-
-            this.textBoxTelefono.Text = row["Teléfono"].ToString();
-            this.textBoxMail.Text = row["Mail"].ToString();
-            this.timePickerNacimiento.Text = ((DateTime)row["Fecha de Nacimiento"]).ToShortDateString();
-            this.textBoxDniPas.Enabled = false;
-        }
-
-        private void cargarDatosPasajero()
-        {
-            DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
-                         NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
-                         TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                         from " + SqlConnector.getSchema() + @".clientes where BAJA = 0 AND  ID = " + this.textBoxIdCliente.Text);
-            DataRow row = tablaClientes.Rows[0];
-
             this.textBoxIdCliente.Text = row["Id"].ToString();
             this.textBoxNombre.Text = row["Nombre"].ToString();
             this.textBoxApellido.Text = row["Apellido"].ToString();
@@ -325,7 +296,7 @@ namespace AerolineaFrba.Compra
         {
             foreach (DataGridViewRow row in this.dataGridPasaje.Rows)
             {
-                if ((this.textBoxNombre.Text.Equals(row.Cells[1].Value.ToString())) && (this.textBoxApellido.Text.Equals(row.Cells[2].Value.ToString())) && (this.textBoxDniPas.Text.Equals(row.Cells[3].Value.ToString())))
+                if (this.textBoxIdCliente.Text.Equals(row.Cells[0].Value.ToString()))
                 {
                     return true;
                 }
@@ -498,9 +469,8 @@ namespace AerolineaFrba.Compra
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            if ((this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0") || this.textBoxApellido.Text != "")
+            if (this.textBoxIdCliente.Text != "")
             {
-                this.modificarDatos = true;
                 string id = this.textBoxIdCliente.Text;
                 string nombre = this.textBoxNombre.Text;
                 string apellido = this.textBoxApellido.Text;

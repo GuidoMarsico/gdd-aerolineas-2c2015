@@ -376,35 +376,11 @@ namespace AerolineaFrba
                 Int32 idButaca = Int32.Parse(pasaje.Cells[11].Value.ToString());
                 Double precio = Convert.ToDouble(pasaje.Cells[6].Value.ToString());
 
-                if ( idPasajero == 0) {
-                    idPasajero = funcionesComunes.darAltaCliente(pasaje);
-                }
                 SqlConnector.executeProcedure(SqlConnector.getSchema() + ".altaPasaje",
                 funcionesComunes.generarListaParaProcedure("@idCliente","@idButaca","@idBoletoCompra","@precio","@idVuelo"),
                 idPasajero,idButaca,idBoleto,precio,idVuelo);
                 //Aca hacemos el insert del pasaje usando el idBoleto , el idPasajero, el precio , el id de la butaca y el codigo que hay que ver como generar
             }
-        }
-
-        private static int darAltaCliente(DataGridViewRow pasaje)
-        {
-            string nombre = pasaje.Cells[1].Value.ToString();
-            string apellido=pasaje.Cells[2].Value.ToString();
-            long dni = long.Parse(pasaje.Cells[3].Value.ToString());
-            long telefono= long.Parse(pasaje.Cells[7].Value.ToString());
-            string direccion= pasaje.Cells[8].Value.ToString();
-            string mail= pasaje.Cells[9].Value.ToString();
-            SqlConnector.executeProcedure(SqlConnector.getSchema() + ".agregarCliente",
-                funcionesComunes.generarListaParaProcedure("@rol_id", "@nombreCliente", "@apellidoCliente",
-                "@documentoCliente", "@direccion", "@telefono", "@mail", "@fechaNac"),
-                funcionesComunes.getIdRolCliente(), nombre, apellido, dni, direccion,
-                telefono, mail, String.Format("{0:yyyyMMdd HH:mm:ss}", Convert.ToDateTime(pasaje.Cells[10].Value.ToString())));
-            // Tenemos que hacer que me devuelva el id del cliente dado de alta para despues usarlo en el alta del pasaje
-            DataTable tabla= SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
-                                                                    FROM " + SqlConnector.getSchema() + @".clientes c
-                                                                    order by 1 desc");
-
-            return Convert.ToInt32( tabla.Rows[0].ItemArray[0]);
         }
 
         public static bool validarDni(string dni)

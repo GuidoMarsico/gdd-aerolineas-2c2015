@@ -14,7 +14,6 @@ namespace AerolineaFrba.Compra
     {
         public DataGridView pasajes;
         public DataGridView encomiendas;
-        public Boolean modificarDatos = false;
         string fechaSalida;
         string origen;
         string destino;
@@ -70,28 +69,9 @@ namespace AerolineaFrba.Compra
         {
             Double precio =double.Parse (this.textBoxImporte.Text);
             Int32 idCliente = Int32.Parse( this.textBoxIdCliente.Text);
-            if (idCliente == 0)
-            {
-                idCliente = this.darDeAltaCliente();
-            }
             Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
             String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas,precio ,0,0,idCliente,idVuelo);
-            // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
             funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso(idBoleto,pasajes,encomiendas,this.fechaSalida,this.origen,this.destino));
-        }
-
-        private int darDeAltaCliente()
-        {
-            string nombre = this.textBoxNombre.Text;
-            string apellido = this.textBoxApellido.Text;
-            long dni = long.Parse(this.textBoxDni.Text);
-            long telefono = long.Parse(this.textBoxTelefono.Text);
-            string direccion = this.textBoxDireccion.Text;
-            string mail = this.textBoxMail.Text;
-            DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
-                                                                    FROM " + SqlConnector.getSchema() + @".clientes c
-                                                                    order by 1 desc");
-            return Convert.ToInt32(tabla.Rows[0].ItemArray[0]);
         }
 
         private void botonBuscar_Click(object sender, EventArgs e)
@@ -150,27 +130,6 @@ namespace AerolineaFrba.Compra
             }
         }
 
-
-        private void cargarDatosPasajero()
-        {
-            DataTable tablaClientes = SqlConnector.obtenerTablaSegunConsultaString(@"select ID as Id,
-                         NOMBRE as Nombre, APELLIDO as Apellido, DNI as Dni, DIRECCION as Dirección, 
-                         TELEFONO as Teléfono, MAIL as Mail, FECHA_NACIMIENTO as 'Fecha de Nacimiento' 
-                         from " + SqlConnector.getSchema() + @".clientes where BAJA = 0 AND  ID = " + this.textBoxIdCliente.Text);
-
-            DataRow row = tablaClientes.Rows[0];
-            textBoxIdCliente.Text = row["Id"].ToString();
-            textBoxNombre.Text = row["Nombre"].ToString();
-            textBoxApellido.Text = row["Apellido"].ToString();
-            textBoxDireccion.Text = row["Dirección"].ToString();
-            textBoxTelefono.Text = row["Teléfono"].ToString();
-            textBoxMail.Text = row["Mail"].ToString();
-            timePickerNacimiento.Text = ((DateTime)row["Fecha de Nacimiento"]).ToShortDateString();
-            textBoxImporte.Enabled = true;
-            textBoxImporte.Focus();
-            this.textBoxDni.Enabled = false;
-        }
-
         private void botonLimpiar_Click(object sender, EventArgs e)
         {
             textBoxIdCliente.Clear();
@@ -188,24 +147,30 @@ namespace AerolineaFrba.Compra
 
         private void registrarPagoEfectivo_Enter(object sender, EventArgs e)
         {
-            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
-                this.cargarDatosPasajero();
-            if (this.textBoxIdCliente.Text == "0")
-                this.textBoxDni.Enabled = false;
-            if (this.modificarDatos)
-            {
-                this.cargarDatosPasajero();
-                this.modificarDatos = false;
-            }
+            if (this.textBoxIdCliente.Text != "")
+                setCliente();
+         
+        }
+        private void setCliente()
+        {
+            DataRow row = funcionesComunes.getcliente(this.textBoxIdCliente.Text);
+            this.textBoxIdCliente.Text = row["Id"].ToString();
+            this.textBoxNombre.Text = row["Nombre"].ToString();
+            this.textBoxApellido.Text = row["Apellido"].ToString();
+            this.textBoxDireccion.Text = row["Dirección"].ToString();
+
+            this.textBoxTelefono.Text = row["Teléfono"].ToString();
+            this.textBoxMail.Text = row["Mail"].ToString();
+            this.timePickerNacimiento.Text = ((DateTime)row["Fecha de Nacimiento"]).ToShortDateString();
+            this.textBoxDni.Enabled = false;
         }
 
         
 
         private void buttonModificar_Click_1(object sender, EventArgs e)
         {
-            if (this.textBoxIdCliente.Text != "" && this.textBoxIdCliente.Text != "0")
+            if (this.textBoxIdCliente.Text != "")
             {
-                this.modificarDatos = true;
                 string id = this.textBoxIdCliente.Text;
                 string nombre = this.textBoxNombre.Text;
                 string apellido = this.textBoxApellido.Text;

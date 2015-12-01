@@ -35,7 +35,6 @@ namespace AerolineaFrba.Registro_de_Usuario
             textBoxDNI.Text = dni;
             textBoxDNI.Enabled = false;
             lblDni.Visible = false;
-            botonVolver.Visible = false;
         }
 
         public altaModificacionDeCliente(int valor, string titulo, string id, string nombre, string apellido, string dni, string direccion, string telefono, string mail, DateTime fecha)
@@ -92,7 +91,7 @@ namespace AerolineaFrba.Registro_de_Usuario
             this.textBoxMail.Clear();
             this.textBoxNombre.Clear();
             this.textBoxTelefono.Clear();
-            if(this.textBoxTipoForm.Text != "1")
+            if(this.textBoxTipoForm.Text != "2")
                  this.textBoxDNI.Clear();
             this.TimePickerNacimiento.ResetText();
         }
@@ -133,10 +132,6 @@ namespace AerolineaFrba.Registro_de_Usuario
                         if (resultado)
                         {
                             MessageBox.Show("Se guardo exitosamente");
-                            if (textBoxTipoForm.Text == "1")
-                            {
-                                this.setearParaCompras();
-                            }
                             if (textBoxTipoForm.Text == "0")
                             {
                                 funcionesComunes.habilitarAnterior();
@@ -163,30 +158,6 @@ namespace AerolineaFrba.Registro_de_Usuario
             else
                 MessageBox.Show("Complete los campos requeridos", "Error", MessageBoxButtons.OK,
                        MessageBoxIcon.Error);
-        }
-
-        private void setearParaCompras()
-        {
-            Form anterior = funcionesComunes.getVentanaAnterior();
-            ((TextBox)anterior.Controls["textBoxIdCliente"]).Text = "0";
-            foreach (Control gb in anterior.Controls)
-            {
-                if (gb is GroupBox)
-                {
-                    if (gb.Name == "groupBox1")
-                    {
-                       
-                                ((Label)gb.Controls["textBoxApellido"]).Text = this.textBoxApellido.Text;
-                                ((Label)gb.Controls["textBoxNombre"]).Text = this.textBoxNombre.Text;
-                                ((Label)gb.Controls["textBoxDireccion"]).Text = this.textBoxDireccion.Text;
-                                ((Label)gb.Controls["textBoxMail"]).Text = this.textBoxMail.Text;
-                                ((Label)gb.Controls["textBoxTelefono"]).Text = this.textBoxTelefono.Text;
-                                ((Label)gb.Controls["timePickerNacimiento"]).Text = this.TimePickerNacimiento.Value.ToShortDateString();
-                        
-                    }
-                }
-            }
-            funcionesComunes.habilitarAnterior();
         }
 
         private bool persistirCliente()
