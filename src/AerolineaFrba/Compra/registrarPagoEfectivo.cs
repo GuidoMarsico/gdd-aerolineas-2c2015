@@ -67,11 +67,16 @@ namespace AerolineaFrba.Compra
 
         private void botonConfirmar_Click(object sender, EventArgs e)
         {
-            Double precio =double.Parse (this.textBoxImporte.Text);
-            Int32 idCliente = Int32.Parse( this.textBoxIdCliente.Text);
-            Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
-            String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas,precio ,0,0,idCliente,idVuelo);
-            funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso(idBoleto,pasajes,encomiendas,this.fechaSalida,this.origen,this.destino));
+            if (this.textBoxIdCliente.Text != "")
+            {
+                Double precio = double.Parse(this.textBoxImporte.Text);
+                Int32 idCliente = Int32.Parse(this.textBoxIdCliente.Text);
+                Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
+                String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas, precio, 0, 0, idCliente, idVuelo);
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso(idBoleto, pasajes, encomiendas, this.fechaSalida, this.origen, this.destino));
+            }
+            else
+                MessageBox.Show("Debe ingresar un cliente");
         }
 
         private void botonBuscar_Click(object sender, EventArgs e)
