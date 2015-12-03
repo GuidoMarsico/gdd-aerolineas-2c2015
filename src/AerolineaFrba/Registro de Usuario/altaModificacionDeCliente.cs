@@ -23,6 +23,7 @@ namespace AerolineaFrba.Registro_de_Usuario
         public altaModificacionDeCliente()
         {
             InitializeComponent();
+            this.TimePickerNacimiento.Value = funcionesComunes.getFechaGlobal();
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -57,7 +58,7 @@ namespace AerolineaFrba.Registro_de_Usuario
             this.textBoxTelefono.Clear();
             if(this.textBoxTipoForm.Text != "1")
                  this.textBoxDNI.Clear();
-            this.TimePickerNacimiento.ResetText();
+            this.TimePickerNacimiento.Value = funcionesComunes.getFechaGlobal();
         }
 
         private void botonLimpiar_Click(object sender, EventArgs e)
@@ -73,7 +74,7 @@ namespace AerolineaFrba.Registro_de_Usuario
                 if (mail.Contains("@") || mail == "")
                 {
 
-                    if (TimePickerNacimiento.Value < DateTime.Today)
+                    if (TimePickerNacimiento.Value < funcionesComunes.getFechaGlobal())
                     {
                         bool resultado = true;
                         if (this.textBoxTipoForm.Text == "1")

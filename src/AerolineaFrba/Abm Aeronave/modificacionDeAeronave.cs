@@ -18,6 +18,8 @@ namespace AerolineaFrba.Abm_Aeronave
             InitializeComponent();
             funcionesComunes.llenarCombobox(comboBoxFabricante, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".fabricantes");
             funcionesComunes.llenarCombobox(comboBoxServicio, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_de_servicio");
+            this.fechaFinInactividad.Value = funcionesComunes.getFechaGlobal();
+            this.fechaInicioInactividad.Value = funcionesComunes.getFechaGlobal();
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -27,8 +29,10 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private void botonModificar_Click(object sender, EventArgs e)
         {
-            if (this.fechaFinInactividad.Value < this.fechaInicioInactividad.Value){
-                MessageBox.Show("La fecha de fin de la inactividad no puede ser menor que la de inicio");
+            if (this.fechaFinInactividad.Value <= this.fechaInicioInactividad.Value){
+                MessageBox.Show("La fecha de fin de la inactividad debe ser mayor a la de inicio");
+            }else if (this.fechaInicioInactividad.Value < funcionesComunes.getFechaGlobal()){
+                MessageBox.Show("La fecha de inicio no puede ser anterior a la de hoy");
             } else {
                 string inicioInactividad =  String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value);
                 string finInactividad = String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaFinInactividad.Value);
@@ -79,8 +83,8 @@ namespace AerolineaFrba.Abm_Aeronave
         }
 
         private void limpiar(){
-            this.fechaFinInactividad.ResetText();
-            this.fechaInicioInactividad.ResetText();
+            this.fechaFinInactividad.Value = funcionesComunes.getFechaGlobal();
+            this.fechaInicioInactividad.Value = funcionesComunes.getFechaGlobal();
         }
     }
 }

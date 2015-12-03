@@ -19,6 +19,8 @@ namespace AerolineaFrba.Abm_Vuelos
             InitializeComponent();
             listadoAeronaves = funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
             listadoRutas = funcionesComunes.consultarRutas(dataGridListadoRutas);
+            this.timePickerSalida.Value = funcionesComunes.getFechaGlobal();
+            this.timePickerLlegadaEstimada.Value = funcionesComunes.getFechaGlobal();
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -97,8 +99,8 @@ namespace AerolineaFrba.Abm_Vuelos
             funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
             this.textBoxCodigo.Clear();
             this.textBoxMatricula.Clear();
-            this.timePickerLlegadaEstimada.ResetText();
-            this.timePickerSalida.ResetText();
+            this.timePickerLlegadaEstimada.Value = funcionesComunes.getFechaGlobal();
+            this.timePickerSalida.Value = funcionesComunes.getFechaGlobal();
         }
 
         private void botonGuardar_Click(object sender, EventArgs e)
@@ -129,13 +131,13 @@ namespace AerolineaFrba.Abm_Vuelos
 
         private bool validar() 
         {
-            if (this.timePickerSalida.Value < DateTime.Today) 
+            if (this.timePickerSalida.Value < funcionesComunes.getFechaGlobal()) 
             {
-                MessageBox.Show("La fecha de salida no puede ser posterior a la de hoy");
+                MessageBox.Show("La fecha de salida no puede ser anterior a la de hoy");
                 return false;
             }
-            if (this.timePickerSalida.Value > this.timePickerLlegadaEstimada.Value){
-                MessageBox.Show("No puede haber una fecha de salida despues de la estima");
+            if (this.timePickerSalida.Value >= this.timePickerLlegadaEstimada.Value){
+                MessageBox.Show("La fecha de llegada estimada debe ser mayor a la de salida");
                 return false;
             }
             if (timePickerSalida.Value.AddDays((double)1) < timePickerLlegadaEstimada.Value){

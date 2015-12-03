@@ -81,7 +81,7 @@ namespace AerolineaFrba.Compra
             this.textBoxMail.Clear();
             this.textBoxNombre.Clear();
             this.textBoxTelefono.Clear();
-            this.timePickerNacimiento.ResetText();
+            this.timePickerNacimiento.Value = funcionesComunes.getFechaGlobal();
         }
 
         private void botonVolver_Click(object sender, EventArgs e)

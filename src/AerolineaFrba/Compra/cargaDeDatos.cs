@@ -246,7 +246,7 @@ namespace AerolineaFrba.Compra
             this.textBoxMail.Clear();
             this.textBoxNombre.Clear();
             this.textBoxTelefono.Clear();
-            this.timePickerNacimiento.ResetText();
+            this.timePickerNacimiento.Value = funcionesComunes.getFechaGlobal();
         }
 
         private void settearUbicacion(object sender, EventArgs e)

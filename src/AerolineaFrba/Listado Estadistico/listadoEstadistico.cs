@@ -19,6 +19,7 @@ namespace AerolineaFrba.Listado_Estadistico
             pickerAño.CustomFormat = "yyyy";
             pickerAño.ShowUpDown = true;
             comboBoxSemestre.SelectedIndex = 0;
+            this.pickerAño.Value = funcionesComunes.getFechaGlobal();
         }
 
         private void botonVolver_Click(object sender, EventArgs e)

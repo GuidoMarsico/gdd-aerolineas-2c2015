@@ -101,8 +101,8 @@ namespace AerolineaFrba.Compra
             textBoxMail.Clear();
             textBoxTelefono.Clear();
             textBoxDni.Enabled = true;
-            timePickerNacimiento.Value = DateTime.Today;
-            timePickerVencimiento.Value = DateTime.Today;
+            timePickerNacimiento.Value = funcionesComunes.getFechaGlobal();
+            timePickerVencimiento.Value = funcionesComunes.getFechaGlobal();
             textBoxNumero.Clear();
             textBoxCodigo.Clear();
             textBoxTipo.Clear();
