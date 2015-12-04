@@ -21,13 +21,14 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
             this.vuelos = tabla;
         }
 
-        public CancelarVuelos(string tipo, string idVuelo,string i,string f)
+        public CancelarVuelos(string tipo, string idVuelo,string i,string f,DataTable vuelosEnPeriodo)
         {
             InitializeComponent();
             textBoxTipo.Text = tipo;
             textBoxTipoIdAero.Text = idVuelo;
             inicio = i;
             fin = f;
+            this.vuelos = vuelosEnPeriodo;
         }
 
         public void actualizarAeronave()

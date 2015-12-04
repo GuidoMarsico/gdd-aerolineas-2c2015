@@ -18,7 +18,8 @@ namespace AerolineaFrba.Compra
         {
             InitializeComponent();
             this.textBoxKgEncomienda.Text = "0";
-            funcionesComunes.consultarViajesDisponibles(this.dataGridViajes, String.Format("{0:yyyyMMdd HH:mm:ss}", DateTime.Today.Subtract(TimeSpan.FromDays(1))));
+            funcionesComunes.consultarViajesDisponibles(this.dataGridViajes, String.Format("{0:yyyyMMdd HH:mm:ss}", funcionesComunes.getFechaConfig().Subtract(TimeSpan.FromDays(1))));
+            this.timePickerFecha.Value = funcionesComunes.getFechaConfig();
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -67,7 +68,7 @@ namespace AerolineaFrba.Compra
         {
             if (comboBoxOrigen.SelectedIndex != comboBoxDestino.SelectedIndex){
 
-                   if (timePickerFecha.Value >= DateTime.Today)
+                   if (timePickerFecha.Value >= funcionesComunes.getFechaConfig())
                       {
                          this.dataGridViajes.DataSource = filtrarViajes();
                          this.dataGridViajes.Columns[0].Visible = false;
@@ -112,7 +113,7 @@ namespace AerolineaFrba.Compra
 
         private void Limpiar()
         {
-            this.timePickerFecha.ResetText();
+            this.timePickerFecha.Value = funcionesComunes.getFechaConfig();
             this.textBoxKgEncomienda.Clear();
             this.numericUpDownPasajes.Value=0;
             this.comboBoxOrigen.SelectedIndex = 0;

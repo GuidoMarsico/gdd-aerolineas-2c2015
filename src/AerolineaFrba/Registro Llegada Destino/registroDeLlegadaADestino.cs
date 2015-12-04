@@ -16,6 +16,7 @@ namespace AerolineaFrba.Registro_Llegada_Destino
         public registroDeLlegadaADestino()
         {
             InitializeComponent();
+            this.timePickerLlegada.Value = funcionesComunes.getFechaConfig();
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -69,7 +70,7 @@ namespace AerolineaFrba.Registro_Llegada_Destino
         private void limpiar()
         {
             this.textBoxMatricula.Clear();
-            this.timePickerLlegada.ResetText();
+            this.timePickerLlegada.Value = funcionesComunes.getFechaConfig();
             this.dataGridListadoVuelos.DataSource = null;
         }
 

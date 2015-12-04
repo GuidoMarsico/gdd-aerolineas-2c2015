@@ -19,6 +19,8 @@ namespace AerolineaFrba.Abm_Vuelos
             InitializeComponent();
             listadoAeronaves = funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
             listadoRutas = funcionesComunes.consultarRutas(dataGridListadoRutas);
+            this.timePickerLlegadaEstimada.Value = funcionesComunes.getFechaConfig();
+            this.timePickerSalida.Value = funcionesComunes.getFechaConfig();
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -97,8 +99,8 @@ namespace AerolineaFrba.Abm_Vuelos
             funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
             this.textBoxCodigo.Clear();
             this.textBoxMatricula.Clear();
-            this.timePickerLlegadaEstimada.ResetText();
-            this.timePickerSalida.ResetText();
+            this.timePickerLlegadaEstimada.Value = funcionesComunes.getFechaConfig();
+            this.timePickerSalida.Value = funcionesComunes.getFechaConfig();
         }
 
         private void botonGuardar_Click(object sender, EventArgs e)
@@ -127,12 +129,12 @@ namespace AerolineaFrba.Abm_Vuelos
 
         private bool validar() 
         {
-            if (this.timePickerSalida.Value < DateTime.Today) 
+            if (this.timePickerSalida.Value < funcionesComunes.getFechaConfig()) 
             {
                 MessageBox.Show("La fecha de salida no puede ser posterior a la de hoy");
                 return false;
             }
-            if (this.timePickerSalida.Value > this.timePickerLlegadaEstimada.Value){
+            if (this.timePickerSalida.Value >= this.timePickerLlegadaEstimada.Value){
                 MessageBox.Show("No puede haber una fecha de salida despues de la estima");
                 return false;
             }

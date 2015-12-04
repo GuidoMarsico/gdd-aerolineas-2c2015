@@ -13,7 +13,7 @@ namespace AerolineaFrba
     //creamos una clase con funciones que utilizan las demas para no repetir codigo
     class funcionesComunes
     {
-        public static string fecha;
+        public static DateTime fecha;
 
         #region Singletons Ventanas
         private static Form ventanaAnterior;
@@ -208,7 +208,7 @@ namespace AerolineaFrba
                 a.MODELO as Modelo, a.KG_DISPONIBLES as 'KG Disponibles', f.NOMBRE as Fabricante, ts.NOMBRE as 
                 Servicio, a.FECHA_ALTA as 'Fecha de Alta', a.CANT_BUTACAS as Butacas FROM " + SqlConnector.getSchema() + @".aeronaves a, 
                 " + SqlConnector.getSchema() + @".fabricantes f, " + SqlConnector.getSchema() + @".tipos_de_servicio ts WHERE a.FABRICANTE_ID = f.ID AND 
-                a.TIPO_SERVICIO_ID = ts.ID AND a.BAJA IS NULL;");
+                a.TIPO_SERVICIO_ID = ts.ID AND a.BAJA IS NULL and a.fecha_alta <= convert(datetime,'" + funcionesComunes.getFecha() + "',109);");
             datagridview.DataSource = listadoAeronaves;
             datagridview.Columns[0].Visible = false;
             return listadoAeronaves;
@@ -308,15 +308,20 @@ namespace AerolineaFrba
 
         #endregion
 
-        public static void setFecha(String fec)
+        public static void setFecha(DateTime fec)
         {
 
            fecha = fec;     
         }
+        public static DateTime getFechaConfig() 
+        {
+            return fecha;
+        }
 
       public static string getFecha()
       {
-            return fecha;
+          String fec = String.Format("{0:yyyyMMdd HH:mm:ss}", getFechaConfig());
+          return fec;
       }
 
         public static double precioEncomienda(DataGridViewRow encomienda)

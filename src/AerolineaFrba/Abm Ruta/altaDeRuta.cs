@@ -101,6 +101,14 @@ namespace AerolineaFrba.Abm_Ruta
                 return false;
             if (this.comboBoxServicios.SelectedIndex == -1)
                 return false;
+            DataTable rutas = new DataTable();
+            rutas = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT * FROM " + SqlConnector.getSchema() + ".rutas R WHERE R.origen_id = "
+                     + this.comboBoxOrigen.SelectedValue + " and R.destino_id = " + this.comboBoxDestino.SelectedValue);
+            if (rutas.Rows.Count != 0) 
+            {
+                MessageBox.Show("Ya existe una ruta con ese origen y destino");
+                return false;
+            }
             return true;
         }
 

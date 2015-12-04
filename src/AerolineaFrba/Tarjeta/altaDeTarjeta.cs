@@ -18,6 +18,7 @@ namespace AerolineaFrba.Tarjeta
         {
             InitializeComponent();
             funcionesComunes.llenarCombobox(this.comboBoxTipoTarjeta, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_tarjeta");
+            this.fechavencimiento.Value = funcionesComunes.getFechaConfig();
         }
 
         //este boton borra el contenido de todos los campos
@@ -73,7 +74,7 @@ namespace AerolineaFrba.Tarjeta
             else
                 numero = long.Parse(this.textBoxNumero.Text);
             if (this.dataGridCliente.DataSource != null && numero > 0 && this.comboBoxTipoTarjeta.SelectedValue != null) {
-                if (this.fechavencimiento.Value <= DateTime.Today.AddDays(1))
+                if (this.fechavencimiento.Value <= funcionesComunes.getFechaConfig().AddDays(1))
                 {
                     MessageBox.Show("La fecha de vencimiento debe ser superior a la de hoy", "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -133,7 +134,7 @@ namespace AerolineaFrba.Tarjeta
             this.textBoxNumero.Clear();
             this.comboBoxTipoTarjeta.SelectedIndex = -1;
             this.dataGridCliente.DataSource = null;
-            this.fechavencimiento.ResetText();
+            this.fechavencimiento.Value = funcionesComunes.getFechaConfig();
         }
     }
 }

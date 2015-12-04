@@ -102,7 +102,7 @@ namespace AerolineaFrba.Compra
             textBoxMail.Text = "";
             textBoxTelefono.Text = "";
             timePickerNacimiento.Text = "";
-            timePickerVencimiento.Value = DateTime.Today;
+            timePickerVencimiento.Value = funcionesComunes.getFechaConfig();
             textBoxNumero.Clear();
             textBoxCodigo.Clear();
             textBoxTipo.Clear();

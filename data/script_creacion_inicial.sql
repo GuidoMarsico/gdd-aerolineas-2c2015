@@ -1474,9 +1474,9 @@ GO
 CREATE PROCEDURE LAS_PELOTAS.validarVuelo (@id int, @fechaSalida varchar(50), @fechaLlegadaEstimada varchar(50))
 AS BEGIN
 select COUNT(v.ID) from LAS_PELOTAS.vuelos v
-where v.AERONAVE_ID = @id and (v.FECHA_SALIDA > convert(datetime, @fechaSalida,109) and v.FECHA_SALIDA < convert(datetime, @fechaLlegadaEstimada,109)
-or v.FECHA_LLEGADA > convert(datetime, @fechaSalida,109) and v.FECHA_LLEGADA < convert(datetime, @fechaLlegadaEstimada,109)
-or v.FECHA_LLEGADA_ESTIMADA > convert(datetime, @fechaSalida,109) and v.FECHA_LLEGADA_ESTIMADA  < convert(datetime, @fechaLlegadaEstimada,109))
+where v.AERONAVE_ID = @id and (v.FECHA_SALIDA >= convert(datetime, @fechaSalida,109) and v.FECHA_SALIDA <= convert(datetime, @fechaLlegadaEstimada,109)
+or v.FECHA_LLEGADA >= convert(datetime, @fechaSalida,109) and v.FECHA_LLEGADA <= convert(datetime, @fechaLlegadaEstimada,109)
+or v.FECHA_LLEGADA_ESTIMADA >= convert(datetime, @fechaSalida,109) and v.FECHA_LLEGADA_ESTIMADA  <= convert(datetime, @fechaLlegadaEstimada,109))
 END
 GO
 

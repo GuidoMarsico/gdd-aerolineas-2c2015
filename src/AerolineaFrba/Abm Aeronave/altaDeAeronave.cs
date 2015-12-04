@@ -19,6 +19,7 @@ namespace AerolineaFrba.Abm_Aeronave
             InitializeComponent();
             funcionesComunes.llenarCombobox(comboBoxFabricante,"NOMBRE","select ID, NOMBRE from " + SqlConnector.getSchema() + ".fabricantes");
             funcionesComunes.llenarCombobox(comboBoxServicio, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_de_servicio");
+            this.timePickerAlta.Value = funcionesComunes.getFechaConfig();
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -36,7 +37,7 @@ namespace AerolineaFrba.Abm_Aeronave
             this.textBoxKgDisponibles.Clear();
             this.textBoxMatricula.Clear();
             this.textBoxModelo.Clear();
-            this.timePickerAlta.ResetText();
+            this.timePickerAlta.Value = funcionesComunes.getFechaConfig();
             this.comboBoxFabricante.SelectedIndex = -1;
             this.comboBoxServicio.SelectedIndex = -1;
         }
@@ -59,21 +60,27 @@ namespace AerolineaFrba.Abm_Aeronave
                 fabricante = (Int32)comboBoxFabricante.SelectedValue;
             if (comboBoxServicio.SelectedValue != null)
                 servicio = (Int32)this.comboBoxServicio.SelectedValue;
-            if (cantButacas > 0 && kg > 0 && matricula != "" && modelo != "" && fabricante > 0 && servicio > 0)
-                if(validarMatricula(matricula)){
-                    bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".agregarAeronave",
-                        funcionesComunes.generarListaParaProcedure("@matricula","@modelo","@kg_disponibles",
-                        "@fabricante","@tipo_servicio","@alta","@cantButacas"),
-                        matricula, modelo, kg, fabricante, servicio,
-                        String.Format("{0:yyyyMMdd HH:mm:ss}",this.timePickerAlta.Value), cantButacas);
-                    if (resultado){
-                        MessageBox.Show("Se guardo exitosamente");
-                        limpiar();
+                if (validar(matricula,modelo,fabricante,servicio,kg,cantButacas))
+                {
+                    if (validarMatricula(matricula))
+                    {
+                        bool resultado = SqlConnector.executeProcedure(SqlConnector.getSchema() + ".agregarAeronave",
+                            funcionesComunes.generarListaParaProcedure("@matricula", "@modelo", "@kg_disponibles",
+                            "@fabricante", "@tipo_servicio", "@alta", "@cantButacas"),
+                            matricula, modelo, kg, fabricante, servicio,
+                            String.Format("{0:yyyyMMdd HH:mm:ss}", this.timePickerAlta.Value), cantButacas);
+                        if (resultado)
+                        {
+                            MessageBox.Show("Se guardo exitosamente");
+                            limpiar();
+                        }
                     }
-                }else{
-                    MessageBox.Show("Uno o más campos son inválidos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else
+                    {
+                        MessageBox.Show("Ya hay una aeronave con ese numero de matricula", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-            else MessageBox.Show("Complete los campos requeridos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+              
         }
 
         private bool validarMatricula(String matricula){
@@ -104,6 +111,35 @@ namespace AerolineaFrba.Abm_Aeronave
         private void textBoxModelo_KeyPress(object sender, KeyPressEventArgs e)
         {
             funcionesComunes.soloLetrasYNumeros(e);
+        }
+
+        private bool validar(String matricula, String modelo, Int32 fabricante, Int32 servicio, Int32 kg, Int32 cantButacas)
+        {
+            if (cantButacas <= 0){
+                MessageBox.Show("La cantidad de butacas debe ser mayor a cero", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if (kg <= 0){
+                MessageBox.Show("La cantidad de KG debe ser mayor a cero", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+           }
+            if (matricula == ""){
+                MessageBox.Show("La matrícula es un campo requerido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if (modelo == ""){
+                MessageBox.Show("El modelo es un campo requerido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if (fabricante <= 0){
+                MessageBox.Show("Seleccione un fabricante", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if (servicio <= 0){
+                MessageBox.Show("Seleccione un servicio", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
         }
 
     }

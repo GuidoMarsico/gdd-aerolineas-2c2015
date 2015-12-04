@@ -26,6 +26,8 @@ namespace AerolineaFrba.Abm_Aeronave
             this.comboBoxServicio.Text = servicio;
             this.timePickerAlta.Value = alta;
             this.textBoxCantButacas.Text = butacas;
+            this.fechaFinInactividad.Value = funcionesComunes.getFechaConfig();
+            this.fechaInicioInactividad.Value = funcionesComunes.getFechaConfig();
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -35,8 +37,10 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private void botonModificar_Click(object sender, EventArgs e)
         {
-            if (this.fechaFinInactividad.Value < this.fechaInicioInactividad.Value){
+            if (this.fechaFinInactividad.Value <= this.fechaInicioInactividad.Value){
                 MessageBox.Show("La fecha de fin de la inactividad no puede ser menor que la de inicio");
+            }else if(this.fechaInicioInactividad.Value < funcionesComunes.getFechaConfig()){
+                MessageBox.Show("La fecha de inicio del periodo de inactividad no puede ser anterior a la de hoy");
             } else {
                 string inicioInactividad =  String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value);
                 string finInactividad = String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaFinInactividad.Value);
@@ -57,7 +61,7 @@ namespace AerolineaFrba.Abm_Aeronave
                 finInactividad + @"',109)) ");
                 if (vuelosEnElPeriodo.Rows.Count > 0){
                     MessageBox.Show("La aeronave tiene vuelos asignados en ese período");
-                    Form vuelosARemplazar = new CancelarReprogramarVuelos.CancelarVuelos("0",textBoxId.Text, String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value),String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaFinInactividad.Value) );
+                    Form vuelosARemplazar = new CancelarReprogramarVuelos.CancelarVuelos("0", textBoxId.Text, String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value), String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaFinInactividad.Value), vuelosEnElPeriodo);
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(vuelosARemplazar);
                 } else {
                     actualizarAeronave();
@@ -87,8 +91,8 @@ namespace AerolineaFrba.Abm_Aeronave
         }
 
         private void limpiar(){
-            this.fechaFinInactividad.ResetText();
-            this.fechaInicioInactividad.ResetText();
+            this.fechaFinInactividad.Value = funcionesComunes.getFechaConfig();
+            this.fechaInicioInactividad.Value = funcionesComunes.getFechaConfig();
         }
     }
 }

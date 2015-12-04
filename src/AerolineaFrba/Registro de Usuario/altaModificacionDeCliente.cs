@@ -25,6 +25,7 @@ namespace AerolineaFrba.Registro_de_Usuario
             InitializeComponent();
             lblTitulo.Text = titulo;
             textBoxTipoForm.Text = valor.ToString();
+            this.TimePickerNacimiento.Value = funcionesComunes.getFechaConfig();
         }
 
         public altaModificacionDeCliente(int valor, string titulo, string dni)
@@ -35,6 +36,7 @@ namespace AerolineaFrba.Registro_de_Usuario
             textBoxDNI.Text = dni;
             textBoxDNI.Enabled = false;
             lblDni.Visible = false;
+            this.TimePickerNacimiento.Value = funcionesComunes.getFechaConfig();
         }
 
         public altaModificacionDeCliente(int valor, string titulo, string id, string nombre, string apellido, string dni, string direccion, string telefono, string mail, DateTime fecha)
@@ -93,7 +95,7 @@ namespace AerolineaFrba.Registro_de_Usuario
             this.textBoxTelefono.Clear();
             if(this.textBoxTipoForm.Text != "2")
                  this.textBoxDNI.Clear();
-            this.TimePickerNacimiento.ResetText();
+            this.TimePickerNacimiento.Value = funcionesComunes.getFechaConfig();
         }
 
         private void botonLimpiar_Click(object sender, EventArgs e)
@@ -109,7 +111,7 @@ namespace AerolineaFrba.Registro_de_Usuario
                 if (mail.Contains("@") || mail == "")
                 {
 
-                    if (TimePickerNacimiento.Value < DateTime.Today)
+                    if (TimePickerNacimiento.Value < funcionesComunes.getFechaConfig())
                     {
                         bool resultado = true;
                         if (this.textBoxTipoForm.Text == "2" || this.textBoxTipoForm.Text == "0")
