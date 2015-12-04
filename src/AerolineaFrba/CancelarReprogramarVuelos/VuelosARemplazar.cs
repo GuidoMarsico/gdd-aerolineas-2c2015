@@ -87,10 +87,14 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
                 ((TextBox)seleccionarAeronave.Controls["textBoxIdVuelo"]).Text = this.dataGridListadoVuelos.SelectedCells[0].Value.ToString();
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(seleccionarAeronave);
             }else{
-                MessageBox.Show("No hay ninguna aeronave que pueda ser usada como remplazo");
-                Int32 id = Int32.Parse(dataGridListadoVuelos.SelectedCells[0].Value.ToString());
-                funcionesComunes.darDebajaVuelo(id);
-                
+                 DialogResult dialogResult = MessageBox.Show("¿Desea dar de alta una nueva aeronave para usar como remplazo?","No hay aeronave de remplazo",MessageBoxButtons.YesNo);
+                 if (dialogResult == DialogResult.Yes)
+                 {
+                     funcionesComunes.deshabilitarVentanaYAbrirNueva(new Abm_Aeronave.altaDeAeronave());
+                 }
+               // MessageBox.Show("No hay ninguna aeronave que pueda ser usada como remplazo");
+                //Int32 id = Int32.Parse(dataGridListadoVuelos.SelectedCells[0].Value.ToString());
+                //funcionesComunes.darDebajaVuelo(id);
             }
         }
 
