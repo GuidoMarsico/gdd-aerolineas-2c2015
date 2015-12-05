@@ -144,7 +144,7 @@ namespace AerolineaFrba.Compra
                         DialogResult dialogResult = MessageBox.Show("Debe dar de alta el cliente con ese DNI, ¿esta seguro?", "Dni de Cliente Inexistente", MessageBoxButtons.YesNo);
                         if (dialogResult == DialogResult.Yes){
                             Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-                            int valor = 1;
+                            int valor = 2;
                             ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
                             altaDeCliente.Text = "Alta de Cliente";
                             ((TextBox)altaDeCliente.Controls["textBoxDNI"]).Text = dni;

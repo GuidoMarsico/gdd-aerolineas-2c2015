@@ -32,6 +32,7 @@
             this.buttonReprogramar = new System.Windows.Forms.Button();
             this.textBoxTipoIdAero = new System.Windows.Forms.TextBox();
             this.textBoxTipo = new System.Windows.Forms.TextBox();
+            this.textBoxIdAeroValida = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // botonBajaTodos
@@ -78,6 +79,16 @@
             this.textBoxTipo.TabIndex = 79;
             this.textBoxTipo.Visible = false;
             // 
+            // textBoxIdAeroValida
+            // 
+            this.textBoxIdAeroValida.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIdAeroValida.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIdAeroValida.Location = new System.Drawing.Point(215, 62);
+            this.textBoxIdAeroValida.Name = "textBoxIdAeroValida";
+            this.textBoxIdAeroValida.Size = new System.Drawing.Size(33, 26);
+            this.textBoxIdAeroValida.TabIndex = 80;
+            this.textBoxIdAeroValida.Visible = false;
+            // 
             // CancelarVuelos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -85,6 +96,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(460, 124);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxIdAeroValida);
             this.Controls.Add(this.textBoxTipo);
             this.Controls.Add(this.textBoxTipoIdAero);
             this.Controls.Add(this.buttonReprogramar);
@@ -92,6 +104,7 @@
             this.Name = "CancelarVuelos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cancelar / Reprogramar";
+            this.Enter += new System.EventHandler(this.enter);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -103,5 +116,6 @@
         private System.Windows.Forms.Button buttonReprogramar;
         private System.Windows.Forms.TextBox textBoxTipoIdAero;
         private System.Windows.Forms.TextBox textBoxTipo;
+        private System.Windows.Forms.TextBox textBoxIdAeroValida;
     }
 }

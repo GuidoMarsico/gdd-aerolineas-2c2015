@@ -74,6 +74,12 @@ namespace AerolineaFrba.Abm_Aeronave
                 }else{
                     MessageBox.Show("La matrícula ya existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            if (this.textBoxTipo.Text == "1")
+            {
+                Form altaAeronave = funcionesComunes.getVentanaAnterior();
+                ((TextBox)altaAeronave.Controls["textBoxIdAeroValida"]).Text = "1";
+                funcionesComunes.habilitarAnterior();
+            }
         }
 
         private bool validarMatricula(String matricula){

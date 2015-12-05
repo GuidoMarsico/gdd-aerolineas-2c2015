@@ -68,16 +68,19 @@ namespace AerolineaFrba.Compra
 
         private void botonConfirmar_Click(object sender, EventArgs e)
         {
-            Double precio =double.Parse (this.textBoxImporte.Text);
-            Int32 idCliente = Int32.Parse( this.textBoxIdCliente.Text);
-            if (idCliente == 0)
+            if (this.textBoxIdCliente.Text != "")
             {
-                idCliente = this.darDeAltaCliente();
+                Double precio = double.Parse(this.textBoxImporte.Text);
+                Int32 idCliente = Int32.Parse(this.textBoxIdCliente.Text);
+                if (idCliente == 0)
+                {
+                    idCliente = this.darDeAltaCliente();
+                }
+                Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
+                String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas, precio, "EFECTIVO", idCliente, idVuelo, 0, 0);
+                // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
+                funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso(idBoleto, pasajes, encomiendas, this.fechaSalida, this.origen, this.destino));
             }
-            Int32 idVuelo = Int32.Parse(this.textBoxIDVuelo.Text);
-            String idBoleto = funcionesComunes.crearBoleto(this.pasajes, this.encomiendas, precio,"EFECTIVO",idCliente,idVuelo, 0, 0);
-            // Me devuelvo el id del boleto que es el codigo de compra como quedamos y se lo mandamos a la siguiente vista para mostrarlo
-            funcionesComunes.deshabilitarVentanaYAbrirNueva(new Compra.procesoCompraExitoso(idBoleto,pasajes,encomiendas,this.fechaSalida,this.origen,this.destino));
         }
 
         private int darDeAltaCliente()
@@ -137,7 +140,7 @@ namespace AerolineaFrba.Compra
                         if (dialogResult == DialogResult.Yes)
                         {
                             Form altaDeCliente = new Registro_de_Usuario.altaModificacionDeCliente();
-                            int valor = 1;
+                            int valor = 2;
                             ((TextBox)altaDeCliente.Controls["textBoxTipoForm"]).Text = valor.ToString();
                             altaDeCliente.Text = "Alta de Cliente";
                             ((TextBox)altaDeCliente.Controls["textBoxDNI"]).Text = dni;

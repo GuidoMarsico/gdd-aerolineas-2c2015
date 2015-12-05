@@ -204,7 +204,6 @@ namespace AerolineaFrba
 
         public static DataTable consultarAeronaves(DataGridView datagridview)
         {
-            String fechaloca = funcionesComunes.getFecha();
             DataTable listadoAeronaves = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT a.ID as Id, a.MATRICULA as Matricula, 
                 a.MODELO as Modelo, a.KG_DISPONIBLES as 'KG Disponibles', f.NOMBRE as Fabricante, ts.NOMBRE as 
                 Servicio, a.FECHA_ALTA as 'Fecha de Alta', a.CANT_BUTACAS as Butacas FROM " + SqlConnector.getSchema() + @".aeronaves a, 

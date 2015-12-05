@@ -53,7 +53,9 @@ namespace AerolineaFrba.Abm_Aeronave
                 finInactividad + @"',109)) ");
                 if (vuelosEnElPeriodo.Rows.Count > 0){
                     MessageBox.Show("La aeronave tiene vuelos asignados en ese período");
-                    Form vuelosARemplazar = new CancelarReprogramarVuelos.CancelarVuelos("0",textBoxId.Text, String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value),String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaFinInactividad.Value) );
+                    Form vuelosARemplazar = new CancelarReprogramarVuelos.CancelarVuelos("0",textBoxId.Text, 
+                        String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value),
+                        String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaFinInactividad.Value), vuelosEnElPeriodo);
                     funcionesComunes.deshabilitarVentanaYAbrirNueva(vuelosARemplazar);
                 } else {
                     actualizarAeronave();

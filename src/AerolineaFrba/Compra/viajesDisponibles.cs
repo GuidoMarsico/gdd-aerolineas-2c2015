@@ -18,7 +18,7 @@ namespace AerolineaFrba.Compra
         {
             InitializeComponent();
             this.textBoxKgEncomienda.Text = "0";
-            funcionesComunes.consultarViajesDisponibles(this.dataGridViajes, String.Format("{0:yyyyMMdd HH:mm:ss}", funcionesComunes.getFechaGlobal().Subtract(TimeSpan.FromDays(1))));
+            funcionesComunes.consultarViajesDisponibles(this.dataGridViajes, String.Format("{0:yyyyMMdd HH:mm:ss}", funcionesComunes.getFechaGlobal()));
             this.timePickerFecha.Value = funcionesComunes.getFechaGlobal();
         }
 

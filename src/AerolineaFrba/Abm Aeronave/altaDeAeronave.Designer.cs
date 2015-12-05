@@ -53,6 +53,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            this.textBoxTipo = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // botonVolver
@@ -325,12 +326,23 @@
             this.label15.TabIndex = 54;
             this.label15.Text = "*";
             // 
+            // textBoxTipo
+            // 
+            this.textBoxTipo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxTipo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxTipo.Location = new System.Drawing.Point(12, 31);
+            this.textBoxTipo.Name = "textBoxTipo";
+            this.textBoxTipo.Size = new System.Drawing.Size(27, 26);
+            this.textBoxTipo.TabIndex = 56;
+            this.textBoxTipo.Visible = false;
+            // 
             // altaDeAeronave
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(453, 483);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxTipo);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label7);
@@ -390,5 +402,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBoxTipo;
     }
 }
