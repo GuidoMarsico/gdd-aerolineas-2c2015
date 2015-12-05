@@ -73,34 +73,42 @@ namespace AerolineaFrba.Registro_de_Usuario
             {
                 if (mail.Contains("@") || mail == "")
                 {
-
                     if (TimePickerNacimiento.Value < funcionesComunes.getFechaGlobal())
                     {
-                        bool resultado = true;
-                        if (this.textBoxTipoForm.Text == "1")
+                        DataTable dt = SqlConnector.obtenerTablaSegunConsultaString(@"select * from " + SqlConnector.getSchema() +
+                            @".clientes where dni = " + dni + " and baja = 0");
+                        if (dt.Rows.Count != 0)
                         {
-                            this.setearParaCompras();
-                            return;
+                            MessageBox.Show("Ese documento ya existe");
                         }
                         else
-                            resultado = this.persistirCliente();
-                        if (textBoxTipoForm.Text == "2")
                         {
-                            DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
+                            bool resultado = true;
+                            if (this.textBoxTipoForm.Text == "1")
+                            {
+                                this.setearParaCompras();
+                                return;
+                            }
+                            else
+                                resultado = this.persistirCliente();
+                            if (textBoxTipoForm.Text == "2")
+                            {
+                                DataTable tabla = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT TOP 1 c.ID as id
                                                                     FROM " + SqlConnector.getSchema() + @".clientes c
                                                                     order by 1 desc");
-                            Form anterior = funcionesComunes.getVentanaAnterior();
-                            ((TextBox)anterior.Controls["textBoxIdCliente"]).Text = Convert.ToString(tabla.Rows[0].ItemArray[0]);
-                            funcionesComunes.habilitarAnterior();
-                            return;
-                        }
-                        if (resultado)
-                        {
-                            MessageBox.Show("Se guardo exitosamente");
-                            botonLimpiar.PerformClick();
-                            if (textBoxVolver.Text == "1")
-                            {
+                                Form anterior = funcionesComunes.getVentanaAnterior();
+                                ((TextBox)anterior.Controls["textBoxIdCliente"]).Text = Convert.ToString(tabla.Rows[0].ItemArray[0]);
                                 funcionesComunes.habilitarAnterior();
+                                return;
+                            }
+                            if (resultado)
+                            {
+                                MessageBox.Show("Se guardo exitosamente");
+                                botonLimpiar.PerformClick();
+                                if (textBoxVolver.Text == "1")
+                                {
+                                    funcionesComunes.habilitarAnterior();
+                                }
                             }
                         }
                     }

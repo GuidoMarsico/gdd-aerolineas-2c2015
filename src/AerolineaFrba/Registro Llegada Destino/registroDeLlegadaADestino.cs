@@ -95,9 +95,9 @@ namespace AerolineaFrba.Registro_Llegada_Destino
             if (dataGridListadoVuelos.Rows.Count > 0)
             {
                 DateTime fechaSalida = Convert.ToDateTime(dataGridListadoVuelos.SelectedCells[5].Value.ToString());
-                if (this.timePickerLlegada.Value < fechaSalida)
+                if (this.timePickerLlegada.Value <= fechaSalida)
                 {
-                    MessageBox.Show("No puede haber una fecha de llega antes de la de salida");
+                    MessageBox.Show("La fecha de llegada debe ser posterior a la de salida");
                     return false;
                 }
                 if (fechaSalida.AddDays((double)1) < timePickerLlegada.Value)

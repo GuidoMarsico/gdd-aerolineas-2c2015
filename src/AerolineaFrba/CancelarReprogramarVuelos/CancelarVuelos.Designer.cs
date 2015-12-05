@@ -33,13 +33,14 @@
             this.textBoxTipoIdAero = new System.Windows.Forms.TextBox();
             this.textBoxTipo = new System.Windows.Forms.TextBox();
             this.textBoxIdAeroValida = new System.Windows.Forms.TextBox();
+            this.buttonVolver = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // botonBajaTodos
             // 
             this.botonBajaTodos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.botonBajaTodos.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.botonBajaTodos.Location = new System.Drawing.Point(22, 40);
+            this.botonBajaTodos.Location = new System.Drawing.Point(22, 54);
             this.botonBajaTodos.Name = "botonBajaTodos";
             this.botonBajaTodos.Size = new System.Drawing.Size(189, 66);
             this.botonBajaTodos.TabIndex = 62;
@@ -51,7 +52,7 @@
             // 
             this.buttonReprogramar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonReprogramar.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonReprogramar.Location = new System.Drawing.Point(254, 40);
+            this.buttonReprogramar.Location = new System.Drawing.Point(254, 54);
             this.buttonReprogramar.Name = "buttonReprogramar";
             this.buttonReprogramar.Size = new System.Drawing.Size(183, 66);
             this.buttonReprogramar.TabIndex = 63;
@@ -63,7 +64,7 @@
             // 
             this.textBoxTipoIdAero.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxTipoIdAero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTipoIdAero.Location = new System.Drawing.Point(155, 8);
+            this.textBoxTipoIdAero.Location = new System.Drawing.Point(155, 22);
             this.textBoxTipoIdAero.Name = "textBoxTipoIdAero";
             this.textBoxTipoIdAero.Size = new System.Drawing.Size(33, 26);
             this.textBoxTipoIdAero.TabIndex = 78;
@@ -73,7 +74,7 @@
             // 
             this.textBoxTipo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxTipo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTipo.Location = new System.Drawing.Point(254, 8);
+            this.textBoxTipo.Location = new System.Drawing.Point(254, 22);
             this.textBoxTipo.Name = "textBoxTipo";
             this.textBoxTipo.Size = new System.Drawing.Size(33, 26);
             this.textBoxTipo.TabIndex = 79;
@@ -83,19 +84,32 @@
             // 
             this.textBoxIdAeroValida.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxIdAeroValida.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxIdAeroValida.Location = new System.Drawing.Point(215, 62);
+            this.textBoxIdAeroValida.Location = new System.Drawing.Point(215, 76);
             this.textBoxIdAeroValida.Name = "textBoxIdAeroValida";
             this.textBoxIdAeroValida.Size = new System.Drawing.Size(33, 26);
             this.textBoxIdAeroValida.TabIndex = 80;
             this.textBoxIdAeroValida.Visible = false;
+            // 
+            // buttonVolver
+            // 
+            this.buttonVolver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonVolver.Location = new System.Drawing.Point(133, 166);
+            this.buttonVolver.Name = "buttonVolver";
+            this.buttonVolver.Size = new System.Drawing.Size(189, 44);
+            this.buttonVolver.TabIndex = 81;
+            this.buttonVolver.Text = "Volver";
+            this.buttonVolver.UseVisualStyleBackColor = true;
+            this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
             // 
             // CancelarVuelos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(460, 124);
+            this.ClientSize = new System.Drawing.Size(460, 238);
             this.ControlBox = false;
+            this.Controls.Add(this.buttonVolver);
             this.Controls.Add(this.textBoxIdAeroValida);
             this.Controls.Add(this.textBoxTipo);
             this.Controls.Add(this.textBoxTipoIdAero);
@@ -117,5 +131,6 @@
         private System.Windows.Forms.TextBox textBoxTipoIdAero;
         private System.Windows.Forms.TextBox textBoxTipo;
         private System.Windows.Forms.TextBox textBoxIdAeroValida;
+        private System.Windows.Forms.Button buttonVolver;
     }
 }

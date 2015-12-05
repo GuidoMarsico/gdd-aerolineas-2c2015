@@ -27,10 +27,25 @@ namespace AerolineaFrba.Canje_Millas
             String dni = this.textDni.Text;
             if (dni != "")
             {
-                DataTable resultado = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + @".obtenerClienteConMillas",
-                    funcionesComunes.generarListaParaProcedure("@dni", "@fecha"), dni, funcionesComunes.getFecha());
-                dataGridCliente.DataSource = resultado;
-                dataGridCliente.Columns[0].Visible = false;
+                DataTable cliente = SqlConnector.obtenerTablaSegunConsultaString(@"select * from "+SqlConnector.getSchema() + @".clientes where dni = "+dni);
+                if (cliente.Rows.Count == 0)
+                {
+                    MessageBox.Show("No existe un cliente con el dni ingresado");
+                }
+                else
+                {
+                    DataTable resultado = SqlConnector.obtenerTablaSegunProcedure(SqlConnector.getSchema() + @".obtenerClienteConMillas",
+                        funcionesComunes.generarListaParaProcedure("@dni", "@fecha"), dni, funcionesComunes.getFecha());
+                    if (resultado.Rows.Count == 0)
+                    {
+                        MessageBox.Show("El cliente ingresado no tiene millas");
+                    }
+                    else
+                    {
+                        dataGridCliente.DataSource = resultado;
+                        dataGridCliente.Columns[0].Visible = false;
+                    }
+                }
             }
             else
             {

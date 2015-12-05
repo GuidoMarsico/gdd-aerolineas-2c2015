@@ -135,7 +135,9 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
                     actualizarAeronave();
                 else
                     funcionesComunes.darDeBajaAeronave(this.textBoxTipoIdAero.Text);
-                funcionesComunes.volverAMenuPrincipal();
+                this.textBoxIdAeroValida.Text = "";
+                buttonReprogramar.Enabled = false;
+                botonBajaTodos.Enabled = false;
             }
             else{
                 funcionesComunes.deshabilitarVentanaYAbrirNueva(new CancelarReprogramarVuelos.SeleccionarAeronave(tablaAeronavesValidas, vuelos));
@@ -154,8 +156,15 @@ namespace AerolineaFrba.CancelarReprogramarVuelos
                     actualizarAeronave();
                 else
                     funcionesComunes.darDeBajaAeronave(this.textBoxTipoIdAero.Text);
-                funcionesComunes.volverAMenuPrincipal();
+                this.textBoxIdAeroValida.Text = "";
+                buttonReprogramar.Enabled = false;
+                botonBajaTodos.Enabled = false;
             }
+        }
+
+        private void buttonVolver_Click(object sender, EventArgs e)
+        {
+            funcionesComunes.habilitarAnterior();
         }
     }
 }

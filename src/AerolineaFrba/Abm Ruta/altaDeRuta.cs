@@ -103,7 +103,7 @@ namespace AerolineaFrba.Abm_Ruta
                 return false;
             DataTable dt = new DataTable();
             dt = SqlConnector.obtenerTablaSegunConsultaString(@"SELECT * FROM "+ SqlConnector.getSchema()+".rutas R WHERE R.origen_id = " 
-                + this.comboBoxOrigen.SelectedValue + " and R.destino_id = "+ this.comboBoxDestino.SelectedValue );
+                + this.comboBoxOrigen.SelectedValue + " and R.destino_id = "+ this.comboBoxDestino.SelectedValue + @" and baja = 0");
             if (dt.Rows.Count != 0)
             {
                 MessageBox.Show("Esa combinación de origen y destino ya existe");
