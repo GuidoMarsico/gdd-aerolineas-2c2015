@@ -52,13 +52,12 @@ namespace AerolineaFrba.Abm_Aeronave
                         join " + SqlConnector.getSchema() + @".rutas r on r.ID = v.Ruta_ID
                         join " + SqlConnector.getSchema() + @".servicios_Por_Ruta servxruta on servxruta.RUTAS_ID = r.ID
                         join " + SqlConnector.getSchema() + @".tipos_de_servicio t on t.ID = servxruta.TIPOS_DE_SERVICIO_ID
-                        where v.AERONAVE_ID = " + textBoxId.Text + @" AND (v.FECHA_SALIDA 
-                > convert(datetime, '" + inicioInactividad + @"',109) and (v.FECHA_SALIDA <
-                convert(datetime, '" + finInactividad + @"',109)) or v.FECHA_LLEGADA < 
-                convert(datetime, '" + inicioInactividad + @"',109) and v.FECHA_LLEGADA < convert(datetime, '" +
-                finInactividad + @"',109) or v.FECHA_LLEGADA_ESTIMADA > 
-                convert(datetime, '" + inicioInactividad + @"',109) and v.FECHA_LLEGADA_ESTIMADA < convert(datetime, '" +
-                finInactividad + @"',109)) ");
+                        where v.AERONAVE_ID = " + textBoxId.Text + @" 
+                        AND (v.FECHA_SALIDA >= convert(datetime, '" + inicioInactividad + @"',109) 
+                        and v.FECHA_SALIDA < convert(datetime, '" + finInactividad + @"',109) 
+                        or v.FECHA_LLEGADA_ESTIMADA >= convert(datetime, '" + inicioInactividad + @"',109)
+                        and v.FECHA_LLEGADA_ESTIMADA < convert(datetime, '" + finInactividad + @"',109)) 
+                        and v.FECHA_LLEGADA IS NULL");
                 if (vuelosEnElPeriodo.Rows.Count > 0){
                     MessageBox.Show("La aeronave tiene vuelos asignados en ese período");
                     Form vuelosARemplazar = new CancelarReprogramarVuelos.CancelarVuelos("0", textBoxId.Text, String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaInicioInactividad.Value), String.Format("{0:yyyyMMdd HH:mm:ss}", this.fechaFinInactividad.Value), vuelosEnElPeriodo);

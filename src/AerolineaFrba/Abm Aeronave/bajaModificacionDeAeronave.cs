@@ -26,19 +26,24 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private void botonModificacion_Click(object sender, EventArgs e)
         {
-            if (dataGridListadoAeronaves.Rows.Count > 0)
+            if (EstaEnvuelo())
             {
-             string id = dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
-             string matricula = dataGridListadoAeronaves.SelectedCells[1].Value.ToString();
-             string modelo = dataGridListadoAeronaves.SelectedCells[2].Value.ToString();
-             string kg = dataGridListadoAeronaves.SelectedCells[3].Value.ToString();
-             string fabricante = dataGridListadoAeronaves.SelectedCells[4].Value.ToString();
-             string servicio = dataGridListadoAeronaves.SelectedCells[5].Value.ToString();
-             DateTime alta = Convert.ToDateTime(dataGridListadoAeronaves.SelectedCells[6].Value.ToString());
-             string butacas = dataGridListadoAeronaves.SelectedCells[7].Value.ToString();
-             Form modificacionAeronave = new Abm_Aeronave.modificacionDeAeronave(id,matricula,modelo,kg,fabricante,servicio,alta,butacas);
-             funcionesComunes.deshabilitarVentanaYAbrirNueva(modificacionAeronave);
+                if (dataGridListadoAeronaves.Rows.Count > 0)
+                {
+                    string id = dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
+                    string matricula = dataGridListadoAeronaves.SelectedCells[1].Value.ToString();
+                    string modelo = dataGridListadoAeronaves.SelectedCells[2].Value.ToString();
+                    string kg = dataGridListadoAeronaves.SelectedCells[3].Value.ToString();
+                    string fabricante = dataGridListadoAeronaves.SelectedCells[4].Value.ToString();
+                    string servicio = dataGridListadoAeronaves.SelectedCells[5].Value.ToString();
+                    DateTime alta = Convert.ToDateTime(dataGridListadoAeronaves.SelectedCells[6].Value.ToString());
+                    string butacas = dataGridListadoAeronaves.SelectedCells[7].Value.ToString();
+                    Form modificacionAeronave = new Abm_Aeronave.modificacionDeAeronave(id, matricula, modelo, kg, fabricante, servicio, alta, butacas);
+                    funcionesComunes.deshabilitarVentanaYAbrirNueva(modificacionAeronave);
+                }
             }
+            else
+                MessageBox.Show("La aeronave esta actualmente realizando un viaje, no puede modificarse en este momento"); 
         }
 
         private void bajaModificacionDeAeronave_Load(object sender, EventArgs e)
@@ -89,14 +94,27 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private void botonBaja_Click(object sender, EventArgs e)
         {
-            if (this.dataGridListadoAeronaves.Rows.Count > 0)
+            if (EstaEnvuelo())
             {
-                bool resultado = this.cancelarVuelosVinculados();
-                if (resultado)
-                    funcionesComunes.darDeBajaAeronave(dataGridListadoAeronaves.SelectedCells[0].Value.ToString());
-                funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
+                if (this.dataGridListadoAeronaves.Rows.Count > 0)
+                {
+                    bool resultado = this.cancelarVuelosVinculados();
+                    if (resultado)
+                        funcionesComunes.darDeBajaAeronave(dataGridListadoAeronaves.SelectedCells[0].Value.ToString());
+                    funcionesComunes.consultarAeronaves(dataGridListadoAeronaves);
+                }
             }
-            
+            else
+                MessageBox.Show("La aeronave esta actualmente realizando un viaje, no puede darse de baja en este momento");
+        }
+
+        private bool EstaEnvuelo()
+        {
+            DataTable vuelosAeronave = SqlConnector.obtenerTablaSegunConsultaString(@"select * from " + SqlConnector.getSchema() +
+            @".vuelos v where v.AERONAVE_ID = " + Int32.Parse(dataGridListadoAeronaves.SelectedCells[0].Value.ToString()) + 
+            @" and v.fecha_salida <= convert(datetime,'" + funcionesComunes.getFecha() + @"',109) and 
+            v.fecha_llegada_estimada >= convert(datetime,'" + funcionesComunes.getFecha() + @"',109)");
+            return vuelosAeronave.Rows.Count == 0;
         }
 
         private Boolean cancelarVuelosVinculados()
@@ -105,6 +123,7 @@ namespace AerolineaFrba.Abm_Aeronave
             int cantVuelos =vuelos.Rows.Count;
             if (cantVuelos > 0)
             {
+                MessageBox.Show("La aeronave tiene vuelos progamados a futuro debera remplazar la aeronave o cancelar los vuelos para terminar de dar de baja la aeronave");
                 Form opcion = new CancelarReprogramarVuelos.CancelarVuelos(vuelos);
                 ((TextBox)opcion.Controls["textBoxTipoIdAero"]).Text = dataGridListadoAeronaves.SelectedCells[0].Value.ToString();
                 ((TextBox)opcion.Controls["textBoxTipo"]).Text = "1";

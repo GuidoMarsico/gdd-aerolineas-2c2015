@@ -14,12 +14,30 @@ namespace AerolineaFrba.Abm_Aeronave
 {
     public partial class altaDeAeronave : Form
     {
+        int tipoForm = 0;
         public altaDeAeronave()
         {
             InitializeComponent();
             funcionesComunes.llenarCombobox(comboBoxFabricante,"NOMBRE","select ID, NOMBRE from " + SqlConnector.getSchema() + ".fabricantes");
             funcionesComunes.llenarCombobox(comboBoxServicio, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_de_servicio");
             this.timePickerAlta.Value = funcionesComunes.getFechaConfig();
+        }
+        public altaDeAeronave(int tipo, Int32 fabricanteId, Int32 tipoServicioId, Int32 kgdisp, Int32 cantBut) {
+            InitializeComponent();
+            funcionesComunes.llenarCombobox(comboBoxFabricante, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".fabricantes where ID = "+ fabricanteId);
+            funcionesComunes.llenarCombobox(comboBoxServicio, "NOMBRE", "select ID, NOMBRE from " + SqlConnector.getSchema() + ".tipos_de_servicio where ID = "+ tipoServicioId);
+            this.timePickerAlta.Value = funcionesComunes.getFechaConfig();
+            this.textBoxCantButacas.Text = cantBut.ToString();
+            this.textBoxCantButacas.Enabled = false;
+            this.textBoxKgDisponibles.Text = kgdisp.ToString();
+            this.textBoxKgDisponibles.Enabled = false;
+            this.timePickerAlta.Enabled = false;
+            this.botonLimpiar.Visible = false;
+            comboBoxFabricante.SelectedValue = fabricanteId;
+            comboBoxFabricante.Enabled = false;
+            comboBoxServicio.SelectedValue = tipoServicioId;
+            comboBoxServicio.Enabled = false;
+            this.tipoForm = tipo;
         }
 
         private void botonVolver_Click(object sender, EventArgs e)
@@ -72,7 +90,12 @@ namespace AerolineaFrba.Abm_Aeronave
                         if (resultado)
                         {
                             MessageBox.Show("Se guardo exitosamente");
-                            limpiar();
+                            if (tipoForm == 1) 
+                            {
+                                funcionesComunes.habilitarAnterior();
+                            }
+                            else
+                                limpiar();
                         }
                     }
                     else
